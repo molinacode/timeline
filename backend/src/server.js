@@ -11,6 +11,7 @@ import authRoutes from './routes/auth.js';
 import newsRoutes from './routes/news.js';
 import sourcesRoutes from './routes/sources.js';
 import usersRoutes from './routes/users.js';
+import rssRoutes from './routes/rss.js';
 
 // Importar middleware
 import { errorHandler } from './middleware/errorHandler.js';
@@ -110,6 +111,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/sources', sourcesRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/rss', rssRoutes);
 
 // Servir archivos estáticos (para documentación)
 app.use('/docs', express.static(join(__dirname, '../docs')));
