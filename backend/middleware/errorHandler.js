@@ -7,10 +7,12 @@ import { getSupabase } from '../src/config/supabase.js'
 export function logger(req, res, next) {
   const start = Date.now()
   const timestamp = new Date().toLocaleTimeString('es-ES', { hour12: false })
+  // Usar ruta original: en routers Express reescribe req.path a la parte relativa
+  const pathLog = (req.originalUrl && req.originalUrl.split('?')[0]) || req.path
 
-  if (process.env.NODE_ENV === 'development' || req.path.includes('/api/')) {
+  if (process.env.NODE_ENV === 'development' || pathLog.includes('/api')) {
     const userInfo = req.user ? ` [Usuario: ${req.user.id}]` : ''
-    console.log(`📥 ${timestamp} ${req.method.padEnd(6)} ${req.path.padEnd(50)}${userInfo}`)
+    console.log(`📥 ${timestamp} ${req.method.padEnd(6)} ${pathLog.padEnd(50)}${userInfo}`)
   }
 
   const originalSend = res.send
@@ -32,7 +34,7 @@ export function logger(req, res, next) {
         : ''
 
       console.log(
-        `${statusEmoji} ${timestamp} ${req.method.padEnd(6)} ${req.path.padEnd(50)} ${status} ${duration}ms${errorMsg ? ' - ' + errorMsg : ''}`
+        `${statusEmoji} ${timestamp} ${req.method.padEnd(6)} ${pathLog.padEnd(50)} ${status} ${duration}ms${errorMsg ? ' - ' + errorMsg : ''}`
       )
     }
 
@@ -54,6 +56,7 @@ async function logErrorToDb(req, res, responseData, duration) {
   try {
     const supabase = getSupabase()
     const now = new Date().toISOString()
+    const pathToLog = (req.originalUrl && req.originalUrl.split('?')[0]) || req.path
     const errorMessage =
       typeof responseData === 'string'
         ? responseData.substring(0, 1000)
@@ -61,7 +64,7 @@ async function logErrorToDb(req, res, responseData, duration) {
 
     await supabase.from('error_logs').insert({
       method: req.method,
-      path: req.path,
+      path: pathToLog,
       status_code: res.statusCode,
       error_message: errorMessage,
       user_agent: req.get('User-Agent') || 'Unknown',

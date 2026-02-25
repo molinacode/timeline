@@ -22,10 +22,12 @@ import { BiasComparatorPage } from './features/news/comparator/BiasComparatorPag
 import { UserProfilePage } from './features/user/UserProfilePage'
 import { CookieBanner } from './components/CookieBanner'
 import { Analytics } from '@vercel/analytics/react'
+import { SessionExpiredHandler } from './app/SessionExpiredHandler'
 
 export function App() {
   return (
     <>
+      <SessionExpiredHandler />
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />

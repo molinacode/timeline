@@ -123,6 +123,12 @@ Desde la raíz del proyecto:
 - **Verificación de email:** Para que se envíe el correo al registrarse, configura Nodemailer en `backend/.env` (SMTP_HOST, SMTP_USER, SMTP_PASS, etc.). **Guía paso a paso:** [backend/docs/EMAIL_SETUP.md](backend/docs/EMAIL_SETUP.md). Sin SMTP, en desarrollo el enlace de verificación se muestra en la consola del backend.
 - **Producción:** Usa `JWT_SECRET` y `JWT_REFRESH_SECRET` generados de forma segura; no subas `.env` al repositorio.
 
+### Despliegue (Vercel + Render)
+
+- **Backend (Render):** Define `FRONTEND_URL=https://timelinenews.es` para CORS y enlaces de verificación de email. Las demás variables como en `backend/env.example`.
+- **Frontend (Vercel):** Define `VITE_API_URL` con la URL del backend (ej. `https://tu-backend.onrender.com`) para que las peticiones `/api/*` vayan al backend. Sin esta variable, en producción el login y el resto del API darían 404.
+- **SPA y recargas:** El `frontend/vercel.json` redirige todas las rutas a `index.html` para evitar 404 al recargar en `/login`, `/admin`, etc.
+
 ---
 
 ## Licencia
