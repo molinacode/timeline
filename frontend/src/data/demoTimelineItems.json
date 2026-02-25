@@ -1,0 +1,45 @@
+[
+  {
+    "id": "t1",
+    "user_id": "1",
+    "news_id": "eu-elections-2024-1",
+    "source_id": "diario-progresista",
+    "title": "La UE se enfrenta al reto de frenar a la extrema derecha",
+    "summary": "Cobertura de un medio progresista sobre las elecciones europeas.",
+    "link": "https://ejemplo.com/progresista/eu-elections",
+    "pub_date": "2024-06-10T08:30:00Z",
+    "region": "Europa",
+    "bias": "progressive",
+    "is_saved": true,
+    "is_read": false
+  },
+  {
+    "id": "t2",
+    "user_id": "1",
+    "news_id": "eu-elections-2024-2",
+    "source_id": "centro-noticias",
+    "title": "Reconfiguración del Parlamento Europeo tras las elecciones",
+    "summary": "Cobertura centrista del mismo evento.",
+    "link": "https://ejemplo.com/centro/eu-elections",
+    "pub_date": "2024-06-10T09:10:00Z",
+    "region": "Europa",
+    "bias": "centrist",
+    "is_saved": false,
+    "is_read": true
+  },
+  {
+    "id": "t3",
+    "user_id": "1",
+    "news_id": "eu-elections-2024-3",
+    "source_id": "libre-mercado-hoy",
+    "title": "Los votantes castigan a los partidos tradicionales en Europa",
+    "summary": "Cobertura conservadora del mismo evento.",
+    "link": "https://ejemplo.com/conservador/eu-elections",
+    "pub_date": "2024-06-10T10:05:00Z",
+    "region": "Europa",
+    "bias": "conservative",
+    "is_saved": false,
+    "is_read": false
+  }
+]
+

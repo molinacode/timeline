@@ -1,0 +1,88 @@
+[
+  {
+    "id": "eu-elections-2024",
+    "title": "Elecciones europeas 2024 y equilibrio de poder en Bruselas",
+    "topic": "Política",
+    "region": "Europa",
+    "summary": "Cómo distintos medios cubren el resultado de las elecciones europeas y el auge de partidos euroescépticos.",
+    "image": "https://images.unsplash.com/photo-1540914124281-342587941389?w=800&q=80",
+    "articles": [
+      {
+        "id": "1",
+        "sourceName": "Diario Progresista",
+        "sourceBias": "progressive",
+        "country": "ES",
+        "region": "Nacional",
+        "headline": "La UE se enfrenta al reto de frenar a la extrema derecha",
+        "url": "https://ejemplo.com/progresista/eu-elections",
+        "publishedAt": "2024-06-10T08:30:00Z",
+        "image": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80"
+      },
+      {
+        "id": "2",
+        "sourceName": "Centro Noticias",
+        "sourceBias": "centrist",
+        "country": "ES",
+        "region": "Nacional",
+        "headline": "Reconfiguración del Parlamento Europeo tras las elecciones",
+        "url": "https://ejemplo.com/centro/eu-elections",
+        "publishedAt": "2024-06-10T09:10:00Z",
+        "image": "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=400&q=80"
+      },
+      {
+        "id": "3",
+        "sourceName": "Libre Mercado Hoy",
+        "sourceBias": "conservative",
+        "country": "ES",
+        "region": "Nacional",
+        "headline": "Los votantes castigan a los partidos tradicionales en Europa",
+        "url": "https://ejemplo.com/conservador/eu-elections",
+        "publishedAt": "2024-06-10T10:05:00Z",
+        "image": "https://images.unsplash.com/photo-1508254497628-7074cb3b93ab?w=400&q=80"
+      }
+    ]
+  },
+  {
+    "id": "climate-protests-2024",
+    "title": "Protestas climáticas en capitales europeas",
+    "topic": "Medio ambiente",
+    "region": "Europa",
+    "summary": "Manifestaciones coordinadas reclaman más ambición climática a los gobiernos.",
+    "image": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=800&q=80",
+    "articles": [
+      {
+        "id": "4",
+        "sourceName": "Verde Global",
+        "sourceBias": "progressive",
+        "country": "ES",
+        "region": "Nacional",
+        "headline": "Decenas de miles exigen una transición ecológica justa",
+        "url": "https://ejemplo.com/progresista/clima",
+        "publishedAt": "2024-03-15T11:00:00Z",
+        "image": "https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=400&q=80"
+      },
+      {
+        "id": "5",
+        "sourceName": "Diario Equilibrio",
+        "sourceBias": "centrist",
+        "country": "ES",
+        "region": "Nacional",
+        "headline": "Las protestas climáticas dividen a expertos y gobiernos",
+        "url": "https://ejemplo.com/centro/clima",
+        "publishedAt": "2024-03-15T11:30:00Z",
+        "image": "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400&q=80"
+      },
+      {
+        "id": "6",
+        "sourceName": "Economía Libre",
+        "sourceBias": "conservative",
+        "country": "ES",
+        "region": "Nacional",
+        "headline": "Las protestas climáticas bloquean el tráfico y afectan a comercios",
+        "url": "https://ejemplo.com/conservador/clima",
+        "publishedAt": "2024-03-15T12:05:00Z",
+        "image": "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=400&q=80"
+      }
+    ]
+  }
+]

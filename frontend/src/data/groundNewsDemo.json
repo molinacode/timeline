@@ -1,0 +1,112 @@
+{
+  "stories": [
+    {
+      "id": "eu-elections-2024",
+      "title": "Elecciones europeas 2024 y equilibrio de poder en Bruselas",
+      "summary": "Cómo distintos medios cubren el resultado de las elecciones europeas y el auge de partidos euroescépticos.",
+      "topic": "Política",
+      "region": "Europa",
+      "articles": [
+        {
+          "id": "1",
+          "sourceName": "Diario Progresista",
+          "bias": "left",
+          "headline": "La UE se enfrenta al reto de frenar a la extrema derecha",
+          "url": "https://ejemplo.com/progresista/eu-elections",
+          "publishedAt": "2024-06-10T08:30:00Z"
+        },
+        {
+          "id": "2",
+          "sourceName": "Centro Noticias",
+          "bias": "center",
+          "headline": "Reconfiguración del Parlamento Europeo tras las elecciones",
+          "url": "https://ejemplo.com/centro/eu-elections",
+          "publishedAt": "2024-06-10T09:10:00Z"
+        },
+        {
+          "id": "3",
+          "sourceName": "Libre Mercado Hoy",
+          "bias": "right",
+          "headline": "Los votantes castigan a los partidos tradicionales en Europa",
+          "url": "https://ejemplo.com/conservador/eu-elections",
+          "publishedAt": "2024-06-10T10:05:00Z"
+        },
+        {
+          "id": "4",
+          "sourceName": "Europa Verde",
+          "bias": "left",
+          "headline": "El voto joven frena el avance euroescéptico",
+          "url": "https://ejemplo.com/progresista/eu-elections-2",
+          "publishedAt": "2024-06-10T11:20:00Z"
+        }
+      ]
+    },
+    {
+      "id": "climate-protests-2024",
+      "title": "Protestas climáticas simultáneas en capitales europeas",
+      "summary": "Manifestaciones coordinadas reclaman más ambición climática a los gobiernos.",
+      "topic": "Medio ambiente",
+      "region": "Europa",
+      "articles": [
+        {
+          "id": "5",
+          "sourceName": "Verde Global",
+          "bias": "left",
+          "headline": "Decenas de miles exigen una transición ecológica justa",
+          "url": "https://ejemplo.com/progresista/clima",
+          "publishedAt": "2024-03-15T11:00:00Z"
+        },
+        {
+          "id": "6",
+          "sourceName": "Diario Equilibrio",
+          "bias": "center",
+          "headline": "Las protestas climáticas dividen a expertos y gobiernos",
+          "url": "https://ejemplo.com/centro/clima",
+          "publishedAt": "2024-03-15T11:30:00Z"
+        },
+        {
+          "id": "7",
+          "sourceName": "Economía Libre",
+          "bias": "right",
+          "headline": "Las protestas climáticas bloquean el tráfico y afectan a comercios",
+          "url": "https://ejemplo.com/conservador/clima",
+          "publishedAt": "2024-03-15T12:05:00Z"
+        }
+      ]
+    },
+    {
+      "id": "pensions-reform-2024",
+      "title": "Debate sobre la reforma de pensiones en España",
+      "summary": "Gobierno y oposición discrepan sobre la sostenibilidad del sistema.",
+      "topic": "Pensiones",
+      "region": "España",
+      "articles": [
+        {
+          "id": "8",
+          "sourceName": "La Voz Social",
+          "bias": "left",
+          "headline": "Los sindicatos alertan: recortes encubiertos en la reforma de pensiones",
+          "url": "https://ejemplo.com/progresista/pensiones",
+          "publishedAt": "2024-04-02T09:15:00Z"
+        },
+        {
+          "id": "9",
+          "sourceName": "Diario Centro",
+          "bias": "center",
+          "headline": "Claves técnicas de la reforma de pensiones que propone el Gobierno",
+          "url": "https://ejemplo.com/centro/pensiones",
+          "publishedAt": "2024-04-02T10:00:00Z"
+        },
+        {
+          "id": "10",
+          "sourceName": "Mercado y Futuro",
+          "bias": "right",
+          "headline": "La reforma de pensiones llega tarde y es insuficiente para garantizar la sostenibilidad",
+          "url": "https://ejemplo.com/conservador/pensiones",
+          "publishedAt": "2024-04-02T10:45:00Z"
+        }
+      ]
+    }
+  ]
+}
+

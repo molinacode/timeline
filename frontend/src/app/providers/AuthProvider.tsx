@@ -1,0 +1,121 @@
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
+
+type Role = 'user' | 'admin'
+
+type DemoUser = {
+  id: string
+  email: string
+  name: string
+  region: string
+  role: Role
+}
+
+type AuthContextValue = {
+  user: DemoUser | null
+  token: string | null
+  login: (email: string, password: string) => Promise<DemoUser>
+  register: (name: string, email: string, password: string) => Promise<void>
+  logout: () => void
+  updateUser: (updates: Partial<Pick<DemoUser, 'name' | 'region'>>) => void
+}
+
+const AuthContext = createContext<AuthContextValue | null>(null)
+
+const STORAGE_KEY = 'timeline-demo-user'
+const TOKEN_KEY = 'timeline-auth-token'
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<DemoUser | null>(null)
+  const [token, setToken] = useState<string | null>(null)
+
+  useEffect(() => {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    const storedToken = localStorage.getItem(TOKEN_KEY)
+    if (raw) {
+      try {
+        setUser(JSON.parse(raw))
+      } catch {
+        localStorage.removeItem(STORAGE_KEY)
+      }
+    }
+    if (storedToken) {
+      setToken(storedToken)
+    }
+  }, [])
+
+  const value = useMemo<AuthContextValue>(
+    () => ({
+      user,
+      token,
+      async login(email, password) {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        })
+
+        if (!res.ok) {
+          const error = await res.json().catch(() => ({}))
+          throw new Error(error.message || 'Error al iniciar sesión')
+        }
+
+        const data = await res.json()
+        const userData: DemoUser = {
+          id: String(data.user.id),
+          email: data.user.email,
+          name: data.user.name,
+          region: data.user.region || 'Sin región',
+          role: data.user.role as Role,
+        }
+
+        setUser(userData)
+        setToken(data.token)
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userData))
+        localStorage.setItem(TOKEN_KEY, data.token)
+        return userData
+      },
+      async register(name, email, _password) {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password: _password }),
+        })
+
+        if (!res.ok) {
+          const error = await res.json().catch(() => ({}))
+          throw new Error(error.message || 'Error al registrar usuario')
+        }
+
+        // No iniciamos sesión automáticamente hasta que confirme el correo
+      },
+      logout() {
+        setUser(null)
+        setToken(null)
+        localStorage.removeItem(STORAGE_KEY)
+        localStorage.removeItem(TOKEN_KEY)
+      },
+      updateUser(updates) {
+        if (!user) return
+        const next = { ...user, ...updates }
+        setUser(next)
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+      },
+    }),
+    [user, token]
+  )
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+}
+
+export function useAuth() {
+  const ctx = useContext(AuthContext)
+  if (!ctx) throw new Error('useAuth debe usarse dentro de AuthProvider')
+  return ctx
+}

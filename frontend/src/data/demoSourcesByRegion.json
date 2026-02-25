@@ -1,0 +1,141 @@
+{
+  "regions": [
+    {
+      "id": "andalucia",
+      "name": "Andalucía",
+      "sources": [
+        {
+          "id": "diario-sevilla",
+          "name": "Diario de Sevilla",
+          "url": "https://www.diariodesevilla.es",
+          "city": "Sevilla"
+        },
+        {
+          "id": "ideal",
+          "name": "Ideal",
+          "url": "https://www.ideal.es",
+          "city": "Granada"
+        }
+      ]
+    },
+    {
+      "id": "aragon",
+      "name": "Aragón",
+      "sources": []
+    },
+    {
+      "id": "asturias",
+      "name": "Asturias",
+      "sources": []
+    },
+    {
+      "id": "baleares",
+      "name": "Islas Baleares",
+      "sources": [
+        {
+          "id": "diario-de-baleares",
+          "name": "Diario de Baleares",
+          "url": "https://www.diariodebalears.es",
+          "city": "Palma"
+        },
+        {
+          "id": "mallorca-sport",
+          "name": "Mallorca Sport",
+          "url": "https://www.mallorcasport.com",
+          "city": "Palma"
+        }
+      ]
+    },
+    {
+      "id": "canarias",
+      "name": "Canarias",
+      "sources": []
+    },
+    {
+      "id": "castilla-la-mancha",
+      "name": "Castilla-La Mancha",
+      "sources": []
+    },
+    {
+      "id": "castilla-y-leon",
+      "name": "Castilla y León",
+      "sources": []
+    },
+    {
+      "id": "cataluna",
+      "name": "Cataluña",
+      "sources": []
+    },
+    {
+      "id": "cantabria",
+      "name": "Cantabria",
+      "sources": []
+    },
+    {
+      "id": "pais-vasco",
+      "name": "País Vasco",
+      "sources": []
+    },
+    {
+      "id": "navarra",
+      "name": "Navarra",
+      "sources": []
+    },
+    {
+      "id": "murcia",
+      "name": "Región de Murcia",
+      "sources": []
+    },
+    {
+      "id": "madrid",
+      "name": "Comunidad de Madrid",
+      "sources": [
+        {
+          "id": "telemadrid",
+          "name": "Telemadrid",
+          "url": "https://www.telemadrid.es",
+          "city": "Madrid"
+        },
+        {
+          "id": "madridiario",
+          "name": "Madridiario",
+          "url": "https://www.madridiario.es",
+          "city": "Madrid"
+        }
+      ]
+    },
+    {
+      "id": "la-rioja",
+      "name": "La Rioja",
+      "sources": []
+    },
+    {
+      "id": "galicia",
+      "name": "Galicia",
+      "sources": [
+        {
+          "id": "la-voz-de-galicia",
+          "name": "La Voz de Galicia",
+          "url": "https://www.lavozdegalicia.es",
+          "city": "A Coruña"
+        }
+      ]
+    },
+    {
+      "id": "extremadura",
+      "name": "Extremadura",
+      "sources": []
+    },
+    {
+      "id": "ceuta-melilla",
+      "name": "Ceuta y Melilla",
+      "sources": []
+    },
+    {
+      "id": "valenciana",
+      "name": "Comunidad Valenciana",
+      "sources": []
+    }
+  ]
+}
+
