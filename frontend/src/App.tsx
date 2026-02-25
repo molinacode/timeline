@@ -22,6 +22,7 @@ import { BiasComparatorPage } from './features/news/comparator/BiasComparatorPag
 import { UserProfilePage } from './features/user/UserProfilePage'
 import { CookieBanner } from './components/CookieBanner'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 export function App() {
   return (
@@ -81,6 +82,7 @@ export function App() {
       </Layout>
       <CookieBanner />
       <Analytics />
+      <SpeedInsights />
     </>
   )
 }
