@@ -1,5 +1,5 @@
 import { TimelineArticleCard } from '@/components/TimelineArticleCard'
-import type { NewsItem } from '../../types/news'
+import type { NewsItem } from '@/types/news'
 
 interface LocalesPanelProps {
   items: NewsItem[]

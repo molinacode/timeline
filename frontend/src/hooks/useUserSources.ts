@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import type { UserCustomSource } from '@/types/news'
+import type { UserCustomSource } from '@/types/source'
 import { apiUrl } from '@/config/api'
 
 export function useUserSources(token: string | null) {

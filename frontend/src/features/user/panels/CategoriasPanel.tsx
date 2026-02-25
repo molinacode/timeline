@@ -1,6 +1,6 @@
 import { TimelineArticleCard } from '@/components/TimelineArticleCard'
-import type { Category } from '../../types/category'
-import type { NewsItem } from '../../types/news'
+import type { Category } from '@/types/category'
+import type { NewsItem } from '@/types/news'
 
 interface CategoriasPanelProps {
   categories: Category[]

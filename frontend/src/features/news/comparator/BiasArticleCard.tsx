@@ -1,5 +1,5 @@
 /** Card compartida para artículos del comparador por sesgo */
-import type { BiasArticle } from '../../types/news'
+import type { BiasArticle } from '@/types/news'
 
 type BiasSide = 'left' | 'center' | 'right'
 

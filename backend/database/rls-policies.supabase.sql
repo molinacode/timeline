@@ -11,6 +11,11 @@
 -- =====================================================
 
 -- ---------------------------------------------------------------------------
+-- Si npm run create-admin da "new row violates row-level security policy":
+-- el backend está usando la clave ANON en lugar de SERVICE_ROLE. En .env
+-- pon SUPABASE_SERVICE_ROLE_KEY con la clave "service_role" (secret) de
+-- Dashboard > Project Settings > API, no la clave "anon" (public).
+-- ---------------------------------------------------------------------------
 -- REMEDIACIÓN RÁPIDA: si Supabase te avisa "RLS Disabled" en public.news_sources,
 -- ejecuta solo estas dos líneas en el SQL Editor y vuelve a comprobar:
 --
