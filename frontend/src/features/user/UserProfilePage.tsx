@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { BasePage } from '../../components/layout/BasePage'
+import { apiUrl } from '@/config/api'
 
 type ProfileData = {
   id: number
@@ -35,7 +36,7 @@ export function UserProfilePage() {
     ;(async () => {
       try {
         setLoading(true)
-        const res = await fetch('/api/auth/profile', {
+        const res = await fetch(apiUrl('/api/auth/profile'), {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (res.ok) {
@@ -57,7 +58,7 @@ export function UserProfilePage() {
     setDataMessage(null)
     setSavingData(true)
     try {
-      const res = await fetch('/api/auth/profile', {
+      const res = await fetch(apiUrl('/api/auth/profile'), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +94,7 @@ export function UserProfilePage() {
     }
     setSavingPassword(true)
     try {
-      const res = await fetch('/api/auth/password', {
+      const res = await fetch(apiUrl('/api/auth/password'), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

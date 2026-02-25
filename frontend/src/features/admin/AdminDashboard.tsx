@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { BasePage } from '../../components/layout/BasePage'
+import { apiUrl } from '@/config/api'
 
 type AdminSummary = {
   sourcesTotal: number
@@ -30,8 +31,8 @@ export function AdminDashboard() {
         }
 
         const [sourcesRes, categoriesRes] = await Promise.all([
-          fetch('/api/sources', { headers }),
-          fetch('/api/categories', { headers }),
+          fetch(apiUrl('/api/sources'), { headers }),
+          fetch(apiUrl('/api/categories'), { headers }),
         ])
 
         if (!sourcesRes.ok || !categoriesRes.ok) {

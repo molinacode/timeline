@@ -21,6 +21,7 @@ import { AdminBiasPage } from './features/admin/bias/AdminBiasPage'
 import { BiasComparatorPage } from './features/news/comparator/BiasComparatorPage'
 import { UserProfilePage } from './features/user/UserProfilePage'
 import { CookieBanner } from './components/CookieBanner'
+import { Analytics } from '@vercel/analytics/react'
 
 export function App() {
   return (
@@ -79,6 +80,7 @@ export function App() {
         </Routes>
       </Layout>
       <CookieBanner />
+      <Analytics />
     </>
   )
 }

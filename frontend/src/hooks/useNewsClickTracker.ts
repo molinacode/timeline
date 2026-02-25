@@ -1,4 +1,5 @@
 import { useAuth } from '../app/providers/AuthProvider'
+import { apiUrl } from '@/config/api'
 
 /**
  * Registra un clic en una noticia para métricas de admin.
@@ -9,7 +10,7 @@ export function useNewsClickTracker() {
   function trackClick(source: string, link?: string) {
     if (!token) return
     try {
-      fetch('/api/news/click', {
+      fetch(apiUrl('/api/news/click'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

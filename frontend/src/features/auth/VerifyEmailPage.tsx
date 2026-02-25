@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { BasePage } from '@/components/layout/BasePage';
+import { apiUrl } from '@/config/api';
 
 export function VerifyEmailPage() {
   const [searchParams] = useSearchParams();
@@ -20,7 +21,7 @@ export function VerifyEmailPage() {
       try {
         setStatus('loading');
         const res = await fetch(
-          `/api/auth/verify-email?token=${encodeURIComponent(token)}`
+          apiUrl(`/api/auth/verify-email?token=${encodeURIComponent(token)}`)
         );
         const data = await res.json().catch(() => ({}));
         if (!res.ok) {

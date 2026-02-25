@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import type { UserCustomSource } from '@/types/news'
+import { apiUrl } from '@/config/api'
 
 export function useUserSources(token: string | null) {
   const [sources, setSources] = useState<UserCustomSource[]>([])
@@ -9,7 +10,7 @@ export function useUserSources(token: string | null) {
     if (!token) return
     setLoading(true)
     try {
-      const res = await fetch('/api/me/sources', {
+      const res = await fetch(apiUrl('/api/me/sources'), {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (res.ok) {

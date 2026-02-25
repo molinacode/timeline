@@ -1,6 +1,7 @@
 /** Panel admin: gestión de fuentes por sesgo */
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../../app/providers/AuthProvider'
+import { apiUrl } from '@/config/api'
 import { AdminBiasProgressiveList } from './AdminBiasProgressiveList'
 import { AdminBiasCentristList } from './AdminBiasCentristList'
 import { AdminBiasConservativeList } from './AdminBiasConservativeList'
@@ -25,7 +26,7 @@ export function AdminBiasPage() {
       try {
         if (!token) return
 
-        const res = await fetch('/api/news/sources-by-bias', {
+        const res = await fetch(apiUrl('/api/news/sources-by-bias'), {
           headers: { Authorization: `Bearer ${token}` },
         })
 

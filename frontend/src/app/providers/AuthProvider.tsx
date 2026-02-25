@@ -6,6 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react'
+import { apiUrl } from '@/config/api'
 
 type Role = 'user' | 'admin'
 
@@ -55,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       token,
       async login(email, password) {
-        const res = await fetch('/api/auth/login', {
+        const res = await fetch(apiUrl('/api/auth/login'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
@@ -82,7 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return userData
       },
       async register(name, email, _password) {
-        const res = await fetch('/api/auth/register', {
+        const res = await fetch(apiUrl('/api/auth/register'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, password: _password }),

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { ByBiasMatchedResponse } from '../types/news'
+import { apiUrl } from '@/config/api'
 
 export function useBiasComparator(token: string | null) {
   const [data, setData] = useState<ByBiasMatchedResponse | null>(null)
@@ -17,7 +18,7 @@ export function useBiasComparator(token: string | null) {
           return
         }
 
-        const res = await fetch('/api/news/by-bias-matched?limit=15', {
+        const res = await fetch(apiUrl('/api/news/by-bias-matched?limit=15'), {
           headers: { Authorization: `Bearer ${token}` },
         })
 

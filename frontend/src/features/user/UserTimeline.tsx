@@ -4,6 +4,7 @@ import { useRegionFromGeolocation } from '../../hooks/useRegionFromGeolocation'
 import { useNewsClickTracker } from '../../hooks/useNewsClickTracker'
 import regionsData from '../../data/demoSourcesByRegion.json'
 import { BasePage } from '../../components/layout/BasePage'
+import { apiUrl } from '@/config/api'
 import type { NewsItem } from '../../types/news'
 import type { Category } from '../../types/category'
 import type { UserCustomSource } from '../../types/source'
@@ -52,7 +53,7 @@ export function UserTimeline() {
     ;(async () => {
       try {
         setLoadingLastHour(true)
-        const res = await fetch('/api/news/ultima-hora?limit=15')
+        const res = await fetch(apiUrl('/api/news/ultima-hora?limit=15'))
         const text = await res.text()
         let data: NewsItem[] = []
         try {
@@ -76,7 +77,7 @@ export function UserTimeline() {
     ;(async () => {
       try {
         setLoadingCategories(true)
-        const res = await fetch('/api/categories', {
+        const res = await fetch(apiUrl('/api/categories'), {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (res.ok) {
@@ -100,7 +101,7 @@ export function UserTimeline() {
     if (activeTab !== 'locales') return
     const region = effectiveRegionId || 'madrid'
     setLoadingLocalNews(true)
-    fetch(`/api/news/by-region?region=${encodeURIComponent(region)}&limit=30`)
+    fetch(apiUrl(`/api/news/by-region?region=${encodeURIComponent(region)}&limit=30`))
       .then((res) => (res.ok ? res.json() : []))
       .then((data) => setLocalNews(Array.isArray(data) ? data : []))
       .catch(() => setLocalNews([]))
@@ -111,7 +112,7 @@ export function UserTimeline() {
     if (!token) return
     try {
       setLoadingUserSources(true)
-      const res = await fetch('/api/me/sources', {
+      const res = await fetch(apiUrl('/api/me/sources'), {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (res.ok) {
@@ -134,7 +135,7 @@ export function UserTimeline() {
     }
     setAddingSource(true)
     try {
-      const res = await fetch('/api/me/sources', {
+      const res = await fetch(apiUrl('/api/me/sources'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -165,7 +166,7 @@ export function UserTimeline() {
     setLoadingCategoryNews(true)
     try {
       const res = await fetch(
-        `/api/news/by-category?category=${encodeURIComponent(cat)}&limit=20`
+        apiUrl(`/api/news/by-category?category=${encodeURIComponent(cat)}&limit=20`)
       )
       if (res.ok) {
         const data = await res.json()
@@ -183,7 +184,7 @@ export function UserTimeline() {
   async function handleRemoveSource(id: number) {
     if (!token) return
     try {
-      const res = await fetch(`/api/me/sources/${id}`, {
+      const res = await fetch(apiUrl(`/api/me/sources/${id}`), {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       })

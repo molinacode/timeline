@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { BasePage } from '../../components/layout/BasePage'
+import { apiUrl } from '@/config/api'
 
 type LogData = {
   errors: Array<{
@@ -42,7 +43,7 @@ export function AdminLogsPage() {
     ;(async () => {
       try {
         setLoading(true)
-        const res = await fetch('/api/admin/logs', {
+        const res = await fetch(apiUrl('/api/admin/logs'), {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (res.ok) {

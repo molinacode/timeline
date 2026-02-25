@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../app/providers/AuthProvider';
+import { apiUrl } from '@/config/api';
 
 type ClickByUser = {
   user_name: string;
@@ -30,7 +31,7 @@ export function RssMetricsPage() {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch('/api/admin/metrics/clicks', {
+        const res = await fetch(apiUrl('/api/admin/metrics/clicks'), {
           headers: {
             ...(token ? { Authorization: `Bearer ${token}` } : {})
           }

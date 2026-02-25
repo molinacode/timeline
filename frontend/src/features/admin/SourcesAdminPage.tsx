@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../app/providers/AuthProvider'
+import { apiUrl } from '@/config/api'
 import type { Source } from '../../types/source'
 
 type TabId = 'añadir' | 'agregadas' | 'bloqueadas';
@@ -26,7 +27,7 @@ export function SourcesAdminPage() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch('/api/admin/sources-with-status', {
+      const res = await fetch(apiUrl('/api/admin/sources-with-status'), {
         headers: {
           'Content-Type': 'application/json',
           ...(token ? { Authorization: `Bearer ${token}` } : {})
@@ -58,7 +59,7 @@ export function SourcesAdminPage() {
     try {
       setError(null);
       const method = editingId ? 'PUT' : 'POST';
-      const url = editingId ? `/api/sources/${editingId}` : '/api/sources';
+      const url = editingId ? apiUrl(`/api/sources/${editingId}`) : apiUrl('/api/sources');
       const res = await fetch(url, {
         method,
         headers: {
@@ -102,7 +103,7 @@ export function SourcesAdminPage() {
     if (!window.confirm('¿Eliminar esta fuente?')) return;
     try {
       setError(null);
-      const res = await fetch(`/api/sources/${id}`, {
+      const res = await fetch(apiUrl(`/api/sources/${id}`), {
         method: 'DELETE',
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {})
@@ -133,7 +134,6 @@ export function SourcesAdminPage() {
             key={id}
             type="button"
             role="tab"
-            aria-selected={activeTab === id}
             className={`app-timeline-tab ${activeTab === id ? 'active' : ''}`}
             onClick={() => setActiveTab(id)}
           >

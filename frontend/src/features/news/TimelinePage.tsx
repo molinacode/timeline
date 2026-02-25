@@ -3,6 +3,7 @@ import { useAuth } from '../../app/providers/AuthProvider';
 import { BasePage } from '../../components/layout/BasePage';
 import { Link } from 'react-router-dom';
 import { useNewsClickTracker } from '../../hooks/useNewsClickTracker';
+import { apiUrl } from '@/config/api';
 
 type NewsItem = {
   id: number;
@@ -26,7 +27,7 @@ export function TimelinePage() {
     (async () => {
       try {
         setLoading(true);
-        const res = await fetch('/api/news?limit=80');
+        const res = await fetch(apiUrl('/api/news?limit=80'));
         if (!res.ok) throw new Error('Error al cargar noticias');
         const data = await res.json();
         setItems(Array.isArray(data) ? data : []);

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../app/providers/AuthProvider'
+import { apiUrl } from '@/config/api'
 import type { Category } from '../../types/category'
 
 export function CategoriesAdminPage() {
@@ -21,7 +22,7 @@ export function CategoriesAdminPage() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch('/api/categories', {
+      const res = await fetch(apiUrl('/api/categories'), {
         headers: {
           'Content-Type': 'application/json',
           ...(token ? { Authorization: `Bearer ${token}` } : {})
@@ -48,7 +49,7 @@ export function CategoriesAdminPage() {
     try {
       setError(null);
       const method = editingId ? 'PUT' : 'POST';
-      const url = editingId ? `/api/categories/${editingId}` : '/api/categories';
+      const url = editingId ? apiUrl(`/api/categories/${editingId}`) : apiUrl('/api/categories');
       const res = await fetch(url, {
         method,
         headers: {
@@ -73,7 +74,7 @@ export function CategoriesAdminPage() {
     if (!window.confirm('¿Eliminar esta categoría?')) return;
     try {
       setError(null);
-      const res = await fetch(`/api/categories/${id}`, {
+      const res = await fetch(apiUrl(`/api/categories/${id}`), {
         method: 'DELETE',
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {})
@@ -101,7 +102,7 @@ export function CategoriesAdminPage() {
   async function seedDefaultCategories() {
     try {
       setError(null);
-      const res = await fetch('/api/admin/categories/seed', {
+      const res = await fetch(apiUrl('/api/admin/categories/seed'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

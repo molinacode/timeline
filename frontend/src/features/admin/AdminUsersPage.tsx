@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { BasePage } from '../../components/layout/BasePage'
+import { apiUrl } from '@/config/api'
 
 type UserItem = {
   id: number
@@ -27,7 +28,7 @@ export function AdminUsersPage() {
   async function loadUsers() {
     try {
       setLoading(true)
-      const res = await fetch('/api/admin/users', {
+      const res = await fetch(apiUrl('/api/admin/users'), {
         headers: { Authorization: `Bearer ${token}` },
       })
       if (res.ok) {
@@ -45,7 +46,7 @@ export function AdminUsersPage() {
     if (String(u.id) === currentUser?.id) return
     setActionLoading(u.id)
     try {
-      const res = await fetch(`/api/admin/users/${u.id}`, {
+      const res = await fetch(apiUrl(`/api/admin/users/${u.id}`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +70,7 @@ export function AdminUsersPage() {
     if (!confirm(`¿Cambiar rol de ${u.email} a ${newRole}?`)) return
     setActionLoading(u.id)
     try {
-      const res = await fetch(`/api/admin/users/${u.id}/role`, {
+      const res = await fetch(apiUrl(`/api/admin/users/${u.id}/role`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +98,7 @@ export function AdminUsersPage() {
       return
     setActionLoading(u.id)
     try {
-      const res = await fetch(`/api/admin/users/${u.id}`, {
+      const res = await fetch(apiUrl(`/api/admin/users/${u.id}`), {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       })
