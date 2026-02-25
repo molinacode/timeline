@@ -8,10 +8,17 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "jest",
-    "migrate": "node src/database/migrate.js migrate",
-    "seed": "node src/database/migrate.js seed",
-    "reset": "node src/database/migrate.js reset",
-    "stats": "node src/database/migrate.js stats"
+    "migrate": "node src/database/scripts/migrate.js migrate",
+    "seed": "node src/database/scripts/migrate.js seed",
+    "reset": "node src/database/scripts/migrate.js reset",
+    "stats": "node src/database/scripts/migrate.js stats",
+    "create-admin": "node src/database/scripts/createAdmin.js",
+    "check-db": "node src/database/scripts/checkDatabase.js",
+    "close-db": "node src/database/scripts/closeDatabase.js",
+    "test-realtime": "node src/database/dbeaverRealtime.js",
+    "load-sources": "node src/database/scripts/loadSources.js",
+    "cleanup": "node scripts/cleanup.js",
+    "test-public-demo": "node scripts/test-public-demo-sources.js"
   },
   "keywords": [
     "rss",
@@ -20,30 +27,31 @@
     "rest",
     "timeline"
   ],
-  "author": "Tu Nombre",
+  "author": "Vivian Garcia @Molinacode",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "helmet": "^7.1.0",
-    "dotenv": "^16.3.1",
+    "@supabase/supabase-js": "^2.97.0",
+    "axios": "^1.13.2",
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2",
-    "sqlite3": "^5.1.6",
-    "better-sqlite3": "^9.2.2",
-    "node-cron": "^3.0.3",
-    "axios": "^1.6.2",
-    "xml2js": "^0.6.2",
     "cheerio": "^1.0.0-rc.12",
-    "express-rate-limit": "^7.1.5",
-    "express-validator": "^7.0.1"
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
+    "express-rate-limit": "^7.5.1",
+    "express-validator": "^7.3.1",
+    "helmet": "^7.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.16",
+    "rss-parser": "^3.13.0",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2",
+    "@types/node": "^20.19.26",
     "jest": "^29.7.0",
-    "@types/node": "^20.10.5"
+    "nodemon": "^3.1.11"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.18.0"
   }
 }

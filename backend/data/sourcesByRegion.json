@@ -1,0 +1,77 @@
+{
+  "regions": [
+    {
+      "id": "andalucia",
+      "name": "Andalucía",
+      "sources": [
+        {
+          "id": "diario-sevilla",
+          "name": "Diario de Sevilla",
+          "url": "https://www.diariodesevilla.es",
+          "rssUrl": "https://www.diariodesevilla.es/rss/",
+          "city": "Sevilla"
+        },
+        {
+          "id": "ideal",
+          "name": "Ideal",
+          "url": "https://www.ideal.es",
+          "rssUrl": "https://www.ideal.es/rss/",
+          "city": "Granada"
+        }
+      ]
+    },
+    {
+      "id": "baleares",
+      "name": "Islas Baleares",
+      "sources": [
+        {
+          "id": "diario-de-baleares",
+          "name": "Diario de Baleares",
+          "url": "https://www.diariodebalears.es",
+          "rssUrl": "https://www.diariodebalears.es/rss/",
+          "city": "Palma"
+        },
+        {
+          "id": "mallorca-sport",
+          "name": "Mallorca Sport",
+          "url": "https://www.mallorcasport.com",
+          "rssUrl": "https://www.mallorcasport.com/feed",
+          "city": "Palma"
+        }
+      ]
+    },
+    {
+      "id": "madrid",
+      "name": "Comunidad de Madrid",
+      "sources": [
+        {
+          "id": "telemadrid",
+          "name": "Telemadrid",
+          "url": "https://www.telemadrid.es",
+          "rssUrl": "https://www.telemadrid.es/noticias/rss",
+          "city": "Madrid"
+        },
+        {
+          "id": "madridiario",
+          "name": "Madridiario",
+          "url": "https://www.madridiario.es",
+          "rssUrl": "https://www.madridiario.es/feed/",
+          "city": "Madrid"
+        }
+      ]
+    },
+    {
+      "id": "galicia",
+      "name": "Galicia",
+      "sources": [
+        {
+          "id": "la-voz-de-galicia",
+          "name": "La Voz de Galicia",
+          "url": "https://www.lavozdegalicia.es",
+          "rssUrl": "https://www.lavozdegalicia.es/rss/portada.xml",
+          "city": "A Coruña"
+        }
+      ]
+    }
+  ]
+}

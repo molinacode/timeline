@@ -1,0 +1,264 @@
+{
+  "bias": "conservative",
+  "label": "Prensa conservadora",
+  "sources": [
+    {
+      "id": "elespanol",
+      "name": "El Español",
+      "url": "https://www.elespanol.com",
+      "rssUrl": "https://www.elespanol.com/rss/"
+    },
+    {
+      "id": "elliberal",
+      "name": "El Liberal",
+      "url": "https://www.elliberal.com",
+      "rssUrl": "https://www.elliberal.com/feed/"
+    },
+    {
+      "id": "theobjective",
+      "name": "The Objective",
+      "url": "https://theobjective.com",
+      "rssUrl": "https://theobjective.com/feed/"
+    },
+    {
+      "id": "edatv",
+      "name": "EDA TV",
+      "url": "https://edatv.news",
+      "rssUrl": "https://edatv.news/feed/"
+    },
+    {
+      "id": "abc",
+      "name": "ABC",
+      "url": "https://www.abc.es",
+      "rssUrl": "https://www.abc.es/rss/abci-portada.xml"
+    },
+    {
+      "id": "larazon",
+      "name": "La Razón",
+      "url": "https://www.larazon.es",
+      "rssUrl": "https://www.larazon.es/rss/"
+    },
+    {
+      "id": "okdiario",
+      "name": "OK Diario",
+      "url": "https://okdiario.com",
+      "rssUrl": "https://okdiario.com/rss"
+    },
+    {
+      "id": "eldebate",
+      "name": "El Debate",
+      "url": "https://www.eldebate.com",
+      "rssUrl": "https://www.eldebate.com/rss/"
+    },
+    {
+      "id": "vozpopuli",
+      "name": "Voz Populi",
+      "url": "https://www.vozpopuli.com",
+      "rssUrl": "https://www.vozpopuli.com/rss/"
+    },
+    {
+      "id": "libertaddigital",
+      "name": "Libertad Digital",
+      "url": "https://www.libertaddigital.com",
+      "rssUrl": "https://www.libertaddigital.com/rss/"
+    },
+    {
+      "id": "elindependiente",
+      "name": "El Independiente",
+      "url": "https://www.elindependiente.com",
+      "rssUrl": "https://www.elindependiente.com/feed/"
+    },
+    {
+      "id": "cope",
+      "name": "Cadena COPE",
+      "url": "https://www.cope.es",
+      "rssUrl": "https://www.cope.es/api/es/programas/noticias/portada/rss"
+    },
+    {
+      "id": "periodistadigital",
+      "name": "Periodista Digital",
+      "url": "https://www.periodistadigital.com",
+      "rssUrl": "https://www.periodistadigital.com/rss/"
+    },
+    {
+      "id": "elimparcial",
+      "name": "El Imparcial",
+      "url": "https://www.elimparcial.es",
+      "rssUrl": "https://www.elimparcial.es/feed/"
+    },
+    {
+      "id": "lainformacion",
+      "name": "La Información",
+      "url": "https://www.lainformacion.com",
+      "rssUrl": "https://www.lainformacion.com/rss/"
+    },
+    {
+      "id": "esdiario",
+      "name": "ES Diario",
+      "url": "https://www.esdiario.com",
+      "rssUrl": "https://www.esdiario.com/feed/"
+    },
+    {
+      "id": "rebelionenlagranja",
+      "name": "Rebelión en la Granja",
+      "url": "https://rebelionenlagranja.com",
+      "rssUrl": "https://rebelionenlagranja.com/feed/"
+    },
+    {
+      "id": "lagaceta",
+      "name": "La Gaceta",
+      "url": "https://gaceta.es",
+      "rssUrl": "https://gaceta.es/feed/"
+    },
+    {
+      "id": "alertadigital",
+      "name": "Alerta Digital",
+      "url": "http://www.alertadigital.com",
+      "rssUrl": "http://www.alertadigital.com/feed/"
+    },
+    {
+      "id": "mediterraneodigital",
+      "name": "Mediterráneo Digital",
+      "url": "https://www.mediterraneodigital.com",
+      "rssUrl": "https://www.mediterraneodigital.com/feed/"
+    },
+    {
+      "id": "confidencialdigital",
+      "name": "Confidencial Digital",
+      "url": "https://www.elconfidencialdigital.com",
+      "rssUrl": "https://www.elconfidencialdigital.com/feed/"
+    },
+    {
+      "id": "alertanacional",
+      "name": "Alerta Nacional",
+      "url": "https://www.alertanacional.es",
+      "rssUrl": "https://www.alertanacional.es/feed/"
+    },
+    {
+      "id": "diarioya",
+      "name": "Diario Ya",
+      "url": "http://www.diarioya.es",
+      "rssUrl": "http://www.diarioya.es/feed/"
+    },
+    {
+      "id": "actuall",
+      "name": "Actuall",
+      "url": "https://www.actuall.com",
+      "rssUrl": "https://www.actuall.com/feed/"
+    },
+    {
+      "id": "dignidaddigital",
+      "name": "Dignidad Digital",
+      "url": "http://www.dignidaddigital.com",
+      "rssUrl": "http://www.dignidaddigital.com/feed/"
+    },
+    {
+      "id": "votoenblanco",
+      "name": "Voto en Blanco",
+      "url": "https://www.votoenblanco.com",
+      "rssUrl": "https://www.votoenblanco.com/feed/"
+    },
+    {
+      "id": "noticierouniversal",
+      "name": "Noticiero Universal",
+      "url": "https://noticierouniversal.com",
+      "rssUrl": "https://noticierouniversal.com/feed/"
+    },
+    {
+      "id": "extraconfidencial",
+      "name": "Extra Confidencial",
+      "url": "https://extraconfidencial.com",
+      "rssUrl": "https://extraconfidencial.com/feed/"
+    },
+    {
+      "id": "vozlibre",
+      "name": "La Voz Libre",
+      "url": "https://vozlibre.com",
+      "rssUrl": "https://vozlibre.com/feed/"
+    },
+    {
+      "id": "disidentia",
+      "name": "Disidentia",
+      "url": "https://disidentia.com",
+      "rssUrl": "https://disidentia.com/feed/"
+    },
+    {
+      "id": "hispanidad",
+      "name": "Hispanidad",
+      "url": "https://www.hispanidad.com",
+      "rssUrl": "https://www.hispanidad.com/feed/"
+    },
+    {
+      "id": "diariopatriota",
+      "name": "Diario Patriota",
+      "url": "https://diariopatriota.com",
+      "rssUrl": "https://diariopatriota.com/feed/"
+    },
+    {
+      "id": "eldiestro",
+      "name": "El Diestro",
+      "url": "https://www.eldiestro.es",
+      "rssUrl": "https://www.eldiestro.es/feed/"
+    },
+    {
+      "id": "ramblalibre",
+      "name": "Rambla Libre",
+      "url": "http://ramblalibre.com",
+      "rssUrl": "http://ramblalibre.com/feed/"
+    },
+    {
+      "id": "infohispania",
+      "name": "Infohispania",
+      "url": "https://www.infohispania.es",
+      "rssUrl": "https://www.infohispania.es/feed/"
+    },
+    {
+      "id": "latribunadelpaisvasco",
+      "name": "La Tribuna del País Vasco",
+      "url": "https://latribunadelpaisvasco.com",
+      "rssUrl": "https://latribunadelpaisvasco.com/feed/"
+    },
+    {
+      "id": "ataraxia",
+      "name": "Ataraxia",
+      "url": "https://ataraxiamagazine.com",
+      "rssUrl": "https://ataraxiamagazine.com/feed/"
+    },
+    {
+      "id": "casoaislado",
+      "name": "Caso Aislado",
+      "url": "https://casoaislado.com",
+      "rssUrl": "https://casoaislado.com/feed/"
+    },
+    {
+      "id": "adelanteespana",
+      "name": "Adelante España",
+      "url": "https://adelanteespana.com",
+      "rssUrl": "https://adelanteespana.com/feed/"
+    },
+    {
+      "id": "espanaesvoz",
+      "name": "España es Voz",
+      "url": "https://www.espanaesvoz.es",
+      "rssUrl": "https://www.espanaesvoz.es/feed/"
+    },
+    {
+      "id": "dondiario",
+      "name": "Don Diario",
+      "url": "https://dondiario.com",
+      "rssUrl": "https://dondiario.com/feed/"
+    },
+    {
+      "id": "vozmedia",
+      "name": "Voz Media",
+      "url": "https://voz.us",
+      "rssUrl": "https://voz.us/feed/"
+    },
+    {
+      "id": "labandera",
+      "name": "La Bandera",
+      "url": "https://labandera.es",
+      "rssUrl": "https://labandera.es/feed/"
+    }
+  ]
+}

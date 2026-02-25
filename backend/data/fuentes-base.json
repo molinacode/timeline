@@ -1,0 +1,711 @@
+{
+  "sources": [
+    {
+      "id": "elpais",
+      "name": "El País",
+      "url": "https://elpais.com",
+      "rssUrl": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
+      "description": "Diario nacional"
+    },
+    {
+      "id": "elmundo",
+      "name": "El Mundo",
+      "url": "https://www.elmundo.es",
+      "rssUrl": "https://e00-elmundo.uecdn.es/elmundo/rss/portada.xml",
+      "description": "Diario nacional"
+    },
+    {
+      "id": "20minutos",
+      "name": "20 Minutos",
+      "url": "https://www.20minutos.es",
+      "rssUrl": "https://www.20minutos.es/rss/",
+      "description": "Diario nacional"
+    },
+    {
+      "id": "elconfidencial",
+      "name": "El Confidencial",
+      "url": "https://www.elconfidencial.com",
+      "rssUrl": "https://rss.elconfidencial.com/espana/",
+      "description": "Diario nacional"
+    },
+    {
+      "id": "rtve",
+      "name": "RTVE",
+      "url": "https://www.rtve.es",
+      "rssUrl": "https://api.rtve.es/api/noticias/ultima_hora/1.rss",
+      "description": "Radio Televisión Española"
+    },
+    {
+      "id": "eldiario",
+      "name": "El Diario",
+      "url": "https://www.eldiario.es",
+      "rssUrl": "https://www.eldiario.es/rss/",
+      "description": "Diario"
+    },
+    {
+      "id": "infolibre",
+      "name": "Infolibre",
+      "url": "https://www.infolibre.es",
+      "rssUrl": "https://www.infolibre.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "cadenaser",
+      "name": "Cadena SER",
+      "url": "https://cadenaser.com",
+      "rssUrl": "https://cadenaser.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "publico",
+      "name": "Público",
+      "url": "https://www.publico.es",
+      "rssUrl": "https://www.publico.es/rss/",
+      "description": "Diario"
+    },
+    {
+      "id": "elplural",
+      "name": "El Plural",
+      "url": "https://www.elplural.com",
+      "rssUrl": "https://www.elplural.com/rss",
+      "description": "Diario"
+    },
+    {
+      "id": "epe",
+      "name": "El Periódico de España",
+      "url": "https://www.epe.es",
+      "rssUrl": "https://www.epe.es/rss/",
+      "description": "Diario"
+    },
+    {
+      "id": "newtral",
+      "name": "Newtral",
+      "url": "https://www.newtral.es",
+      "rssUrl": "https://www.newtral.es/rss/",
+      "description": "Diario"
+    },
+    {
+      "id": "huffpost",
+      "name": "Huffington Post España",
+      "url": "https://www.huffingtonpost.es",
+      "rssUrl": "https://www.huffingtonpost.es/feeds/index.xml",
+      "description": "Diario"
+    },
+    {
+      "id": "elsiglo",
+      "name": "El Siglo",
+      "url": "https://elsiglodeuropa.es",
+      "rssUrl": "https://elsiglodeuropa.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "elobrero",
+      "name": "El Obrero",
+      "url": "https://elobrero.es",
+      "rssUrl": "https://elobrero.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "nuevatribuna",
+      "name": "Nueva Tribuna",
+      "url": "https://www.nuevatribuna.es",
+      "rssUrl": "https://www.nuevatribuna.es/rss",
+      "description": "Diario"
+    },
+    {
+      "id": "cuartopoder",
+      "name": "Cuarto Poder",
+      "url": "https://www.cuartopoder.es",
+      "rssUrl": "https://www.cuartopoder.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "elsaltodiario",
+      "name": "El Salto Diario",
+      "url": "https://www.elsaltodiario.com",
+      "rssUrl": "https://www.elsaltodiario.com/feed",
+      "description": "Diario"
+    },
+    {
+      "id": "deverdaddigital",
+      "name": "De Verdad Digital",
+      "url": "https://deverdaddigital.com",
+      "rssUrl": "https://deverdaddigital.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "cronicalibre",
+      "name": "Crónica Libre",
+      "url": "https://www.cronicalibre.com",
+      "rssUrl": "https://www.cronicalibre.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "contrainformacion",
+      "name": "Contrainformación",
+      "url": "https://contrainformacion.es",
+      "rssUrl": "https://contrainformacion.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "kaosenlared",
+      "name": "Kaos en la Red",
+      "url": "https://kaosenlared.net",
+      "rssUrl": "https://kaosenlared.net/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "izquierdadiario",
+      "name": "Izquierda Diario",
+      "url": "http://www.izquierdadiario.es",
+      "rssUrl": "http://www.izquierdadiario.es/feed",
+      "description": "Diario"
+    },
+    {
+      "id": "lamarea",
+      "name": "La Marea",
+      "url": "https://www.lamarea.com",
+      "rssUrl": "https://www.lamarea.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "mundiario",
+      "name": "Mundiario",
+      "url": "https://www.mundiario.com",
+      "rssUrl": "https://www.mundiario.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "mundoobrero",
+      "name": "Mundo Obrero",
+      "url": "https://www.mundoobrero.es",
+      "rssUrl": "https://www.mundoobrero.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "larepublica",
+      "name": "La República",
+      "url": "https://larepublica.es",
+      "rssUrl": "https://larepublica.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "diarioprogresista",
+      "name": "Diario Progresista",
+      "url": "https://www.diarioprogresista.es",
+      "rssUrl": "https://www.diarioprogresista.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "losreplicantes",
+      "name": "Los Replicantes",
+      "url": "https://www.losreplicantes.com",
+      "rssUrl": "https://www.losreplicantes.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "ctxt",
+      "name": "CTXT",
+      "url": "https://ctxt.es",
+      "rssUrl": "https://ctxt.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "politikon",
+      "name": "Politikon",
+      "url": "https://politikon.es",
+      "rssUrl": "https://politikon.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "ecorepublicano",
+      "name": "Eco Republicano",
+      "url": "https://www.ecorepublicano.es",
+      "rssUrl": "https://www.ecorepublicano.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "diario16plus",
+      "name": "Diario 16 Plus",
+      "url": "https://diario16plus.com",
+      "rssUrl": "https://diario16plus.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "democrata",
+      "name": "Demócrata",
+      "url": "https://www.democrata.es",
+      "rssUrl": "https://www.democrata.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "sabemos",
+      "name": "Sabemos",
+      "url": "https://diariosabemos.com",
+      "rssUrl": "https://diariosabemos.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "elespanol",
+      "name": "El Español",
+      "url": "https://www.elespanol.com",
+      "rssUrl": "https://www.elespanol.com/rss/",
+      "description": "Diario"
+    },
+    {
+      "id": "niusdiario",
+      "name": "Nius Diario",
+      "url": "https://www.niusdiario.es",
+      "rssUrl": "https://www.niusdiario.es/rss/",
+      "description": "Diario"
+    },
+    {
+      "id": "estrelladigital",
+      "name": "Estrella Digital",
+      "url": "https://www.estrelladigital.es",
+      "rssUrl": "https://www.estrelladigital.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "diariocritico",
+      "name": "Diario Crítico",
+      "url": "https://www.diariocritico.com",
+      "rssUrl": "https://www.diariocritico.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "elliberal",
+      "name": "El Liberal",
+      "url": "https://www.elliberal.com",
+      "rssUrl": "https://www.elliberal.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "economiadigital",
+      "name": "Economía Digital",
+      "url": "https://www.economiadigital.es",
+      "rssUrl": "https://www.economiadigital.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "moncloa",
+      "name": "Moncloa",
+      "url": "https://www.moncloa.com",
+      "rssUrl": "https://www.moncloa.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "sigloxxi",
+      "name": "Siglo XXI",
+      "url": "http://www.diariosigloxxi.com",
+      "rssUrl": "http://www.diariosigloxxi.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "pressdigital",
+      "name": "Press Digital",
+      "url": "https://www.pressdigital.es",
+      "rssUrl": "https://www.pressdigital.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "articulo14",
+      "name": "Artículo 14",
+      "url": "https://www.articulo14.es",
+      "rssUrl": "https://www.articulo14.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "confilegal",
+      "name": "Confilegal",
+      "url": "https://confilegal.com",
+      "rssUrl": "https://confilegal.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "infobae",
+      "name": "Infobae",
+      "url": "https://www.infobae.com",
+      "rssUrl": "https://www.infobae.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "elboletin",
+      "name": "El Boletín",
+      "url": "https://www.elboletin.com",
+      "rssUrl": "https://www.elboletin.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "elcierredigital",
+      "name": "El Cierre Digital",
+      "url": "https://elcierredigital.com",
+      "rssUrl": "https://elcierredigital.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "esglobal",
+      "name": "ES Global",
+      "url": "https://www.esglobal.org",
+      "rssUrl": "https://www.esglobal.org/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "inconformista",
+      "name": "Inconformista Digital",
+      "url": "http://www.elinconformistadigital.com",
+      "rssUrl": "http://www.elinconformistadigital.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "gentedigital",
+      "name": "Gente Digital",
+      "url": "http://www.gentedigital.es",
+      "rssUrl": "http://www.gentedigital.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "prnoticias",
+      "name": "PR Noticias",
+      "url": "https://prnoticias.com",
+      "rssUrl": "https://prnoticias.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "atalayar",
+      "name": "Atalayar",
+      "url": "https://atalayar.com",
+      "rssUrl": "https://atalayar.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "eldebatedehoy",
+      "name": "El Debate de Hoy",
+      "url": "https://eldebatedehoy.es",
+      "rssUrl": "https://eldebatedehoy.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "aquieuropa",
+      "name": "Aquí Europa",
+      "url": "http://www.aquieuropa.com",
+      "rssUrl": "http://www.aquieuropa.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "sonbuenasnoticias",
+      "name": "Son Buenas Noticias",
+      "url": "http://www.sonbuenasnoticias.com",
+      "rssUrl": "http://www.sonbuenasnoticias.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "espanadiario",
+      "name": "España Diario",
+      "url": "https://espanadiario.es",
+      "rssUrl": "https://espanadiario.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "theobjective",
+      "name": "The Objective",
+      "url": "https://theobjective.com",
+      "rssUrl": "https://theobjective.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "maldita",
+      "name": "Maldita Hemeroteca",
+      "url": "https://maldita.es",
+      "rssUrl": "https://maldita.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "electomania",
+      "name": "Electomanía",
+      "url": "https://electomania.es",
+      "rssUrl": "https://electomania.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "edatv",
+      "name": "EDA TV",
+      "url": "https://edatv.news",
+      "rssUrl": "https://edatv.news/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "abc",
+      "name": "ABC",
+      "url": "https://www.abc.es",
+      "rssUrl": "https://www.abc.es/rss/abci-portada.xml",
+      "description": "Diario"
+    },
+    {
+      "id": "larazon",
+      "name": "La Razón",
+      "url": "https://www.larazon.es",
+      "rssUrl": "https://www.larazon.es/rss/",
+      "description": "Diario"
+    },
+    {
+      "id": "okdiario",
+      "name": "OK Diario",
+      "url": "https://okdiario.com",
+      "rssUrl": "https://okdiario.com/rss",
+      "description": "Diario"
+    },
+    {
+      "id": "eldebate",
+      "name": "El Debate",
+      "url": "https://www.eldebate.com",
+      "rssUrl": "https://www.eldebate.com/rss/",
+      "description": "Diario"
+    },
+    {
+      "id": "vozpopuli",
+      "name": "Voz Populi",
+      "url": "https://www.vozpopuli.com",
+      "rssUrl": "https://www.vozpopuli.com/rss/",
+      "description": "Diario"
+    },
+    {
+      "id": "libertaddigital",
+      "name": "Libertad Digital",
+      "url": "https://www.libertaddigital.com",
+      "rssUrl": "https://www.libertaddigital.com/rss/",
+      "description": "Diario"
+    },
+    {
+      "id": "elindependiente",
+      "name": "El Independiente",
+      "url": "https://www.elindependiente.com",
+      "rssUrl": "https://www.elindependiente.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "cope",
+      "name": "Cadena COPE",
+      "url": "https://www.cope.es",
+      "rssUrl": "https://www.cope.es/api/es/programas/noticias/portada/rss",
+      "description": "Diario"
+    },
+    {
+      "id": "periodistadigital",
+      "name": "Periodista Digital",
+      "url": "https://www.periodistadigital.com",
+      "rssUrl": "https://www.periodistadigital.com/rss/",
+      "description": "Diario"
+    },
+    {
+      "id": "elimparcial",
+      "name": "El Imparcial",
+      "url": "https://www.elimparcial.es",
+      "rssUrl": "https://www.elimparcial.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "lainformacion",
+      "name": "La Información",
+      "url": "https://www.lainformacion.com",
+      "rssUrl": "https://www.lainformacion.com/rss/",
+      "description": "Diario"
+    },
+    {
+      "id": "esdiario",
+      "name": "ES Diario",
+      "url": "https://www.esdiario.com",
+      "rssUrl": "https://www.esdiario.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "rebelionenlagranja",
+      "name": "Rebelión en la Granja",
+      "url": "https://rebelionenlagranja.com",
+      "rssUrl": "https://rebelionenlagranja.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "lagaceta",
+      "name": "La Gaceta",
+      "url": "https://gaceta.es",
+      "rssUrl": "https://gaceta.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "alertadigital",
+      "name": "Alerta Digital",
+      "url": "http://www.alertadigital.com",
+      "rssUrl": "http://www.alertadigital.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "mediterraneodigital",
+      "name": "Mediterráneo Digital",
+      "url": "https://www.mediterraneodigital.com",
+      "rssUrl": "https://www.mediterraneodigital.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "confidencialdigital",
+      "name": "Confidencial Digital",
+      "url": "https://www.elconfidencialdigital.com",
+      "rssUrl": "https://www.elconfidencialdigital.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "alertanacional",
+      "name": "Alerta Nacional",
+      "url": "https://www.alertanacional.es",
+      "rssUrl": "https://www.alertanacional.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "diarioya",
+      "name": "Diario Ya",
+      "url": "http://www.diarioya.es",
+      "rssUrl": "http://www.diarioya.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "actuall",
+      "name": "Actuall",
+      "url": "https://www.actuall.com",
+      "rssUrl": "https://www.actuall.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "dignidaddigital",
+      "name": "Dignidad Digital",
+      "url": "http://www.dignidaddigital.com",
+      "rssUrl": "http://www.dignidaddigital.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "votoenblanco",
+      "name": "Voto en Blanco",
+      "url": "https://www.votoenblanco.com",
+      "rssUrl": "https://www.votoenblanco.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "noticierouniversal",
+      "name": "Noticiero Universal",
+      "url": "https://noticierouniversal.com",
+      "rssUrl": "https://noticierouniversal.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "extraconfidencial",
+      "name": "Extra Confidencial",
+      "url": "https://extraconfidencial.com",
+      "rssUrl": "https://extraconfidencial.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "vozlibre",
+      "name": "La Voz Libre",
+      "url": "https://vozlibre.com",
+      "rssUrl": "https://vozlibre.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "disidentia",
+      "name": "Disidentia",
+      "url": "https://disidentia.com",
+      "rssUrl": "https://disidentia.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "hispanidad",
+      "name": "Hispanidad",
+      "url": "https://www.hispanidad.com",
+      "rssUrl": "https://www.hispanidad.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "diariopatriota",
+      "name": "Diario Patriota",
+      "url": "https://diariopatriota.com",
+      "rssUrl": "https://diariopatriota.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "eldiestro",
+      "name": "El Diestro",
+      "url": "https://www.eldiestro.es",
+      "rssUrl": "https://www.eldiestro.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "ramblalibre",
+      "name": "Rambla Libre",
+      "url": "http://ramblalibre.com",
+      "rssUrl": "http://ramblalibre.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "infohispania",
+      "name": "Infohispania",
+      "url": "https://www.infohispania.es",
+      "rssUrl": "https://www.infohispania.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "latribunadelpaisvasco",
+      "name": "La Tribuna del País Vasco",
+      "url": "https://latribunadelpaisvasco.com",
+      "rssUrl": "https://latribunadelpaisvasco.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "ataraxia",
+      "name": "Ataraxia",
+      "url": "https://ataraxiamagazine.com",
+      "rssUrl": "https://ataraxiamagazine.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "casoaislado",
+      "name": "Caso Aislado",
+      "url": "https://casoaislado.com",
+      "rssUrl": "https://casoaislado.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "adelanteespana",
+      "name": "Adelante España",
+      "url": "https://adelanteespana.com",
+      "rssUrl": "https://adelanteespana.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "espanaesvoz",
+      "name": "España es Voz",
+      "url": "https://www.espanaesvoz.es",
+      "rssUrl": "https://www.espanaesvoz.es/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "dondiario",
+      "name": "Don Diario",
+      "url": "https://dondiario.com",
+      "rssUrl": "https://dondiario.com/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "vozmedia",
+      "name": "Voz Media",
+      "url": "https://voz.us",
+      "rssUrl": "https://voz.us/feed/",
+      "description": "Diario"
+    },
+    {
+      "id": "labandera",
+      "name": "La Bandera",
+      "url": "https://labandera.es",
+      "rssUrl": "https://labandera.es/feed/",
+      "description": "Diario"
+    }
+  ]
+}

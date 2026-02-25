@@ -1,0 +1,162 @@
+{
+  "bias": "centrist",
+  "label": "Prensa centrista",
+  "sources": [
+    {
+      "id": "elmundo",
+      "name": "El Mundo",
+      "url": "https://www.elmundo.es",
+      "rssUrl": "https://e00-elmundo.uecdn.es/elmundo/rss/portada.xml"
+    },
+    {
+      "id": "20minutos",
+      "name": "20 Minutos",
+      "url": "https://www.20minutos.es",
+      "rssUrl": "https://www.20minutos.es/rss/"
+    },
+    {
+      "id": "elconfidencial",
+      "name": "El Confidencial",
+      "url": "https://www.elconfidencial.com",
+      "rssUrl": "https://rss.elconfidencial.com/espana/"
+    },
+    {
+      "id": "niusdiario",
+      "name": "Nius Diario",
+      "url": "https://www.niusdiario.es",
+      "rssUrl": "https://www.niusdiario.es/rss/"
+    },
+    {
+      "id": "estrelladigital",
+      "name": "Estrella Digital",
+      "url": "https://www.estrelladigital.es",
+      "rssUrl": "https://www.estrelladigital.es/feed/"
+    },
+    {
+      "id": "diariocritico",
+      "name": "Diario Crítico",
+      "url": "https://www.diariocritico.com",
+      "rssUrl": "https://www.diariocritico.com/feed/"
+    },
+    {
+      "id": "economiadigital",
+      "name": "Economía Digital",
+      "url": "https://www.economiadigital.es",
+      "rssUrl": "https://www.economiadigital.es/feed/"
+    },
+    {
+      "id": "moncloa",
+      "name": "Moncloa",
+      "url": "https://www.moncloa.com",
+      "rssUrl": "https://www.moncloa.com/feed/"
+    },
+    {
+      "id": "sigloxxi",
+      "name": "Siglo XXI",
+      "url": "http://www.diariosigloxxi.com",
+      "rssUrl": "http://www.diariosigloxxi.com/feed/"
+    },
+    {
+      "id": "pressdigital",
+      "name": "Press Digital",
+      "url": "https://www.pressdigital.es",
+      "rssUrl": "https://www.pressdigital.es/feed/"
+    },
+    {
+      "id": "articulo14",
+      "name": "Artículo 14",
+      "url": "https://www.articulo14.es",
+      "rssUrl": "https://www.articulo14.es/feed/"
+    },
+    {
+      "id": "confilegal",
+      "name": "Confilegal",
+      "url": "https://confilegal.com",
+      "rssUrl": "https://confilegal.com/feed/"
+    },
+    {
+      "id": "infobae",
+      "name": "Infobae",
+      "url": "https://www.infobae.com",
+      "rssUrl": "https://www.infobae.com/feed/"
+    },
+    {
+      "id": "elboletin",
+      "name": "El Boletín",
+      "url": "https://www.elboletin.com",
+      "rssUrl": "https://www.elboletin.com/feed/"
+    },
+    {
+      "id": "elcierredigital",
+      "name": "El Cierre Digital",
+      "url": "https://elcierredigital.com",
+      "rssUrl": "https://elcierredigital.com/feed/"
+    },
+    {
+      "id": "esglobal",
+      "name": "ES Global",
+      "url": "https://www.esglobal.org",
+      "rssUrl": "https://www.esglobal.org/feed/"
+    },
+    {
+      "id": "inconformista",
+      "name": "Inconformista Digital",
+      "url": "http://www.elinconformistadigital.com",
+      "rssUrl": "http://www.elinconformistadigital.com/feed/"
+    },
+    {
+      "id": "gentedigital",
+      "name": "Gente Digital",
+      "url": "http://www.gentedigital.es",
+      "rssUrl": "http://www.gentedigital.es/feed/"
+    },
+    {
+      "id": "prnoticias",
+      "name": "PR Noticias",
+      "url": "https://prnoticias.com",
+      "rssUrl": "https://prnoticias.com/feed/"
+    },
+    {
+      "id": "atalayar",
+      "name": "Atalayar",
+      "url": "https://atalayar.com",
+      "rssUrl": "https://atalayar.com/feed/"
+    },
+    {
+      "id": "eldebatedehoy",
+      "name": "El Debate de Hoy",
+      "url": "https://eldebatedehoy.es",
+      "rssUrl": "https://eldebatedehoy.es/feed/"
+    },
+    {
+      "id": "aquieuropa",
+      "name": "Aquí Europa",
+      "url": "http://www.aquieuropa.com",
+      "rssUrl": "http://www.aquieuropa.com/feed/"
+    },
+    {
+      "id": "sonbuenasnoticias",
+      "name": "Son Buenas Noticias",
+      "url": "http://www.sonbuenasnoticias.com",
+      "rssUrl": "http://www.sonbuenasnoticias.com/feed/"
+    },
+    {
+      "id": "espanadiario",
+      "name": "España Diario",
+      "url": "https://espanadiario.es",
+      "rssUrl": "https://espanadiario.es/feed/"
+    },
+    {
+      "id": "maldita",
+      "name": "Maldita Hemeroteca",
+      "url": "https://maldita.es",
+      "rssUrl": "https://maldita.es/feed/"
+    },
+    {
+      "id": "electomania",
+      "name": "Electomanía",
+      "url": "https://electomania.es",
+      "rssUrl": "https://electomania.es/feed/"
+    }
+  ]
+}

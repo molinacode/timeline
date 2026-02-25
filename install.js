@@ -38,19 +38,32 @@ function runCommand(command, cwd = process.cwd()) {
 function checkNodeVersion() {
     try {
         const version = execSync('node --version', { encoding: 'utf8' }).trim();
-        const majorVersion = parseInt(version.substring(1).split('.')[0]);
+        const versionParts = version.substring(1).split('.').map(v => parseInt(v));
+        const requiredVersion = [20, 17, 0];
         
-        if (majorVersion < 18) {
-            console.error('❌ Node.js 18+ es requerido. Versión actual:', version);
-            console.error('   Por favor, actualiza Node.js desde https://nodejs.org');
+        // Comparar versiones
+        let isValid = true;
+        for (let i = 0; i < requiredVersion.length; i++) {
+            if (versionParts[i] > requiredVersion[i]) {
+                break; // Versión superior, válida
+            }
+            if (versionParts[i] < requiredVersion[i]) {
+                isValid = false;
+                break;
+            }
+        }
+        
+        if (!isValid) {
+            console.error('❌ Node.js 20.17.0 es requerido. Versión actual:', version);
+            console.error('   Por favor, actualiza Node.js a la versión 20.17.0 desde https://nodejs.org');
             process.exit(1);
         }
         
-        console.log(`✅ Node.js ${version} detectado`);
+        console.log(`✅ Node.js ${version} detectado (requerido: 20.17.0)`);
         return true;
     } catch (error) {
         console.error('❌ Node.js no está instalado');
-        console.error('   Por favor, instala Node.js desde https://nodejs.org');
+        console.error('   Por favor, instala Node.js 20.17.0 desde https://nodejs.org');
         process.exit(1);
     }
 }
@@ -145,7 +158,7 @@ async function install() {
     } catch (error) {
         console.error('\\n❌ Error durante la instalación:', error.message);
         console.log('\\n🔧 Solución de problemas:');
-        console.log('   1. Verifica que Node.js 18+ esté instalado');
+        console.log('   1. Verifica que Node.js 20.17.0 esté instalado');
         console.log('   2. Verifica que npm esté funcionando');
         console.log('   3. Verifica permisos de escritura en el directorio');
         console.log('   4. Revisa los logs de error arriba');

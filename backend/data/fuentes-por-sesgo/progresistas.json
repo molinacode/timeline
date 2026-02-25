@@ -1,0 +1,192 @@
+{
+  "bias": "progressive",
+  "label": "Prensa progresista",
+  "sources": [
+    {
+      "id": "elpais",
+      "name": "El País",
+      "url": "https://elpais.com",
+      "rssUrl": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada"
+    },
+    {
+      "id": "eldiario",
+      "name": "El Diario",
+      "url": "https://www.eldiario.es",
+      "rssUrl": "https://www.eldiario.es/rss/"
+    },
+    {
+      "id": "infolibre",
+      "name": "Infolibre",
+      "url": "https://www.infolibre.es",
+      "rssUrl": "https://www.infolibre.es/feed/"
+    },
+    {
+      "id": "cadenaser",
+      "name": "Cadena SER",
+      "url": "https://cadenaser.com",
+      "rssUrl": "https://cadenaser.com/feed/"
+    },
+    {
+      "id": "publico",
+      "name": "Público",
+      "url": "https://www.publico.es",
+      "rssUrl": "https://www.publico.es/rss/"
+    },
+    {
+      "id": "elplural",
+      "name": "El Plural",
+      "url": "https://www.elplural.com",
+      "rssUrl": "https://www.elplural.com/rss"
+    },
+    {
+      "id": "epe",
+      "name": "El Periódico de España",
+      "url": "https://www.epe.es",
+      "rssUrl": "https://www.epe.es/rss/"
+    },
+    {
+      "id": "newtral",
+      "name": "Newtral",
+      "url": "https://www.newtral.es",
+      "rssUrl": "https://www.newtral.es/rss/"
+    },
+    {
+      "id": "huffpost",
+      "name": "Huffington Post España",
+      "url": "https://www.huffingtonpost.es",
+      "rssUrl": "https://www.huffingtonpost.es/feeds/index.xml"
+    },
+    {
+      "id": "elsiglo",
+      "name": "El Siglo",
+      "url": "https://elsiglodeuropa.es",
+      "rssUrl": "https://elsiglodeuropa.es/feed/"
+    },
+    {
+      "id": "elobrero",
+      "name": "El Obrero",
+      "url": "https://elobrero.es",
+      "rssUrl": "https://elobrero.es/feed/"
+    },
+    {
+      "id": "nuevatribuna",
+      "name": "Nueva Tribuna",
+      "url": "https://www.nuevatribuna.es",
+      "rssUrl": "https://www.nuevatribuna.es/rss"
+    },
+    {
+      "id": "cuartopoder",
+      "name": "Cuarto Poder",
+      "url": "https://www.cuartopoder.es",
+      "rssUrl": "https://www.cuartopoder.es/feed/"
+    },
+    {
+      "id": "elsaltodiario",
+      "name": "El Salto Diario",
+      "url": "https://www.elsaltodiario.com",
+      "rssUrl": "https://www.elsaltodiario.com/feed"
+    },
+    {
+      "id": "deverdaddigital",
+      "name": "De Verdad Digital",
+      "url": "https://deverdaddigital.com",
+      "rssUrl": "https://deverdaddigital.com/feed/"
+    },
+    {
+      "id": "cronicalibre",
+      "name": "Crónica Libre",
+      "url": "https://www.cronicalibre.com",
+      "rssUrl": "https://www.cronicalibre.com/feed/"
+    },
+    {
+      "id": "contrainformacion",
+      "name": "Contrainformación",
+      "url": "https://contrainformacion.es",
+      "rssUrl": "https://contrainformacion.es/feed/"
+    },
+    {
+      "id": "kaosenlared",
+      "name": "Kaos en la Red",
+      "url": "https://kaosenlared.net",
+      "rssUrl": "https://kaosenlared.net/feed/"
+    },
+    {
+      "id": "izquierdadiario",
+      "name": "Izquierda Diario",
+      "url": "http://www.izquierdadiario.es",
+      "rssUrl": "http://www.izquierdadiario.es/feed"
+    },
+    {
+      "id": "lamarea",
+      "name": "La Marea",
+      "url": "https://www.lamarea.com",
+      "rssUrl": "https://www.lamarea.com/feed/"
+    },
+    {
+      "id": "mundiario",
+      "name": "Mundiario",
+      "url": "https://www.mundiario.com",
+      "rssUrl": "https://www.mundiario.com/feed/"
+    },
+    {
+      "id": "mundoobrero",
+      "name": "Mundo Obrero",
+      "url": "https://www.mundoobrero.es",
+      "rssUrl": "https://www.mundoobrero.es/feed/"
+    },
+    {
+      "id": "larepublica",
+      "name": "La República",
+      "url": "https://larepublica.es",
+      "rssUrl": "https://larepublica.es/feed/"
+    },
+    {
+      "id": "diarioprogresista",
+      "name": "Diario Progresista",
+      "url": "https://www.diarioprogresista.es",
+      "rssUrl": "https://www.diarioprogresista.es/feed/"
+    },
+    {
+      "id": "losreplicantes",
+      "name": "Los Replicantes",
+      "url": "https://www.losreplicantes.com",
+      "rssUrl": "https://www.losreplicantes.com/feed/"
+    },
+    {
+      "id": "ctxt",
+      "name": "CTXT",
+      "url": "https://ctxt.es",
+      "rssUrl": "https://ctxt.es/feed/"
+    },
+    {
+      "id": "politikon",
+      "name": "Politikon",
+      "url": "https://politikon.es",
+      "rssUrl": "https://politikon.es/feed/"
+    },
+    {
+      "id": "ecorepublicano",
+      "name": "Eco Republicano",
+      "url": "https://www.ecorepublicano.es",
+      "rssUrl": "https://www.ecorepublicano.es/feed/"
+    },
+    {
+      "id": "diario16plus",
+      "name": "Diario 16 Plus",
+      "url": "https://diario16plus.com",
+      "rssUrl": "https://diario16plus.com/feed/"
+    },
+    {
+      "id": "democrata",
+      "name": "Demócrata",
+      "url": "https://www.democrata.es",
+      "rssUrl": "https://www.democrata.es/feed/"
+    },
+    {
+      "id": "sabemos",
+      "name": "Sabemos",
+      "url": "https://diariosabemos.com",
+      "rssUrl": "https://diariosabemos.com/feed/"
+    }
+  ]
+}

@@ -1,380 +1,312 @@
-import express from 'express';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { body, validationResult } from 'express-validator';
-import { getDatabase } from '../config/database.js';
+import express from 'express'
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+import { getSupabase } from '../src/config/supabase.js'
+import { sendVerificationEmail } from '../src/services/emailService.js'
+import {
+  createEmailVerification,
+  consumeEmailVerification,
+} from '../src/services/emailVerificationService.js'
+import { authenticateToken } from '../middleware/auth.js'
 
-const router = express.Router();
+const router = express.Router()
 
-// =====================================================
-// MIDDLEWARE DE VALIDACIÓN
-// =====================================================
+// POST /api/auth/register
+router.post('/auth/register', async (req, res) => {
+  const supabase = getSupabase()
+  const { email, password, name, region } = req.body || {}
 
-const validateRegister = [
-    body('email')
-        .isEmail()
-        .normalizeEmail()
-        .withMessage('Email válido requerido'),
-    body('password')
-        .isLength({ min: 6 })
-        .withMessage('La contraseña debe tener al menos 6 caracteres'),
-    body('name')
-        .optional()
-        .isLength({ min: 2, max: 100 })
-        .withMessage('El nombre debe tener entre 2 y 100 caracteres'),
-    body('region')
-        .optional()
-        .isIn(['andalucia', 'aragon', 'asturias', 'baleares', 'canarias', 'cantabria', 'castilla', 'cataluna', 'castillaleon', 'paisvasco', 'navarra', 'murcia', 'madrid', 'rioja', 'galicia', 'extremadura', 'ceutamelilla', 'valencia'])
-        .withMessage('Región no válida')
-];
+  if (!email || !password || !name) {
+    return res.status(400).json({
+      error: 'Datos inválidos',
+      message: 'Los campos email, password y name son obligatorios',
+    })
+  }
 
-const validateLogin = [
-    body('email')
-        .isEmail()
-        .normalizeEmail()
-        .withMessage('Email válido requerido'),
-    body('password')
-        .notEmpty()
-        .withMessage('Contraseña requerida')
-];
+  try {
+    const { data: existing } = await supabase
+      .from('users')
+      .select('id')
+      .eq('email', email)
+      .maybeSingle()
 
-// =====================================================
-// FUNCIONES AUXILIARES
-// =====================================================
-
-function generateToken(userId) {
-    return jwt.sign(
-        { userId },
-        process.env.JWT_SECRET || 'timeline-secret-key',
-        { expiresIn: '7d' }
-    );
-}
-
-function generateRefreshToken(userId) {
-    return jwt.sign(
-        { userId, type: 'refresh' },
-        process.env.JWT_REFRESH_SECRET || 'timeline-refresh-secret',
-        { expiresIn: '30d' }
-    );
-}
-
-// =====================================================
-// RUTAS DE AUTENTICACIÓN
-// =====================================================
-
-// POST /api/auth/register - Registro de usuario
-router.post('/register', validateRegister, async (req, res) => {
-    try {
-        // Verificar errores de validación
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                error: 'Datos de entrada inválidos',
-                details: errors.array()
-            });
-        }
-
-        const { email, password, name, region } = req.body;
-        const db = getDatabase();
-
-        // Verificar si el usuario ya existe
-        const existingUser = db.prepare(`
-            SELECT id FROM users WHERE email = ?
-        `).get(email);
-
-        if (existingUser) {
-            return res.status(409).json({
-                error: 'Usuario ya existe',
-                message: 'Ya existe un usuario con este email'
-            });
-        }
-
-        // Hash de la contraseña
-        const saltRounds = 12;
-        const passwordHash = await bcrypt.hash(password, saltRounds);
-
-        // Crear usuario
-        const result = db.prepare(`
-            INSERT INTO users (email, password_hash, name, region, created_at)
-            VALUES (?, ?, ?, ?, datetime('now'))
-        `).run(email, passwordHash, name || null, region || null);
-
-        const userId = result.lastInsertRowid;
-
-        // Crear preferencias por defecto
-        db.prepare(`
-            INSERT INTO user_preferences (user_id, theme, language, region, notifications)
-            VALUES (?, 'light', 'es', ?, TRUE)
-        `).run(userId, region || null);
-
-        // Generar tokens
-        const token = generateToken(userId);
-        const refreshToken = generateRefreshToken(userId);
-
-        // Guardar sesión
-        const expiresAt = new Date();
-        expiresAt.setDate(expiresAt.getDate() + 7); // 7 días
-
-        db.prepare(`
-            INSERT INTO sessions (user_id, token, expires_at)
-            VALUES (?, ?, ?)
-        `).run(userId, token, expiresAt.toISOString());
-
-        // Respuesta exitosa
-        res.status(201).json({
-            message: 'Usuario registrado exitosamente',
-            user: {
-                id: userId,
-                email,
-                name: name || null,
-                region: region || null
-            },
-            token,
-            refreshToken,
-            expiresAt: expiresAt.toISOString()
-        });
-
-    } catch (error) {
-        console.error('Error en registro:', error);
-        res.status(500).json({
-            error: 'Error interno del servidor',
-            message: 'No se pudo registrar el usuario'
-        });
+    if (existing) {
+      return res.status(409).json({
+        error: 'Usuario ya existe',
+        message: 'Ya existe un usuario registrado con ese email',
+      })
     }
-});
 
-// POST /api/auth/login - Inicio de sesión
-router.post('/login', validateLogin, async (req, res) => {
+    const passwordHash = await bcrypt.hash(password, 10)
+    const now = new Date().toISOString()
+
+    const { data: inserted, error: insertError } = await supabase
+      .from('users')
+      .insert({
+        email,
+        password_hash: passwordHash,
+        name,
+        region: region || null,
+        role: 'user',
+        preferences: JSON.stringify({}),
+        is_active: false,
+        created_at: now,
+        updated_at: now,
+        last_login: null,
+      })
+      .select('id')
+      .single()
+
+    if (insertError) throw insertError
+    const userId = inserted.id
+
+    const token = await createEmailVerification(userId)
+
     try {
-        // Verificar errores de validación
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                error: 'Datos de entrada inválidos',
-                details: errors.array()
-            });
-        }
-
-        const { email, password } = req.body;
-        const db = getDatabase();
-
-        // Buscar usuario
-        const user = db.prepare(`
-            SELECT id, email, password_hash, name, region, is_active, last_login
-            FROM users WHERE email = ?
-        `).get(email);
-
-        if (!user) {
-            return res.status(401).json({
-                error: 'Credenciales inválidas',
-                message: 'Email o contraseña incorrectos'
-            });
-        }
-
-        // Verificar si el usuario está activo
-        if (!user.is_active) {
-            return res.status(403).json({
-                error: 'Cuenta desactivada',
-                message: 'Tu cuenta ha sido desactivada'
-            });
-        }
-
-        // Verificar contraseña
-        const isValidPassword = await bcrypt.compare(password, user.password_hash);
-        if (!isValidPassword) {
-            return res.status(401).json({
-                error: 'Credenciales inválidas',
-                message: 'Email o contraseña incorrectos'
-            });
-        }
-
-        // Generar tokens
-        const token = generateToken(user.id);
-        const refreshToken = generateRefreshToken(user.id);
-
-        // Guardar sesión
-        const expiresAt = new Date();
-        expiresAt.setDate(expiresAt.getDate() + 7); // 7 días
-
-        db.prepare(`
-            INSERT INTO sessions (user_id, token, expires_at)
-            VALUES (?, ?, ?)
-        `).run(user.id, token, expiresAt.toISOString());
-
-        // Actualizar último login
-        db.prepare(`
-            UPDATE users 
-            SET last_login = datetime('now'), updated_at = datetime('now')
-            WHERE id = ?
-        `).run(user.id);
-
-        // Respuesta exitosa
-        res.json({
-            message: 'Inicio de sesión exitoso',
-            user: {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                region: user.region
-            },
-            token,
-            refreshToken,
-            expiresAt: expiresAt.toISOString()
-        });
-
-    } catch (error) {
-        console.error('Error en login:', error);
-        res.status(500).json({
-            error: 'Error interno del servidor',
-            message: 'No se pudo iniciar sesión'
-        });
+      await sendVerificationEmail(email, token)
+    } catch (emailError) {
+      console.error('Error enviando email de verificación:', emailError)
     }
-});
 
-// POST /api/auth/refresh - Renovar token
-router.post('/refresh', async (req, res) => {
-    try {
-        const { refreshToken } = req.body;
+    res.status(201).json({
+      id: userId,
+      email,
+      name,
+      region: region || null,
+      role: 'user',
+      isActive: false,
+      message: 'Usuario registrado. Revisa tu correo para confirmar la cuenta.',
+    })
+  } catch (error) {
+    console.error('Error en registro:', error)
+    res.status(500).json({ error: 'Error al registrar usuario' })
+  }
+})
 
-        if (!refreshToken) {
-            return res.status(400).json({
-                error: 'Token de renovación requerido'
-            });
-        }
+// GET /api/auth/verify-email?token=...
+router.get('/auth/verify-email', async (req, res) => {
+  const supabase = getSupabase()
+  const token = req.query.token
 
-        // Verificar refresh token
-        const decoded = jwt.verify(
-            refreshToken,
-            process.env.JWT_REFRESH_SECRET || 'timeline-refresh-secret'
-        );
+  if (!token || typeof token !== 'string') {
+    return res.status(400).json({
+      error: 'Token inválido',
+      message: 'Falta el token de verificación',
+    })
+  }
 
-        if (decoded.type !== 'refresh') {
-            return res.status(401).json({
-                error: 'Token de renovación inválido'
-            });
-        }
-
-        const db = getDatabase();
-        const user = db.prepare(`
-            SELECT id, email, name, region, is_active
-            FROM users WHERE id = ?
-        `).get(decoded.userId);
-
-        if (!user || !user.is_active) {
-            return res.status(401).json({
-                error: 'Usuario no válido'
-            });
-        }
-
-        // Generar nuevo token
-        const newToken = generateToken(user.id);
-        const newRefreshToken = generateRefreshToken(user.id);
-
-        // Guardar nueva sesión
-        const expiresAt = new Date();
-        expiresAt.setDate(expiresAt.getDate() + 7);
-
-        db.prepare(`
-            INSERT INTO sessions (user_id, token, expires_at)
-            VALUES (?, ?, ?)
-        `).run(user.id, newToken, expiresAt.toISOString());
-
-        res.json({
-            message: 'Token renovado exitosamente',
-            token: newToken,
-            refreshToken: newRefreshToken,
-            expiresAt: expiresAt.toISOString()
-        });
-
-    } catch (error) {
-        console.error('Error en renovación de token:', error);
-        res.status(401).json({
-            error: 'Token de renovación inválido'
-        });
+  try {
+    const userId = await consumeEmailVerification(token)
+    if (!userId) {
+      return res.status(400).json({
+        error: 'Token inválido o expirado',
+        message: 'El enlace de verificación no es válido o ha caducado',
+      })
     }
-});
 
-// POST /api/auth/logout - Cerrar sesión
-router.post('/logout', async (req, res) => {
-    try {
-        const { token } = req.body;
+    const now = new Date().toISOString()
+    await supabase
+      .from('users')
+      .update({ is_active: true, updated_at: now })
+      .eq('id', userId)
 
-        if (!token) {
-            return res.status(400).json({
-                error: 'Token requerido'
-            });
-        }
+    res.json({
+      message: 'Correo verificado correctamente. Ya puedes iniciar sesión.',
+    })
+  } catch (error) {
+    console.error('Error verificando email:', error)
+    res.status(500).json({ error: 'Error al verificar el correo' })
+  }
+})
 
-        const db = getDatabase();
+// POST /api/auth/login
+router.post('/auth/login', async (req, res) => {
+  const supabase = getSupabase()
+  const { email, password } = req.body || {}
 
-        // Eliminar sesión
-        const result = db.prepare(`
-            DELETE FROM sessions WHERE token = ?
-        `).run(token);
+  if (!email || !password) {
+    return res.status(400).json({
+      error: 'Datos inválidos',
+      message: 'Los campos email y password son obligatorios',
+    })
+  }
 
-        if (result.changes > 0) {
-            res.json({
-                message: 'Sesión cerrada exitosamente'
-            });
-        } else {
-            res.status(404).json({
-                error: 'Sesión no encontrada'
-            });
-        }
+  try {
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('id, email, password_hash, name, region, role, is_active')
+      .eq('email', email)
+      .maybeSingle()
 
-    } catch (error) {
-        console.error('Error en logout:', error);
-        res.status(500).json({
-            error: 'Error interno del servidor'
-        });
+    if (userError || !user) {
+      return res.status(401).json({
+        error: 'Credenciales inválidas',
+        message: 'Email o contraseña incorrectos',
+      })
     }
-});
 
-// GET /api/auth/verify - Verificar token
-router.get('/verify', async (req, res) => {
-    try {
-        const authHeader = req.headers.authorization;
-        
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return res.status(401).json({
-                error: 'Token de autorización requerido'
-            });
-        }
-
-        const token = authHeader.substring(7);
-        const decoded = jwt.verify(
-            token,
-            process.env.JWT_SECRET || 'timeline-secret-key'
-        );
-
-        const db = getDatabase();
-        const user = db.prepare(`
-            SELECT id, email, name, region, is_active
-            FROM users WHERE id = ?
-        `).get(decoded.userId);
-
-        if (!user || !user.is_active) {
-            return res.status(401).json({
-                error: 'Usuario no válido'
-            });
-        }
-
-        res.json({
-            valid: true,
-            user: {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                region: user.region
-            }
-        });
-
-    } catch (error) {
-        console.error('Error en verificación:', error);
-        res.status(401).json({
-            error: 'Token inválido'
-        });
+    if (!user.is_active) {
+      return res.status(403).json({
+        error: 'Cuenta no verificada',
+        message: 'Debes verificar tu correo antes de iniciar sesión',
+      })
     }
-});
 
-export default router;
+    const isValid = await bcrypt.compare(password, user.password_hash)
+    if (!isValid) {
+      return res.status(401).json({
+        error: 'Credenciales inválidas',
+        message: 'Email o contraseña incorrectos',
+      })
+    }
+
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET || 'timeline-secret-key',
+      { expiresIn: '8h' }
+    )
+
+    const expiresAt = new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString()
+    const now = new Date().toISOString()
+
+    await supabase.from('sessions').insert({
+      user_id: user.id,
+      token,
+      expires_at: expiresAt,
+      created_at: now,
+    })
+
+    await supabase
+      .from('users')
+      .update({ last_login: now, updated_at: now })
+      .eq('id', user.id)
+
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        region: user.region,
+        role: user.role,
+      },
+    })
+  } catch (error) {
+    console.error('Error en login:', error)
+    res.status(500).json({ error: 'Error al iniciar sesión' })
+  }
+})
+
+// GET /api/auth/profile
+router.get('/auth/profile', authenticateToken, async (req, res) => {
+  const supabase = getSupabase()
+  const { data: user, error } = await supabase
+    .from('users')
+    .select('id, email, name, region, role, created_at, last_login')
+    .eq('id', req.user.id)
+    .maybeSingle()
+
+  if (error || !user) {
+    return res.status(404).json({ error: 'Usuario no encontrado' })
+  }
+  res.json(user)
+})
+
+// PUT /api/auth/profile
+router.put('/auth/profile', authenticateToken, async (req, res) => {
+  const supabase = getSupabase()
+  const { name, region } = req.body || {}
+
+  try {
+    if (name != null && typeof name === 'string' && name.trim().length === 0) {
+      return res.status(400).json({
+        error: 'Nombre inválido',
+        message: 'El nombre no puede estar vacío',
+      })
+    }
+
+    const updates = {}
+    if (name != null && typeof name === 'string') {
+      updates.name = name.trim()
+    }
+    if (region != null) {
+      updates.region = typeof region === 'string' ? region.trim() || null : null
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({
+        error: 'Sin cambios',
+        message: 'No hay datos para actualizar',
+      })
+    }
+
+    updates.updated_at = new Date().toISOString()
+
+    const { data: user, error } = await supabase
+      .from('users')
+      .update(updates)
+      .eq('id', req.user.id)
+      .select('id, email, name, region, role, created_at, last_login')
+      .single()
+
+    if (error) throw error
+    res.json(user)
+  } catch (error) {
+    console.error('Error actualizando perfil:', error)
+    res.status(500).json({ error: 'Error al actualizar perfil' })
+  }
+})
+
+// PUT /api/auth/password
+router.put('/auth/password', authenticateToken, async (req, res) => {
+  const supabase = getSupabase()
+  const { current_password, new_password } = req.body || {}
+
+  if (!current_password || !new_password) {
+    return res.status(400).json({
+      error: 'Datos inválidos',
+      message: 'Debes indicar contraseña actual y nueva',
+    })
+  }
+
+  if (new_password.length < 6) {
+    return res.status(400).json({
+      error: 'Contraseña débil',
+      message: 'La nueva contraseña debe tener al menos 6 caracteres',
+    })
+  }
+
+  try {
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .select('id, password_hash')
+      .eq('id', req.user.id)
+      .maybeSingle()
+
+    if (userError || !user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' })
+    }
+
+    const valid = await bcrypt.compare(current_password, user.password_hash)
+    if (!valid) {
+      return res.status(401).json({
+        error: 'Contraseña incorrecta',
+        message: 'La contraseña actual no es correcta',
+      })
+    }
+
+    const passwordHash = await bcrypt.hash(new_password, 10)
+    const now = new Date().toISOString()
+    await supabase
+      .from('users')
+      .update({ password_hash: passwordHash, updated_at: now })
+      .eq('id', req.user.id)
+
+    res.json({ message: 'Contraseña actualizada correctamente' })
+  } catch (error) {
+    console.error('Error cambiando contraseña:', error)
+    res.status(500).json({ error: 'Error al cambiar contraseña' })
+  }
+})
+
+export default router
