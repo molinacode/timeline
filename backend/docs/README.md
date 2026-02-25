@@ -132,6 +132,11 @@ npm run reset      # Resetear y poblar
 npm run stats      # Mostrar estadísticas
 ```
 
+### Admin y recuperación (desarrollo / Supabase)
+
+- **Crear admin**: `npm run create-admin` — Crea el usuario administrador usando `ADMIN_EMAIL`, `ADMIN_PASSWORD` y `ADMIN_NAME` del `.env`.
+- **Resetear contraseña del admin**: `npm run reset-admin-password` — Actualiza la contraseña del usuario con `ADMIN_EMAIL` usando el valor actual de `ADMIN_PASSWORD` en `.env`. Pensado para desarrollo o recuperación puntual. En producción hay que definir además `ALLOW_RESET_ADMIN=true` para poder ejecutarlo.
+
 ## 🔒 Seguridad
 
 - **JWT Authentication**: Tokens seguros con refresh
@@ -170,6 +175,8 @@ npm run migrate    # Ejecutar migración de BD
 npm run seed       # Poblar con datos de prueba
 npm run reset      # Resetear BD y poblar
 npm run stats      # Mostrar estadísticas
+npm run create-admin        # Crear usuario admin (Supabase)
+npm run reset-admin-password # Resetear contraseña del admin (solo dev/recuperación)
 npm test           # Ejecutar tests
 ```
 
