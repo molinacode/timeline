@@ -20,12 +20,14 @@ const router = express.Router()
 // Si quieres forzar el modo "en vivo" con RSS directos, pon USE_LIVE_RSS=true.
 const USE_LIVE_RSS = process.env.USE_LIVE_RSS === 'true'
 
-// Caché simple en memoria para respuestas de /api/news y /api/news/ultima-hora
+// Caché simple en memoria para respuestas de /api/news, /api/news/ultima-hora y comparador
 const NEWS_CACHE_TTL_MS = 30_000
 const ULTIMA_HORA_CACHE_TTL_MS = 30_000
+const BIAS_MATCHED_CACHE_TTL_MS = 120_000
 
 const newsCache = new Map()
 const ultimaHoraCache = new Map()
+const biasMatchedCache = new Map()
 
 function getFromCache(cache, key) {
   const entry = cache.get(key)
@@ -291,7 +293,14 @@ router.get('/news/by-bias', authenticateToken, async (req, res) => {
 router.get('/news/by-bias-matched', authenticateToken, async (req, res) => {
   const limit = Math.min(Number(req.query.limit) || 15, 25)
   try {
+    const cacheKey = String(limit)
+    const cached = getFromCache(biasMatchedCache, cacheKey)
+    if (cached) {
+      return res.json(cached)
+    }
+
     const data = await fetchNewsByBiasMatched(limit)
+    setInCache(biasMatchedCache, cacheKey, data, BIAS_MATCHED_CACHE_TTL_MS)
     res.json(data)
   } catch (err) {
     console.error('Error en /api/news/by-bias-matched:', err.message)
