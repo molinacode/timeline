@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../app/providers/AuthProvider';
 import { BasePage } from '../../components/layout/BasePage';
+import { NewsImage } from '../../components/NewsImage';
 import { Link } from 'react-router-dom';
 import { useNewsClickTracker } from '../../hooks/useNewsClickTracker';
 import { apiUrl } from '@/config/api';
@@ -76,13 +77,7 @@ export function TimelinePage() {
           <div className="app-flex-col">
             {items.map((item) => (
               <article key={item.id} className="app-card app-article-card">
-                {item.imageUrl && (
-                  <img
-                    src={item.imageUrl}
-                    alt=""
-                    className="user-timeline-img app-article-card-media"
-                  />
-                )}
+                <NewsImage src={item.imageUrl} />
                 <div className="app-article-card-body">
                   <h2 className="app-page-title app-headline-link">
                     <a
@@ -104,8 +99,10 @@ export function TimelinePage() {
                     {item.sourceName}
                     {item.pubDate
                       ? ` · ${new Date(item.pubDate).toLocaleString('es-ES', {
-                          dateStyle: 'short',
-                          timeStyle: 'short'
+                          day: '2-digit',
+                          month: 'short',
+                          hour: '2-digit',
+                          minute: '2-digit'
                         })}`
                       : ''}
                   </p>

@@ -4,6 +4,7 @@ import { useRegionFromGeolocation } from '../../hooks/useRegionFromGeolocation'
 import { useNewsClickTracker } from '../../hooks/useNewsClickTracker'
 import regionsData from '../../data/demoSourcesByRegion.json'
 import { BasePage } from '../../components/layout/BasePage'
+import { TimelineArticleCard } from '../../components/TimelineArticleCard'
 import { apiUrl } from '@/config/api'
 import type { NewsItem } from '../../types/news'
 import type { Category } from '../../types/category'
@@ -237,37 +238,14 @@ export function UserTimeline() {
             ) : (
               <div className="app-flex-col">
                 {lastHourItems.map((item, idx) => (
-                  <article key={idx} className="app-card app-article-card">
-                    {item.image && (
-                      <img
-                        src={item.image}
-                        alt=""
-                        className="user-timeline-img app-article-card-media"
-                      />
-                    )}
-                    <div className="app-article-card-body">
-                      <h2 className="app-page-title app-headline-link">
-                        <a
-                          href={item.link}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="app-link-inherit"
-                          onClick={() => trackClick(item.source, item.link)}
-                        >
-                          {item.title}
-                        </a>
-                      </h2>
-                      <p className="app-page-subtitle app-page-subtitle--md app-page-subtitle--tight app-article-description-clamp">
-                        {item.description}
-                      </p>
-                      <p className="app-comparador-cell-source app-timeline-meta">
-                        {item.source}
-                        {item.programName
-                          ? ` · ${item.programName}`
-                          : ''} · {item.pubDate}
-                      </p>
-                    </div>
-                  </article>
+                  <TimelineArticleCard
+                    key={`${item.link}-${idx}`}
+                    item={item}
+                    formatDate
+                    onLinkClick={(source, link) =>
+                      trackClick(source, link || item.link)
+                    }
+                  />
                 ))}
               </div>
             )}
@@ -290,19 +268,30 @@ export function UserTimeline() {
                 No hay categorías configuradas. El administrador puede crearlas en el panel de Admin.
               </p>
             ) : (
-            <div className="app-categories-chips">
-              {categories.map((c) => (
-                <button
-                  key={c.id}
-                  type="button"
-                  className={`app-category-chip ${selectedCategory === c.name ? 'active' : ''}`}
-                  onClick={() => loadNewsByCategory(c.name)}
-                  title={c.description || undefined}
-                >
-                  {c.name}
-                </button>
-              ))}
-            </div>
+              <div className="app-categories-chips">
+                {categories
+                  .slice()
+                  .sort((a, b) => Number(!!b.isSpecial) - Number(!!a.isSpecial))
+                  .map((c) => (
+                    <button
+                      key={c.id}
+                      type="button"
+                      className={`app-category-chip ${
+                        c.isSpecial ? 'app-category-chip--special' : ''
+                      } ${selectedCategory === c.name ? 'active' : ''}`}
+                      onClick={() => loadNewsByCategory(c.name)}
+                      title={c.description || undefined}
+                    >
+                      {c.icon && <span className="app-category-chip-icon">{c.icon}</span>}
+                      <span>{c.name}</span>
+                      {c.isSpecial && (
+                        <span className="app-category-chip-badge" aria-hidden="true">
+                          ⚡
+                        </span>
+                      )}
+                    </button>
+                  ))}
+              </div>
             )}
             {selectedCategory && (
               <>

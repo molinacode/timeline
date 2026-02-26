@@ -25,6 +25,7 @@
     "ajv": "^8.18.0",
     "autoprefixer": "^10.4.23",
     "debug": "^4.4.3",
+    "enhanced-resolve": "^5.19.0",
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.37.0",
     "eslint-plugin-react-hooks": "^5.0.0",

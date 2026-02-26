@@ -11,6 +11,10 @@ import { authenticateToken } from '../middleware/auth.js'
 
 const router = express.Router()
 
+// Versión actual del acuerdo de uso. Si en el futuro cambian las condiciones,
+// se puede actualizar este valor para forzar una nueva aceptación.
+const CURRENT_TERMS_VERSION = '2026-02-v1'
+
 // POST /api/auth/register
 router.post('/auth/register', async (req, res) => {
   const supabase = getSupabase()
@@ -134,7 +138,9 @@ router.post('/auth/login', async (req, res) => {
   try {
     const { data: user, error: userError } = await supabase
       .from('users')
-      .select('id, email, password_hash, name, region, role, is_active')
+      .select(
+        'id, email, password_hash, name, region, role, is_active, terms_version, terms_accepted_at'
+      )
       .eq('email', email)
       .maybeSingle()
 
@@ -189,6 +195,8 @@ router.post('/auth/login', async (req, res) => {
         name: user.name,
         region: user.region,
         role: user.role,
+        hasAcceptedTerms: !!user.terms_accepted_at,
+        termsVersion: user.terms_version || null,
       },
     })
   } catch (error) {
@@ -202,7 +210,9 @@ router.get('/auth/profile', authenticateToken, async (req, res) => {
   const supabase = getSupabase()
   const { data: user, error } = await supabase
     .from('users')
-    .select('id, email, name, region, role, created_at, last_login')
+    .select(
+      'id, email, name, region, role, created_at, last_login, terms_version, terms_accepted_at'
+    )
     .eq('id', req.user.id)
     .maybeSingle()
 
@@ -246,7 +256,9 @@ router.put('/auth/profile', authenticateToken, async (req, res) => {
       .from('users')
       .update(updates)
       .eq('id', req.user.id)
-      .select('id, email, name, region, role, created_at, last_login')
+      .select(
+        'id, email, name, region, role, created_at, last_login, terms_version, terms_accepted_at'
+      )
       .single()
 
     if (error) throw error
@@ -254,6 +266,50 @@ router.put('/auth/profile', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Error actualizando perfil:', error)
     res.status(500).json({ error: 'Error al actualizar perfil' })
+  }
+})
+
+// POST /api/auth/accept-terms
+// Marca que el usuario ha aceptado el acuerdo de uso actual.
+router.post('/auth/accept-terms', authenticateToken, async (req, res) => {
+  const supabase = getSupabase()
+
+  try {
+    const now = new Date().toISOString()
+
+    const { data: user, error } = await supabase
+      .from('users')
+      .update({
+        terms_version: CURRENT_TERMS_VERSION,
+        terms_accepted_at: now,
+        updated_at: now,
+      })
+      .eq('id', req.user.id)
+      .select(
+        'id, email, name, region, role, terms_version, terms_accepted_at, created_at, last_login'
+      )
+      .single()
+
+    if (error) {
+      throw error
+    }
+
+    res.json({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      region: user.region,
+      role: user.role,
+      hasAcceptedTerms: !!user.terms_accepted_at,
+      termsVersion: user.terms_version || null,
+      created_at: user.created_at,
+      last_login: user.last_login,
+    })
+  } catch (error) {
+    console.error('Error registrando aceptación de términos:', error)
+    res
+      .status(500)
+      .json({ error: 'Error al registrar aceptación de términos' })
   }
 })
 

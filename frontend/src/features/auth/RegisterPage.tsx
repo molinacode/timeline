@@ -77,6 +77,11 @@ export function RegisterPage() {
           {loading ? 'Creando cuenta…' : 'Registrarse'}
         </button>
 
+        <p className="auth-terms-hint">
+          Al crear una cuenta aceptas el acuerdo de uso de TimeLine. Podrás
+          revisarlo y confirmarlo en el primer acceso a tu timeline.
+        </p>
+
         <p className="auth-link">
           ¿Ya tienes cuenta?{' '}
           <Link to="/login">Inicia sesión</Link>

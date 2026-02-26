@@ -23,6 +23,7 @@ import { UserProfilePage } from './features/user/UserProfilePage'
 import { CookieBanner } from './components/CookieBanner'
 import { Analytics } from '@vercel/analytics/react'
 import { SessionExpiredHandler } from './app/SessionExpiredHandler'
+import { UserAgreementPage } from './features/legal/UserAgreementPage'
 
 export function App() {
   return (
@@ -53,6 +54,14 @@ export function App() {
             element={
               <RequireAuth>
                 <UserProfilePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/user-agreement"
+            element={
+              <RequireAuth>
+                <UserAgreementPage />
               </RequireAuth>
             }
           />
