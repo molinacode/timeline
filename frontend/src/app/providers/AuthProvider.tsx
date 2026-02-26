@@ -16,6 +16,8 @@ type DemoUser = {
   name: string
   region: string
   role: Role
+  hasAcceptedTerms?: boolean
+  termsVersion?: string | null
 }
 
 type AuthContextValue = {
@@ -24,7 +26,7 @@ type AuthContextValue = {
   login: (email: string, password: string) => Promise<DemoUser>
   register: (name: string, email: string, password: string) => Promise<void>
   logout: () => void
-  updateUser: (updates: Partial<Pick<DemoUser, 'name' | 'region'>>) => void
+  updateUser: (updates: Partial<DemoUser>) => void
   hydrated: boolean
 }
 
@@ -43,7 +45,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const storedToken = localStorage.getItem(TOKEN_KEY)
     if (raw) {
       try {
-        setUser(JSON.parse(raw))
+        const parsed = JSON.parse(raw) as DemoUser
+        setUser(parsed)
       } catch {
         localStorage.removeItem(STORAGE_KEY)
       }
@@ -78,6 +81,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           name: data.user.name,
           region: data.user.region || 'Sin región',
           role: data.user.role as Role,
+          hasAcceptedTerms: !!data.user.hasAcceptedTerms,
+          termsVersion: data.user.termsVersion ?? null,
         }
 
         setUser(userData)
@@ -108,7 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       },
       updateUser(updates) {
         if (!user) return
-        const next = { ...user, ...updates }
+        const next: DemoUser = { ...user, ...updates }
         setUser(next)
         localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
       },

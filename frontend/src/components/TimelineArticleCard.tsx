@@ -1,4 +1,5 @@
 import type { NewsItem } from '../types/news'
+import { NewsImage } from './NewsImage'
 
 interface TimelineArticleCardProps {
   item: NewsItem
@@ -13,8 +14,8 @@ export function TimelineArticleCard({
 }: TimelineArticleCardProps) {
   const dateStr = item.pubDate
     ? formatDate
-      ? new Date(item.pubDate).toLocaleDateString('es-ES', {
-          day: 'numeric',
+      ? new Date(item.pubDate).toLocaleString('es-ES', {
+          day: '2-digit',
           month: 'short',
           hour: '2-digit',
           minute: '2-digit',
@@ -24,15 +25,7 @@ export function TimelineArticleCard({
 
   return (
     <article className="app-card app-article-card">
-      {item.image && (
-        <img
-          src={item.image}
-          alt=""
-          className="user-timeline-img app-article-card-media"
-          loading="lazy"
-          decoding="async"
-        />
-      )}
+      <NewsImage src={item.image} />
       <div className="app-article-card-body">
         <h2 className="app-page-title app-headline-link">
           <a

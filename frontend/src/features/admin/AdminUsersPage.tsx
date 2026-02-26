@@ -13,6 +13,7 @@ type UserItem = {
   created_at: string
   last_login: string | null
   is_connected: boolean
+  has_accepted_terms?: boolean
 }
 
 export function AdminUsersPage() {
@@ -138,6 +139,7 @@ export function AdminUsersPage() {
                 <th>Región</th>
                 <th>Rol</th>
                 <th>Estado</th>
+                <th>Acuerdo uso</th>
                 <th>Conectado</th>
                 <th>Registro</th>
                 <th>Acciones</th>
@@ -161,13 +163,22 @@ export function AdminUsersPage() {
                         {u.role}
                       </span>
                     </td>
-                    <td>
+                  <td>
                       <span
                         className={`app-status-badge app-status-badge--${
                           u.is_active ? 'ok' : 'error'
                         }`}
                       >
                         {u.is_active ? 'Activo' : 'Bloqueado'}
+                      </span>
+                    </td>
+                    <td>
+                      <span
+                        className={`app-status-badge app-status-badge--${
+                          u.has_accepted_terms ? 'ok' : 'error'
+                        }`}
+                      >
+                        {u.has_accepted_terms ? 'Aceptado' : 'Pendiente'}
                       </span>
                     </td>
                     <td>{u.is_connected ? 'Sí' : 'No'}</td>

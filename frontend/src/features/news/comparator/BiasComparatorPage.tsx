@@ -66,6 +66,15 @@ export function BiasComparatorPage() {
                 key={idx}
                 className="comparador-story-card app-card app-card--spaced"
               >
+                {group.tags && group.tags.length > 0 && (
+                  <div className="comparador-story-tags">
+                    {group.tags.map((tag: string, i: number) => (
+                      <span key={i} className="comparador-story-tag">
+                        ⚡ {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 <div className="comparador-story-main">
                   <div className="text-left comparador-story-col">
                     <span className="comparador-bias-label comparador-bias-label--progressive">

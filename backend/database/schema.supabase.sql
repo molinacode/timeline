@@ -16,6 +16,13 @@ CREATE TABLE IF NOT EXISTS users (
   last_login TIMESTAMPTZ
 );
 
+-- Campos para control de aceptación del acuerdo de uso
+ALTER TABLE IF EXISTS users
+  ADD COLUMN IF NOT EXISTS terms_version TEXT;
+
+ALTER TABLE IF EXISTS users
+  ADD COLUMN IF NOT EXISTS terms_accepted_at TIMESTAMPTZ;
+
 -- 2. Fuentes de noticias (incluye bias para comparador por sesgo)
 CREATE TABLE IF NOT EXISTS news_sources (
   id BIGSERIAL PRIMARY KEY,
@@ -125,6 +132,7 @@ CREATE TABLE IF NOT EXISTS source_categories (
   icon TEXT,
   color TEXT,
   description TEXT,
+  is_special BOOLEAN NOT NULL DEFAULT false,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 

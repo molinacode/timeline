@@ -14,7 +14,9 @@ router.get('/users', async (req, res) => {
     const supabase = getSupabase()
     const { data: users, error: usersError } = await supabase
       .from('users')
-      .select('id, email, name, region, role, is_active, created_at, last_login')
+      .select(
+        'id, email, name, region, role, is_active, created_at, last_login, terms_version, terms_accepted_at'
+      )
       .order('created_at', { ascending: false })
 
     if (usersError) throw usersError
@@ -29,6 +31,7 @@ router.get('/users', async (req, res) => {
     const usersWithStatus = (users || []).map((u) => ({
       ...u,
       is_connected: sessionUserIds.includes(u.id),
+      has_accepted_terms: !!u.terms_accepted_at,
     }))
 
     res.json(usersWithStatus)

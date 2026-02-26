@@ -6,4 +6,6 @@ export interface Category {
   icon: string | null
   color: string | null
   description: string | null
+  /** Categoría especial / destacada (23F, DANA, etc.) */
+  isSpecial?: boolean
 }
