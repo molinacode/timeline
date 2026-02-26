@@ -4,10 +4,34 @@ import { authenticateToken, requireAdmin } from '../middleware/auth.js'
 
 const router = express.Router()
 
+// Caché simple en memoria: fuentes cambian poco; podemos cachear 60s
+const SOURCES_CACHE_TTL_MS = 60_000
+const sourcesCache = new Map()
+
+function getFromCache(cache, key) {
+  const entry = cache.get(key)
+  if (!entry) return null
+  if (entry.expiresAt <= Date.now()) {
+    cache.delete(key)
+    return null
+  }
+  return entry.value
+}
+
+function setInCache(cache, key, value, ttlMs) {
+  cache.set(key, { value, expiresAt: Date.now() + ttlMs })
+}
+
 // GET /api/sources?activeOnly=true
 router.get('/sources', authenticateToken, async (req, res) => {
   const supabase = getSupabase()
   const activeOnly = req.query.activeOnly === 'true'
+
+  const cacheKey = activeOnly ? 'active' : 'all'
+  const cached = getFromCache(sourcesCache, cacheKey)
+  if (cached) {
+    return res.json(cached)
+  }
 
   try {
     let query = supabase
@@ -18,17 +42,18 @@ router.get('/sources', authenticateToken, async (req, res) => {
     const { data: rows, error } = await query
 
     if (error) throw error
-    res.json(
-      (rows || []).map((r) => ({
-        id: r.id,
-        name: r.name,
-        rssUrl: r.rss_url,
-        websiteUrl: r.website_url,
-        category: r.category,
-        description: r.description,
-        isActive: !!r.is_active,
-      }))
-    )
+    const payload = (rows || []).map((r) => ({
+      id: r.id,
+      name: r.name,
+      rssUrl: r.rss_url,
+      websiteUrl: r.website_url,
+      category: r.category,
+      description: r.description,
+      isActive: !!r.is_active,
+    }))
+
+    setInCache(sourcesCache, cacheKey, payload, SOURCES_CACHE_TTL_MS)
+    res.json(payload)
   } catch (error) {
     console.error('Error listando fuentes:', error)
     res.status(500).json({ error: 'Error al listar fuentes' })

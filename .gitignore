@@ -7,6 +7,7 @@ Propuesta_DAW.htm
 .nvmrc
 setup-node-version.ps1
 /Propuesta_DAW/
+/mockups/
 
 # Node / frontend / backend
 node_modules/

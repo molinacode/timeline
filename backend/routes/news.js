@@ -16,6 +16,34 @@ import { authenticateToken } from '../middleware/auth.js'
 
 const router = express.Router()
 
+// En producción evitamos ir a los RSS en cada petición para mejorar rendimiento.
+// Si quieres forzar el modo "en vivo" con RSS directos, pon USE_LIVE_RSS=true.
+const USE_LIVE_RSS = process.env.USE_LIVE_RSS === 'true'
+
+// Caché simple en memoria para respuestas de /api/news y /api/news/ultima-hora
+const NEWS_CACHE_TTL_MS = 30_000
+const ULTIMA_HORA_CACHE_TTL_MS = 30_000
+
+const newsCache = new Map()
+const ultimaHoraCache = new Map()
+
+function getFromCache(cache, key) {
+  const entry = cache.get(key)
+  if (!entry) return null
+  if (entry.expiresAt <= Date.now()) {
+    cache.delete(key)
+    return null
+  }
+  return entry.value
+}
+
+function setInCache(cache, key, value, ttlMs) {
+  cache.set(key, {
+    value,
+    expiresAt: Date.now() + ttlMs,
+  })
+}
+
 // GET /api/news - noticias del timeline (desde news_items, fuentes RSS configuradas)
 router.get('/news', async (req, res) => {
   const send = (status, body) => {
@@ -23,9 +51,14 @@ router.get('/news', async (req, res) => {
     res.status(status).json(body)
   }
   try {
-    const supabase = getSupabase()
     const limit = Math.min(Number(req.query.limit) || 50, 200)
+    const cacheKey = String(limit)
+    const cached = getFromCache(newsCache, cacheKey)
+    if (cached) {
+      return send(200, cached)
+    }
 
+    const supabase = getSupabase()
     const { data: rows, error } = await supabase
       .from('news_items')
       .select('id, source_id, title, description, link, image_url, pub_date, created_at')
@@ -55,6 +88,8 @@ router.get('/news', async (req, res) => {
       createdAt: r.created_at,
       sourceName: sourceMap.get(r.source_id) ?? null,
     }))
+
+    setInCache(newsCache, cacheKey, list, NEWS_CACHE_TTL_MS)
     send(200, list)
   } catch (error) {
     console.error('Error en /api/news:', error.message, error)
@@ -65,38 +100,53 @@ router.get('/news', async (req, res) => {
 // GET /api/news/ultima-hora - últimas 15 noticias etiquetadas "ultima hora"
 router.get('/news/ultima-hora', async (req, res) => {
   const limit = Math.min(Number(req.query.limit) || 15, 30)
-  try {
-    const items = await fetchUltimaHoraNews(limit)
-    if (items.length > 0) {
-      return res.json(
-        items.map((i) => ({
+  const cacheKey = String(limit)
+  const cached = getFromCache(ultimaHoraCache, cacheKey)
+  if (cached) {
+    return res.json(cached)
+  }
+
+  // En modo "RSS en vivo" mantenemos la lógica original (más lenta, va a los RSS).
+  if (USE_LIVE_RSS) {
+    try {
+      const items = await fetchUltimaHoraNews(limit)
+      if (items.length > 0) {
+        const payload = items.map((i) => ({
           ...i,
           programName: null,
         }))
-      )
+        setInCache(ultimaHoraCache, cacheKey, payload, ULTIMA_HORA_CACHE_TTL_MS)
+        return res.json(payload)
+      }
+    } catch (err) {
+      console.error('Error en /api/news/ultima-hora (RSS ultima-hora):', err.message)
     }
-  } catch (err) {
-    console.error('Error en /api/news/ultima-hora:', err.message)
-  }
-  try {
-    const baseItems = await fetchFuentesBaseNews(limit)
-    if (baseItems.length > 0) {
-      return res.json(
-        baseItems.slice(0, limit).map((i) => ({
+    try {
+      const baseItems = await fetchFuentesBaseNews(limit)
+      if (baseItems.length > 0) {
+        const payload = baseItems.slice(0, limit).map((i) => ({
           ...i,
           programName: null,
         }))
-      )
+        setInCache(ultimaHoraCache, cacheKey, payload, ULTIMA_HORA_CACHE_TTL_MS)
+        return res.json(payload)
+      }
+    } catch (err) {
+      console.error('Error en /api/news/ultima-hora (RSS fuentes-base):', err.message)
     }
-  } catch (err) {
-    console.error('Error en /api/news/ultima-hora (fallback):', err.message)
+    try {
+      const items = await fetchAggregatedRtveNews()
+      if (items.length > 0) {
+        const payload = items.slice(0, limit)
+        setInCache(ultimaHoraCache, cacheKey, payload, ULTIMA_HORA_CACHE_TTL_MS)
+        return res.json(payload)
+      }
+    } catch (err) {
+      console.error('Error en /api/news/ultima-hora (RTVE):', err.message)
+    }
   }
-  try {
-    const items = await fetchAggregatedRtveNews()
-    if (items.length > 0) return res.json(items.slice(0, limit))
-  } catch (err) {
-    console.error('Error en /api/news/ultima-hora (RTVE):', err.message)
-  }
+
+  // Modo rápido (por defecto): tiramos solo de BD, que es rápida y ya está alimentada por el cron.
   try {
     const supabase = getSupabase()
     const { data: rows, error } = await supabase
@@ -111,17 +161,17 @@ router.get('/news/ultima-hora', async (req, res) => {
       const { data: sources } = await supabase.from('news_sources').select('id, name').in('id', sourceIds)
       ;(sources || []).forEach((s) => sourceMap.set(s.id, s.name))
     }
-    return res.json(
-      rows.map((r) => ({
-        title: r.title,
-        link: r.link,
-        description: r.description || '',
-        pubDate: r.pub_date,
-        image: r.image_url,
-        source: sourceMap.get(r.source_id) ?? null,
-        programName: null,
-      }))
-    )
+    const payload = rows.map((r) => ({
+      title: r.title,
+      link: r.link,
+      description: r.description || '',
+      pubDate: r.pub_date,
+      image: r.image_url,
+      source: sourceMap.get(r.source_id) ?? null,
+      programName: null,
+    }))
+    setInCache(ultimaHoraCache, cacheKey, payload, ULTIMA_HORA_CACHE_TTL_MS)
+    return res.json(payload)
   } catch (dbError) {
     console.error('Fallback BD falló:', dbError.message)
     return res.json([])

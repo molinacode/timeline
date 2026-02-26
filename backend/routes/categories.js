@@ -4,9 +4,35 @@ import { authenticateToken, requireAdmin } from '../middleware/auth.js'
 
 const router = express.Router()
 
+// Caché simple en memoria para categorías (cambian muy poco)
+const CATEGORIES_CACHE_TTL_MS = 300_000
+let categoriesCache = null
+
+function getCategoriesFromCache() {
+  if (!categoriesCache) return null
+  if (categoriesCache.expiresAt <= Date.now()) {
+    categoriesCache = null
+    return null
+  }
+  return categoriesCache.value
+}
+
+function setCategoriesCache(value) {
+  categoriesCache = {
+    value,
+    expiresAt: Date.now() + CATEGORIES_CACHE_TTL_MS,
+  }
+}
+
 // GET /api/categories
 router.get('/categories', authenticateToken, async (req, res) => {
   const supabase = getSupabase()
+
+  const cached = getCategoriesFromCache()
+  if (cached) {
+    return res.json(cached)
+  }
+
   try {
     const { data: rows, error } = await supabase
       .from('source_categories')
@@ -14,16 +40,17 @@ router.get('/categories', authenticateToken, async (req, res) => {
       .order('name', { ascending: true })
 
     if (error) throw error
-    res.json(
-      (rows || []).map((r) => ({
-        id: r.id,
-        name: r.name,
-        icon: r.icon,
-        color: r.color,
-        description: r.description,
-        createdAt: r.created_at,
-      }))
-    )
+    const payload = (rows || []).map((r) => ({
+      id: r.id,
+      name: r.name,
+      icon: r.icon,
+      color: r.color,
+      description: r.description,
+      createdAt: r.created_at,
+    }))
+
+    setCategoriesCache(payload)
+    res.json(payload)
   } catch (error) {
     console.error('Error listando categorías:', error)
     res.status(500).json({ error: 'Error al listar categorías' })
