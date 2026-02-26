@@ -36,7 +36,7 @@ router.get('/categories', authenticateToken, async (req, res) => {
   try {
     const { data: rows, error } = await supabase
       .from('source_categories')
-      .select('id, name, icon, color, description, created_at')
+      .select('id, name, icon, color, description, is_special, created_at')
       .order('name', { ascending: true })
 
     if (error) throw error
@@ -46,6 +46,7 @@ router.get('/categories', authenticateToken, async (req, res) => {
       icon: r.icon,
       color: r.color,
       description: r.description,
+      isSpecial: !!r.is_special,
       createdAt: r.created_at,
     }))
 
@@ -60,7 +61,7 @@ router.get('/categories', authenticateToken, async (req, res) => {
 // POST /api/categories (admin)
 router.post('/categories', authenticateToken, requireAdmin, async (req, res) => {
   const supabase = getSupabase()
-  const { name, icon, color, description } = req.body || {}
+  const { name, icon, color, description, isSpecial } = req.body || {}
 
   if (!name) {
     return res.status(400).json({
@@ -78,9 +79,10 @@ router.post('/categories', authenticateToken, requireAdmin, async (req, res) => 
         icon: icon || null,
         color: color || null,
         description: description || null,
+        is_special: !!isSpecial,
         created_at: now,
       })
-      .select('id, name, icon, color, description, created_at')
+      .select('id, name, icon, color, description, is_special, created_at')
       .single()
 
     if (error) throw error
@@ -90,6 +92,7 @@ router.post('/categories', authenticateToken, requireAdmin, async (req, res) => 
       icon: created.icon,
       color: created.color,
       description: created.description,
+      isSpecial: !!created.is_special,
       createdAt: created.created_at,
     })
   } catch (error) {
@@ -102,7 +105,7 @@ router.post('/categories', authenticateToken, requireAdmin, async (req, res) => 
 router.put('/categories/:id', authenticateToken, requireAdmin, async (req, res) => {
   const supabase = getSupabase()
   const id = Number(req.params.id)
-  const { name, icon, color, description } = req.body || {}
+  const { name, icon, color, description, isSpecial } = req.body || {}
 
   try {
     const { data: existing, error: findErr } = await supabase
@@ -119,6 +122,7 @@ router.put('/categories/:id', authenticateToken, requireAdmin, async (req, res) 
     if (icon != null) updates.icon = icon
     if (color != null) updates.color = color
     if (description != null) updates.description = description
+    if (typeof isSpecial === 'boolean') updates.is_special = isSpecial
 
     if (Object.keys(updates).length === 0) {
       const { data: current } = await supabase
@@ -140,7 +144,7 @@ router.put('/categories/:id', authenticateToken, requireAdmin, async (req, res) 
       .from('source_categories')
       .update(updates)
       .eq('id', id)
-      .select('id, name, icon, color, description, created_at')
+      .select('id, name, icon, color, description, is_special, created_at')
       .single()
 
     if (updateErr) throw updateErr
@@ -150,6 +154,7 @@ router.put('/categories/:id', authenticateToken, requireAdmin, async (req, res) 
       icon: updated.icon,
       color: updated.color,
       description: updated.description,
+      isSpecial: !!updated.is_special,
       createdAt: updated.created_at,
     })
   } catch (error) {

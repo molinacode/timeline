@@ -34,6 +34,27 @@ router.get('/sources', async (req, res) => {
   }
 })
 
+const DISALLOWED_SOURCE_PATTERNS = [
+  'porn',
+  'porno',
+  'sex',
+  'xxx',
+  'hentai',
+  'gore',
+  'snuff',
+  'rape',
+  'torture',
+  'nazis',
+  'neo-nazi',
+  'kkk',
+  'whitepower',
+]
+
+function looksIllegalOrAbusiveSource(name, rssUrl) {
+  const text = `${name || ''} ${rssUrl || ''}`.toLowerCase()
+  return DISALLOWED_SOURCE_PATTERNS.some((kw) => text.includes(kw))
+}
+
 // POST /api/me/sources
 router.post('/sources', async (req, res) => {
   const supabase = getSupabase()
@@ -43,6 +64,14 @@ router.post('/sources', async (req, res) => {
     return res.status(400).json({
       error: 'Datos inválidos',
       message: 'Los campos nombre y URL RSS son obligatorios',
+    })
+  }
+
+  if (looksIllegalOrAbusiveSource(name, rssUrl)) {
+    return res.status(400).json({
+      error: 'Fuente no permitida',
+      message:
+        'Esta fuente parece contener contenido sexual explícito, violento o de odio y no está permitida en TimeLine.',
     })
   }
 

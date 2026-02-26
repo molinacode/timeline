@@ -6,6 +6,7 @@ import Parser from 'rss-parser'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { getSupabase } from '../config/supabase.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -285,7 +286,9 @@ export async function fetchNewsByBiasMatched(limitGroups = 15) {
         ),
       ]
 
-      const mainSet = new Set([mainProg.link, mainCentrist?.link, mainConservative?.link].filter(Boolean))
+      const mainSet = new Set(
+        [mainProg.link, mainCentrist?.link, mainConservative?.link].filter(Boolean)
+      )
       const otherSources = allArticles
         .filter((a) => !mainSet.has(a.link))
         .slice(0, 15)
@@ -296,6 +299,49 @@ export async function fetchNewsByBiasMatched(limitGroups = 15) {
         conservative: mainConservative,
         otherSources,
       })
+    }
+  }
+
+  // Enriquecer con etiquetas basadas en categorías especiales de Supabase
+  try {
+    const supabase = getSupabase()
+    const { data: specials } = await supabase
+      .from('source_categories')
+      .select('name')
+      .eq('is_special', true)
+
+    const specialNames =
+      specials?.map((c) => (c.name || '').toString().trim()).filter(Boolean) ?? []
+
+    if (specialNames.length > 0) {
+      for (const g of groups) {
+        const tags = new Set()
+        const texts = [
+          g.progressive?.title,
+          g.progressive?.description,
+          g.centrist?.title,
+          g.centrist?.description,
+          g.conservative?.title,
+          g.conservative?.description,
+        ]
+          .filter(Boolean)
+          .map((t) => t.toLowerCase())
+
+        for (const name of specialNames) {
+          const lower = name.toLowerCase()
+          if (texts.some((txt) => txt.includes(lower))) {
+            tags.add(name)
+          }
+        }
+
+        if (tags.size > 0) {
+          g.tags = Array.from(tags)
+        }
+      }
+    }
+  } catch (err) {
+    if (VERBOSE_RSS) {
+      console.error('[fuentesBias] Error cargando categorías especiales:', err.message)
     }
   }
 

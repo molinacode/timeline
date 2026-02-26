@@ -14,7 +14,8 @@ export function CategoriesAdminPage() {
     name: '',
     icon: '',
     color: '',
-    description: ''
+    description: '',
+    isSpecial: false,
   });
   const [editingId, setEditingId] = useState<number | null>(null);
 
@@ -62,7 +63,7 @@ export function CategoriesAdminPage() {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.message || 'Error al guardar categoría');
       }
-      setForm({ name: '', icon: '', color: '', description: '' });
+      setForm({ name: '', icon: '', color: '', description: '', isSpecial: false });
       setEditingId(null);
       await loadCategories();
     } catch (e: any) {
@@ -95,7 +96,8 @@ export function CategoriesAdminPage() {
       name: c.name,
       icon: c.icon || '',
       color: c.color || '',
-      description: c.description || ''
+      description: c.description || '',
+      isSpecial: !!c.isSpecial,
     });
   }
 
@@ -164,6 +166,14 @@ export function CategoriesAdminPage() {
             />
           </label>
         </div>
+        <label className="auth-label auth-label-inline">
+          <input
+            type="checkbox"
+            checked={!!form.isSpecial}
+            onChange={(e) => setForm({ ...form, isSpecial: e.target.checked })}
+          />
+          Categoría destacada / especial (23F, DANA, alertas importantes)
+        </label>
         <label className="auth-label auth-label-block">
           Descripción
           <textarea

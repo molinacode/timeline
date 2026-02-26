@@ -8,6 +8,22 @@ const router = express.Router()
 const SOURCES_CACHE_TTL_MS = 60_000
 const sourcesCache = new Map()
 
+const DISALLOWED_SOURCE_PATTERNS = [
+  'porn',
+  'porno',
+  'sex',
+  'xxx',
+  'hentai',
+  'gore',
+  'snuff',
+  'rape',
+  'torture',
+  'nazis',
+  'neo-nazi',
+  'kkk',
+  'whitepower',
+]
+
 function getFromCache(cache, key) {
   const entry = cache.get(key)
   if (!entry) return null
@@ -20,6 +36,11 @@ function getFromCache(cache, key) {
 
 function setInCache(cache, key, value, ttlMs) {
   cache.set(key, { value, expiresAt: Date.now() + ttlMs })
+}
+
+function looksIllegalOrAbusiveSource(name, rssUrl) {
+  const text = `${name || ''} ${rssUrl || ''}`.toLowerCase()
+  return DISALLOWED_SOURCE_PATTERNS.some((kw) => text.includes(kw))
 }
 
 // GET /api/sources?activeOnly=true
@@ -70,6 +91,14 @@ router.post('/sources', authenticateToken, requireAdmin, async (req, res) => {
     return res.status(400).json({
       error: 'Datos inválidos',
       message: 'Los campos name y rssUrl son obligatorios',
+    })
+  }
+
+  if (looksIllegalOrAbusiveSource(name, rssUrl)) {
+    return res.status(400).json({
+      error: 'Fuente no permitida',
+      message:
+        'Esta fuente parece contener contenido sexual explícito, violento o de odio y no está permitida en TimeLine.',
     })
   }
 
