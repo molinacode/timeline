@@ -25,6 +25,7 @@ type AuthContextValue = {
   register: (name: string, email: string, password: string) => Promise<void>
   logout: () => void
   updateUser: (updates: Partial<Pick<DemoUser, 'name' | 'region'>>) => void
+  hydrated: boolean
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -35,6 +36,7 @@ const TOKEN_KEY = 'timeline-auth-token'
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<DemoUser | null>(null)
   const [token, setToken] = useState<string | null>(null)
+  const [hydrated, setHydrated] = useState(false)
 
   useEffect(() => {
     const raw = localStorage.getItem(STORAGE_KEY)
@@ -49,12 +51,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (storedToken) {
       setToken(storedToken)
     }
+    setHydrated(true)
   }, [])
 
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
       token,
+      hydrated,
       async login(email, password) {
         const res = await fetch(apiUrl('/api/auth/login'), {
           method: 'POST',
@@ -109,7 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
       },
     }),
-    [user, token]
+    [user, token, hydrated]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

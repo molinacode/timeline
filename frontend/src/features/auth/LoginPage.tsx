@@ -1,10 +1,10 @@
 import { FormEvent, useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, Navigate } from 'react-router-dom'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { BasePage } from '../../components/layout/BasePage'
 
 export function LoginPage() {
-  const { login } = useAuth()
+  const { user, login, hydrated } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -23,6 +23,16 @@ export function LoginPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  // Si ya hay sesión cargada, redirigir fuera del formulario de login.
+  if (hydrated && user) {
+    return (
+      <Navigate
+        to={user.role === 'admin' ? '/admin' : '/me/timeline'}
+        replace
+      />
+    )
   }
 
   return (

@@ -20,14 +20,12 @@ const router = express.Router()
 // Si quieres forzar el modo "en vivo" con RSS directos, pon USE_LIVE_RSS=true.
 const USE_LIVE_RSS = process.env.USE_LIVE_RSS === 'true'
 
-// Caché simple en memoria para respuestas de /api/news, /api/news/ultima-hora y comparador
+// Caché simple en memoria para respuestas de /api/news y /api/news/ultima-hora
 const NEWS_CACHE_TTL_MS = 30_000
 const ULTIMA_HORA_CACHE_TTL_MS = 30_000
-const BIAS_MATCHED_CACHE_TTL_MS = 120_000
 
 const newsCache = new Map()
 const ultimaHoraCache = new Map()
-const biasMatchedCache = new Map()
 
 function getFromCache(cache, key) {
   const entry = cache.get(key)
@@ -293,14 +291,26 @@ router.get('/news/by-bias', authenticateToken, async (req, res) => {
 router.get('/news/by-bias-matched', authenticateToken, async (req, res) => {
   const limit = Math.min(Number(req.query.limit) || 15, 25)
   try {
-    const cacheKey = String(limit)
-    const cached = getFromCache(biasMatchedCache, cacheKey)
-    if (cached) {
-      return res.json(cached)
+    const supabase = getSupabase()
+    const { data: snapshot, error } = await supabase
+      .from('bias_matched_snapshots')
+      .select('payload, created_at')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+
+    if (!error && snapshot && snapshot.payload) {
+      // Opcionalmente limitamos grupos si el snapshot trae más que el límite actual
+      const payload = snapshot.payload
+      if (Array.isArray(payload.groups) && payload.groups.length > limit) {
+        payload.groups = payload.groups.slice(0, limit)
+      }
+      return res.json(payload)
     }
 
+    // Fallback: si no hay snapshot aún, calcular en vivo y devolver
     const data = await fetchNewsByBiasMatched(limit)
-    setInCache(biasMatchedCache, cacheKey, data, BIAS_MATCHED_CACHE_TTL_MS)
+    await supabase.from('bias_matched_snapshots').insert({ payload: data })
     res.json(data)
   } catch (err) {
     console.error('Error en /api/news/by-bias-matched:', err.message)

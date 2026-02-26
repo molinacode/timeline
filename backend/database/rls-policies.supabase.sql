@@ -45,6 +45,7 @@ ALTER TABLE "public"."source_list_items" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."user_news_clicks" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."error_logs" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."email_verifications" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "public"."bias_matched_snapshots" ENABLE ROW LEVEL SECURITY;
 
 -- Políticas: solo service_role (backend) tiene acceso. anon/authenticated no tienen
 -- ninguna política, así que no pueden leer ni escribir. service_role en Supabase
@@ -67,6 +68,7 @@ DROP POLICY IF EXISTS "Backend full access" ON "public"."source_list_items";
 DROP POLICY IF EXISTS "Backend full access" ON "public"."user_news_clicks";
 DROP POLICY IF EXISTS "Backend full access" ON "public"."error_logs";
 DROP POLICY IF EXISTS "Backend full access" ON "public"."email_verifications";
+DROP POLICY IF EXISTS "Backend full access" ON "public"."bias_matched_snapshots";
 
 CREATE POLICY "Backend full access" ON "public"."users" FOR ALL TO service_role USING (true) WITH CHECK (true);
 CREATE POLICY "Backend full access" ON "public"."news_sources" FOR ALL TO service_role USING (true) WITH CHECK (true);
@@ -85,3 +87,4 @@ CREATE POLICY "Backend full access" ON "public"."source_list_items" FOR ALL TO s
 CREATE POLICY "Backend full access" ON "public"."user_news_clicks" FOR ALL TO service_role USING (true) WITH CHECK (true);
 CREATE POLICY "Backend full access" ON "public"."error_logs" FOR ALL TO service_role USING (true) WITH CHECK (true);
 CREATE POLICY "Backend full access" ON "public"."email_verifications" FOR ALL TO service_role USING (true) WITH CHECK (true);
+CREATE POLICY "Backend full access" ON "public"."bias_matched_snapshots" FOR ALL TO service_role USING (true) WITH CHECK (true);

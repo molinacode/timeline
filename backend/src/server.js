@@ -11,6 +11,8 @@ import rssMetricsRoutes from '../routes/rssMetrics.js'
 import adminRoutes from '../routes/admin.js'
 import userSourcesRoutes from '../routes/userSources.js'
 import { fetchAllSourcesIntoNews } from './services/sourcesRssService.js'
+import { fetchNewsByBiasMatched } from './services/fuentesBiasService.js'
+import { getSupabase } from './config/supabase.js'
 import {
   logger,
   errorHandler,
@@ -51,6 +53,7 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 const RSS_FETCH_INTERVAL_MIN = Number(process.env.RSS_FETCH_INTERVAL) || 15
+const BIAS_MATCHED_REFRESH_MIN = Number(process.env.BIAS_MATCHED_REFRESH_MIN || 30)
 
 async function runRssFetch() {
   try {
@@ -63,15 +66,35 @@ async function runRssFetch() {
   }
 }
 
+async function refreshBiasMatchedSnapshot() {
+  try {
+    const supabase = getSupabase()
+    const limit = 15
+    const payload = await fetchNewsByBiasMatched(limit)
+    await supabase.from('bias_matched_snapshots').insert({ payload })
+    console.log('[BiasMatched] Snapshot actualizado correctamente')
+  } catch (err) {
+    console.error('[BiasMatched] Error refrescando snapshot:', err.message)
+  }
+}
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Backend TimeLine escuchando en http://localhost:${PORT}`)
   console.log(
     `   Fuentes: BD (news_sources) · Por sesgo: fuentes-por-sesgo/*.json`
   )
-  setImmediate(() =>
+  setImmediate(() => {
     runRssFetch().catch((err) => console.error('[RSS] Error:', err.message))
-  )
+    refreshBiasMatchedSnapshot().catch((err) =>
+      console.error('[BiasMatched] Error inicial:', err.message)
+    )
+  })
+
   cron.schedule(`*/${RSS_FETCH_INTERVAL_MIN} * * * *`, () =>
     runRssFetch().catch(() => {})
+  )
+
+  cron.schedule(`*/${BIAS_MATCHED_REFRESH_MIN} * * * *`, () =>
+    refreshBiasMatchedSnapshot().catch(() => {})
   )
 })

@@ -203,3 +203,12 @@ CREATE TABLE IF NOT EXISTS email_verifications (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   expires_at TIMESTAMPTZ NOT NULL
 );
+
+-- 16. Snapshot del comparador por sesgo (bias-matched)
+-- Guarda el resultado completo de fetchNewsByBiasMatched en JSONB para
+-- servirlo rápido desde la API sin recalcular todos los RSS cada vez.
+CREATE TABLE IF NOT EXISTS bias_matched_snapshots (
+  id BIGSERIAL PRIMARY KEY,
+  payload JSONB NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
