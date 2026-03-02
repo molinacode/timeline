@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 // SCRIPT DE MODO (SOLO LOCAL)
 // =====================================================
 
-const FRONTEND_PATH = join(__dirname, '../frontend/src');
+const FRONTEND_PATH = join(__dirname, 'frontend/src');
 const SUPABASE_CLIENT_PATH = join(FRONTEND_PATH, 'supabase_client.ts');
 
 // No hay modos múltiples; mantenemos script para compatibilidad
@@ -21,7 +21,7 @@ const SUPABASE_CLIENT_PATH = join(FRONTEND_PATH, 'supabase_client.ts');
 function switchToMode(_mode) {
     try {
         console.log('🔄 Forzando modo LOCAL (único modo soportado)...');
-        console.log('📝 Usando API REST local + SQLite');
+        console.log('📝 Usando API REST local + Supabase');
         // No reescribimos el cliente local: ya está implementado en frontend/src/supabase_client.ts
         
         // Crear archivo de configuración si no existe
@@ -55,7 +55,7 @@ function showCurrentMode() {
         
         if (content.includes('export const SUPABASE_CONFIG') || content.includes('export { supabase }')) {
             console.log('🏠 Modo actual: LOCAL');
-            console.log('📝 Usando API REST local + SQLite');
+            console.log('📝 Usando API REST local + Supabase');
         } else {
             console.log('❓ Modo actual: DESCONOCIDO');
         }
@@ -72,7 +72,7 @@ function showHelp() {
     console.log('  node switch-mode.js help      - Mostrar esta ayuda');
     console.log('');
     console.log('📖 Descripción de modos:');
-    console.log('  🏠 LOCAL    - API REST local + SQLite');
+    console.log('  🏠 LOCAL    - API REST local + Supabase');
 }
 
 // =====================================================

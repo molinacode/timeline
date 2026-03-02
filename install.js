@@ -109,51 +109,31 @@ async function install() {
         console.log('\\n⚙️ Configurando variables de entorno...');
         createEnvFile();
         
-        // 5. Inicializar base de datos
-        console.log('\\n🗄️ Inicializando base de datos...');
-        if (!runCommand('npm run migrate', join(__dirname, 'backend'))) {
-            throw new Error('Error inicializando base de datos');
+        // 5. Crear usuario admin y sincronizar fuentes (requiere Supabase configurado)
+        console.log('\\n👤 Creando usuario admin y sincronizando fuentes...');
+        if (!runCommand('npm run create-admin', join(__dirname, 'backend'))) {
+            console.warn('⚠️ No se pudo crear el admin. Asegúrate de:');
+            console.warn('   1. Crear un proyecto en https://dashboard.supabase.com');
+            console.warn('   2. Ejecutar en el SQL Editor: backend/database/schema.supabase.sql y backend/database/rls-policies.supabase.sql');
+            console.warn('   3. Configurar SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY en backend/.env');
         }
         
-        // 6. Poblar con datos de prueba
-        console.log('\\n🌱 Poblando base de datos con datos de prueba...');
-        if (!runCommand('npm run seed', join(__dirname, 'backend'))) {
-            console.warn('⚠️ No se pudieron cargar datos de prueba');
-        }
-        
-        // 7. Mostrar estadísticas
-        console.log('\\n📊 Estadísticas de la base de datos:');
-        runCommand('npm run stats', join(__dirname, 'backend'));
-        
-        // 8. Configurar modo local por defecto
-        console.log('\\n🔄 Configurando modo local...');
-        if (fs.existsSync(join(__dirname, 'switch-mode.js'))) {
-            runCommand('node switch-mode.js local', __dirname);
-        }
-        
-        // 9. Mostrar información final
-        console.log('\\n🎉 ¡Instalación completada exitosamente!');
+        // 6. Mostrar información final
+        console.log('\\n🎉 ¡Instalación completada!');
         console.log('====================================================');
         console.log('📋 Próximos pasos:');
+        console.log('\\n🗄️ Si aún no lo has hecho, configura Supabase:');
+        console.log('   1. Crea un proyecto en https://dashboard.supabase.com');
+        console.log('   2. En el SQL Editor ejecuta (en este orden):');
+        console.log('      - backend/database/schema.supabase.sql');
+        console.log('      - backend/database/rls-policies.supabase.sql');
+        console.log('   3. En backend/.env pon SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY');
+        console.log('   4. Vuelve a ejecutar: cd backend && npm run create-admin');
         console.log('\\n🚀 Para iniciar el proyecto:');
-        console.log('   1. Terminal 1 - Backend:');
-        console.log('      cd backend && npm run dev');
-        console.log('\\n   2. Terminal 2 - Frontend:');
-        console.log('      cd frontend && npm run dev');
-        console.log('\\n🌐 URLs de acceso:');
-        console.log('   Frontend: http://localhost:5173');
-        console.log('   Backend:  http://localhost:3001');
-        console.log('   API Docs: http://localhost:3001/docs');
-        console.log('\\n🔑 Credenciales de prueba:');
-        console.log('   Email: test@timeline.com');
-        console.log('   Contraseña: password123');
-        console.log('\\n🔄 Cambiar entre modos:');
-        console.log('   Modo Local:    node switch-mode.js local');
-        console.log('   Modo Supabase: node switch-mode.js supabase');
-        console.log('\\n📚 Documentación:');
-        console.log('   README.md - Documentación principal');
-        console.log('   frontend/README.md - Documentación frontend');
-        console.log('   backend/README.md - Documentación backend');
+        console.log('   1. Terminal 1: cd backend && npm run dev');
+        console.log('   2. Terminal 2: cd frontend && npm run dev');
+        console.log('\\n🌐 URLs: Frontend http://localhost:5173 · Backend http://localhost:3001');
+        console.log('\\n📚 Documentación: README.md · backend/docs/README.md');
         
     } catch (error) {
         console.error('\\n❌ Error durante la instalación:', error.message);
