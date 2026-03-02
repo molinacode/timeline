@@ -10,6 +10,7 @@ import authRoutes from '../routes/auth.js'
 import rssMetricsRoutes from '../routes/rssMetrics.js'
 import adminRoutes from '../routes/admin.js'
 import userSourcesRoutes from '../routes/userSources.js'
+import savedNewsRoutes from '../routes/savedNews.js'
 import { fetchAllSourcesIntoNews } from './services/sourcesRssService.js'
 import { fetchNewsByBiasMatched } from './services/fuentesBiasService.js'
 import { getSupabase } from './config/supabase.js'
@@ -47,6 +48,7 @@ app.use('/api', authRoutes)
 app.use('/api', rssMetricsRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/me', userSourcesRoutes)
+app.use('/api/me', savedNewsRoutes)
 
 app.use(notFoundHandler)
 app.use(errorHandler)

@@ -8,15 +8,15 @@ API REST para el agregador de noticias RSS TimeLine. Proporciona endpoints para 
 - **📰 Gestión de Noticias**: CRUD completo para noticias RSS
 - **📡 Fuentes RSS**: Gestión de fuentes de noticias
 - **👥 Gestión de Usuarios**: Perfiles y preferencias
-- **🗄️ Base de Datos SQLite**: Base de datos local para desarrollo
+- **🗄️ Base de Datos Supabase (PostgreSQL)**: Esquema y RLS en Supabase
 - **🛡️ Seguridad**: Rate limiting, CORS, validación de datos
 - **📊 Logging**: Sistema completo de logs y monitoreo
-- **🔄 Migraciones**: Scripts automáticos de migración
+- **👤 Admin**: Script create-admin para usuario admin y fuentes por defecto
 
 ## 🛠️ Tecnologías
 
 - **Node.js** + **Express.js**
-- **SQLite** con **better-sqlite3**
+- **Supabase** (PostgreSQL) con **@supabase/supabase-js**
 - **JWT** para autenticación
 - **bcryptjs** para hash de contraseñas
 - **express-validator** para validación
@@ -25,21 +25,16 @@ API REST para el agregador de noticias RSS TimeLine. Proporciona endpoints para 
 
 ## 📦 Instalación
 
+1. **Supabase**: Crea un proyecto en [dashboard.supabase.com](https://dashboard.supabase.com). En el SQL Editor ejecuta (en este orden):
+   - `database/schema.supabase.sql`
+   - `database/rls-policies.supabase.sql`
+
+2. **Variables de entorno**: `cp env.example .env` y configura `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, y opcionalmente `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_NAME`.
+
+3. **Dependencias y admin**:
 ```bash
-# Instalar dependencias
 npm install
-
-# Configurar variables de entorno
-cp env.example .env
-# Editar .env con tus configuraciones
-
-# Ejecutar migración de base de datos
-npm run migrate
-
-# Poblar con datos de prueba (opcional)
-npm run seed
-
-# Iniciar servidor
+npm run create-admin   # Crea usuario admin y sincroniza fuentes desde fuentes-base.json
 npm run dev
 ```
 
@@ -54,8 +49,9 @@ Copia `env.example` a `.env` y configura:
 PORT=3001
 NODE_ENV=development
 
-# Base de datos
-DB_PATH=./database/timeline.db
+# Supabase (obligatorio)
+SUPABASE_URL=https://tu-proyecto.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=tu-service-role-key
 
 # JWT
 JWT_SECRET=tu-clave-secreta-super-segura
@@ -123,16 +119,7 @@ DELETE /api/users/sources/:id # Eliminar fuente personalizada
 - **sessions**: Sesiones de usuario
 - **fetch_logs**: Logs de obtención de noticias
 
-### Scripts de Base de Datos
-
-```bash
-npm run migrate    # Ejecutar migración
-npm run seed       # Poblar con datos de prueba
-npm run reset      # Resetear y poblar
-npm run stats      # Mostrar estadísticas
-```
-
-### Admin y recuperación (desarrollo / Supabase)
+### Admin y recuperación (Supabase)
 
 - **Crear admin**: `npm run create-admin` — Crea el usuario administrador usando `ADMIN_EMAIL`, `ADMIN_PASSWORD` y `ADMIN_NAME` del `.env`.
 - **Resetear contraseña del admin**: `npm run reset-admin-password` — Actualiza la contraseña del usuario con `ADMIN_EMAIL` usando el valor actual de `ADMIN_PASSWORD` en `.env`. Pensado para desarrollo o recuperación puntual. En producción hay que definir además `ALLOW_RESET_ADMIN=true` para poder ejecutarlo.
@@ -156,53 +143,15 @@ npm run stats      # Mostrar estadísticas
 - **Authentication**: Intentos de login
 - **Database**: Queries y transacciones
 
-### Estadísticas
-
-```bash
-# Ver estadísticas de la base de datos
-npm run stats
-
-# Ver logs en tiempo real
-npm run dev
-```
-
 ## 🚀 Scripts Disponibles
 
 ```bash
 npm start          # Servidor de producción
 npm run dev        # Servidor de desarrollo con nodemon
-npm run migrate    # Ejecutar migración de BD
-npm run seed       # Poblar con datos de prueba
-npm run reset      # Resetear BD y poblar
-npm run stats      # Mostrar estadísticas
-npm run create-admin        # Crear usuario admin (Supabase)
+npm run create-admin        # Crear usuario admin y sincronizar fuentes
 npm run reset-admin-password # Resetear contraseña del admin (solo dev/recuperación)
 npm test           # Ejecutar tests
 ```
-
-## 🔄 Migración desde Supabase
-
-Para migrar desde Supabase a la base de datos local:
-
-1. **Exportar datos de Supabase**:
-   ```sql
-   -- Exportar usuarios
-   SELECT * FROM auth.users;
-   
-   -- Exportar perfiles
-   SELECT * FROM public.profiles;
-   ```
-
-2. **Importar a SQLite**:
-   ```bash
-   # Usar el script de migración personalizado
-   node scripts/migrate-from-supabase.js
-   ```
-
-3. **Verificar migración**:
-   ```bash
-   npm run stats
-   ```
 
 ## 🧪 Testing
 
@@ -248,7 +197,7 @@ SHOW_SQL_QUERIES=true npm run dev
 
 ### Herramientas de Debug
 
-- **SQLite Browser**: Para inspeccionar la BD
+- **Supabase Dashboard**: Para inspeccionar tablas y datos
 - **Postman**: Para probar endpoints
 - **VS Code**: Debugging integrado
 
@@ -261,9 +210,10 @@ backend/
 ├── src/
 │   ├── server.js          # Servidor principal
 │   ├── config/
-│   │   └── database.js    # Configuración de BD
+│   │   └── supabase.js    # Cliente Supabase
 │   └── database/
-│       └── migrate.js      # Scripts de migración
+│       └── scripts/
+│           └── createAdmin.js
 ├── routes/
 │   ├── auth.js            # Rutas de autenticación
 │   ├── news.js            # Rutas de noticias

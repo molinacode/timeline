@@ -8,18 +8,8 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "jest",
-    "migrate": "node src/database/scripts/migrate.js migrate",
-    "seed": "node src/database/scripts/migrate.js seed",
-    "reset": "node src/database/scripts/migrate.js reset",
-    "stats": "node src/database/scripts/migrate.js stats",
     "create-admin": "node src/database/scripts/createAdmin.js",
-    "reset-admin-password": "node src/database/scripts/resetAdminPassword.js",
-    "check-db": "node src/database/scripts/checkDatabase.js",
-    "close-db": "node src/database/scripts/closeDatabase.js",
-    "test-realtime": "node src/database/dbeaverRealtime.js",
-    "load-sources": "node src/database/scripts/loadSources.js",
-    "cleanup": "node scripts/cleanup.js",
-    "test-public-demo": "node scripts/test-public-demo-sources.js"
+    "reset-admin-password": "node src/database/scripts/resetAdminPassword.js"
   },
   "keywords": [
     "rss",

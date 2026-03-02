@@ -162,6 +162,7 @@ router.get('/news/ultima-hora', async (req, res) => {
       ;(sources || []).forEach((s) => sourceMap.set(s.id, s.name))
     }
     const payload = rows.map((r) => ({
+      id: r.id,
       title: r.title,
       link: r.link,
       description: r.description || '',
