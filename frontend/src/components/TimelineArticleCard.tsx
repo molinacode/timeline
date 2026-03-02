@@ -5,12 +5,16 @@ interface TimelineArticleCardProps {
   item: NewsItem
   formatDate?: boolean
   onLinkClick?: (source: string, link: string) => void
+  onSave?: (newsId: number) => void
+  saving?: boolean
 }
 
 export function TimelineArticleCard({
   item,
   formatDate,
   onLinkClick,
+  onSave,
+  saving,
 }: TimelineArticleCardProps) {
   const dateStr = item.pubDate
     ? formatDate
@@ -48,6 +52,19 @@ export function TimelineArticleCard({
           {item.programName ? ` · ${item.programName}` : ''}
           {dateStr ? ` · ${dateStr}` : ''}
         </p>
+        {onSave && item.id != null && (
+          <div className="app-article-card-actions">
+            <button
+              type="button"
+              className="app-header-button"
+              disabled={saving}
+              onClick={() => onSave(item.id!)}
+              aria-label="Guardar noticia"
+            >
+              {saving ? 'Guardando…' : 'Guardar'}
+            </button>
+          </div>
+        )}
       </div>
     </article>
   )

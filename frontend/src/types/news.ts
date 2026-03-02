@@ -1,6 +1,7 @@
 /** Tipos compartidos para noticias y timeline */
 
 export interface NewsItem {
+  id?: number
   title: string
   link: string
   description: string

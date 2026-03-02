@@ -20,15 +20,18 @@ import { AdminUsersPage } from './features/admin/AdminUsersPage'
 import { AdminBiasPage } from './features/admin/bias/AdminBiasPage'
 import { BiasComparatorPage } from './features/news/comparator/BiasComparatorPage'
 import { UserProfilePage } from './features/user/UserProfilePage'
+import { SavedNewsPage } from './features/user/SavedNewsPage'
 import { CookieBanner } from './components/CookieBanner'
 import { Analytics } from '@vercel/analytics/react'
 import { SessionExpiredHandler } from './app/SessionExpiredHandler'
 import { UserAgreementPage } from './features/legal/UserAgreementPage'
+import { MenuSideProvider } from './contexts/MenuSideContext'
 
 export function App() {
   return (
     <>
       <SessionExpiredHandler />
+      <MenuSideProvider>
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -54,6 +57,14 @@ export function App() {
             element={
               <RequireAuth>
                 <UserProfilePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/me/saved"
+            element={
+              <RequireAuth>
+                <SavedNewsPage />
               </RequireAuth>
             }
           />
@@ -90,6 +101,7 @@ export function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>
+      </MenuSideProvider>
       <CookieBanner />
       <Analytics />
     </>
