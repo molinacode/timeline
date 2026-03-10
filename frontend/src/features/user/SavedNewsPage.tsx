@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { useNewsClickTracker } from '../../hooks/useNewsClickTracker'
 import { apiUrl } from '@/config/api'
@@ -15,6 +16,7 @@ interface SavedItem extends NewsItem {
 export function SavedNewsPage() {
   const { token } = useAuth()
   const { trackClick } = useNewsClickTracker()
+  const navigate = useNavigate()
   const [items, setItems] = useState<SavedItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -92,6 +94,9 @@ export function SavedNewsPage() {
                   }}
                   formatDate
                   onLinkClick={(source, link) => trackClick(source, link || item.link)}
+                  onOpenReader={(article) =>
+                    navigate('/reader', { state: { item: article } })
+                  }
                 />
                 <div className="app-article-card-actions">
                   <button

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { useRegionFromGeolocation } from '../../hooks/useRegionFromGeolocation'
 import { useNewsClickTracker } from '../../hooks/useNewsClickTracker'
@@ -22,6 +23,7 @@ const TABS: { id: TabId; label: string }[] = [
 export function UserTimeline() {
   const { token } = useAuth()
   const { trackClick } = useNewsClickTracker()
+  const navigate = useNavigate()
   const {
     regionId,
     loading: geoLoading,
@@ -269,6 +271,9 @@ export function UserTimeline() {
                     }
                     onSave={item.id != null ? handleSaveNews : undefined}
                     saving={savingNewsId !== null}
+                    onOpenReader={(article) =>
+                      navigate('/reader', { state: { item: article } })
+                    }
                   />
                 ))}
               </div>

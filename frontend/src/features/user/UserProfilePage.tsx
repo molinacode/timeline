@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { useMenuSide } from '../../contexts/MenuSideContext'
 import { BasePage } from '../../components/layout/BasePage'
@@ -16,6 +17,7 @@ type ProfileData = {
 
 export function UserProfilePage() {
   const { token, updateUser } = useAuth()
+  const navigate = useNavigate()
   const [profile, setProfile] = useState<ProfileData | null>(null)
   const [loading, setLoading] = useState(true)
   const [tab, setTab] = useState<'data' | 'password' | 'preferences'>('data')
@@ -319,6 +321,19 @@ export function UserProfilePage() {
                   Derecha
                 </button>
               </div>
+            </div>
+            <div className="app-form-group">
+              <label>Intereses y categorías</label>
+              <p className="app-form-hint">
+                Elige los temas que más te interesan para personalizar tu TimeLine.
+              </p>
+              <button
+                type="button"
+                className="app-btn-secondary"
+                onClick={() => navigate('/me/interests')}
+              >
+                Configurar intereses
+              </button>
             </div>
           </div>
         )}

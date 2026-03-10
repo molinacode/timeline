@@ -96,6 +96,8 @@ export function Layout({ children }: { children: ReactNode }) {
     </>
   )
 
+  const isComparatorPage = location.pathname === '/me/comparator'
+
   return (
     <div className="app-root">
       <header className="app-header">
@@ -152,6 +154,20 @@ export function Layout({ children }: { children: ReactNode }) {
         </nav>
       </header>
 
+      {isNarrow && user && (
+        <nav className="app-mobile-tabs" aria-label="Secciones principales">
+          <NavLinkWithActive to="/me/timeline" onClick={closeDrawer} end>
+            Mi TimeLine
+          </NavLinkWithActive>
+          <NavLinkWithActive to="/me/comparator" onClick={closeDrawer}>
+            Comparador
+          </NavLinkWithActive>
+          <NavLinkWithActive to="/me/saved" onClick={closeDrawer}>
+            Guardadas
+          </NavLinkWithActive>
+        </nav>
+      )}
+
       {/* Drawer móvil/tablet */}
       {drawerOpen && (
         <>
@@ -187,7 +203,9 @@ export function Layout({ children }: { children: ReactNode }) {
         </>
       )}
 
-      <main className="app-main">{children}</main>
+      <main className={isComparatorPage ? 'app-main app-main--wide' : 'app-main'}>
+        {children}
+      </main>
     </div>
   )
 }

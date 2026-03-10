@@ -1,0 +1,144 @@
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { BasePage } from '../../../components/layout/BasePage'
+import { NewsImage } from '../../../components/NewsImage'
+import type { NewsItem } from '../../../types/news'
+import { apiUrl } from '@/config/api'
+
+type LocationState = {
+  item?: NewsItem
+}
+
+export function ReaderPage() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const state = (location.state || {}) as LocationState
+  const item = state.item
+  const [mode, setMode] = useState<'reader' | 'web'>('reader')
+  const [enrichedHtml, setEnrichedHtml] = useState<string | null>(null)
+  const [enrichedLoading, setEnrichedLoading] = useState(false)
+  const [enrichedError, setEnrichedError] = useState<string | null>(null)
+
+  if (!item) {
+    return (
+      <BasePage centered title="Lector de noticias">
+        <p>No se ha encontrado la noticia. Vuelve al timeline y ábrela de nuevo.</p>
+      </BasePage>
+    )
+  }
+
+  const domain = (() => {
+    try {
+      const url = new URL(item.link)
+      return url.hostname.replace(/^www\./, '')
+    } catch {
+      return ''
+    }
+  })()
+
+  useEffect(() => {
+    if (!item?.link) return
+    setEnrichedLoading(true)
+    setEnrichedError(null)
+    fetch(apiUrl(`/api/reader?url=${encodeURIComponent(item.link)}`), {
+      headers: {},
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && typeof data.contentHtml === 'string' && data.contentHtml) {
+          setEnrichedHtml(data.contentHtml)
+        } else {
+          setEnrichedHtml(null)
+        }
+      })
+      .catch(() => {
+        setEnrichedError('No se pudo cargar el modo lector enriquecido.')
+        setEnrichedHtml(null)
+      })
+      .finally(() => setEnrichedLoading(false))
+  }, [item?.link])
+
+  return (
+    <BasePage
+      title="Lector de noticias"
+      subtitle="Lee la noticia en formato limpio o abre la versión original."
+      className="app-reader-page"
+    >
+      <div className="app-page-section app-reader-header">
+        <button
+          type="button"
+          className="app-header-back"
+          onClick={() => navigate(-1)}
+        >
+          ← Volver
+        </button>
+        <div className="app-reader-toggle">
+          <button
+            type="button"
+            className={mode === 'reader' ? 'active' : ''}
+            onClick={() => setMode('reader')}
+          >
+            Lector
+          </button>
+          <button
+            type="button"
+            className=""
+            onClick={() => window.open(item.link, '_blank')}
+          >
+            Web original
+          </button>
+        </div>
+      </div>
+
+      {mode === 'reader' ? (
+        <div className="app-page-section app-reader-content">
+          <article className="app-card app-reader-article">
+            <NewsImage src={item.image} />
+            <div className="app-reader-body">
+              <h1 className="app-page-title">{item.title}</h1>
+              <p className="app-reader-meta">
+                {item.source}
+                {domain ? ` · ${domain}` : ''}
+              </p>
+              {enrichedLoading && (
+                <p className="app-reader-text">Cargando versión para lector…</p>
+              )}
+              {!enrichedLoading && enrichedHtml && (
+                <div
+                  className="app-reader-text"
+                  // eslint-disable-next-line react/no-danger
+                  dangerouslySetInnerHTML={{ __html: enrichedHtml }}
+                />
+              )}
+              {!enrichedLoading && !enrichedHtml && item.description && (
+                <p className="app-reader-text">{item.description}</p>
+              )}
+              {!enrichedLoading && !enrichedHtml && !item.description && (
+                <p className="app-reader-text">
+                  No se ha podido extraer el contenido completo de esta noticia. Puedes
+                  abrirla en la web original.
+                </p>
+              )}
+            </div>
+          </article>
+        </div>
+      ) : (
+        <div className="app-page-section app-reader-web">
+          <p className="app-reader-text">
+            Esta opción abrirá la noticia en su sitio de origen en una pestaña
+            nueva del navegador.
+          </p>
+          <button
+            type="button"
+            className="app-btn-primary"
+            onClick={() => window.open(item.link, '_blank')}
+          >
+            Ir a la web original {domain ? `(${domain})` : ''}
+          </button>
+        </div>
+      )}
+    </BasePage>
+  )
+}
+
+
