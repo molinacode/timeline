@@ -25,7 +25,19 @@
       "id": "abc",
       "name": "ABC",
       "url": "https://www.abc.es",
-      "rssUrl": "https://www.abc.es/rss/feeds/abc_ultima.xml",
+      "rssUrl": "https://www.abc.es/rss/portada/feed/",
+      "rssUrls": [
+        "https://www.abc.es/rss/portada/feed/",
+        "https://www.abc.es/rss/ultima-hora/feed/",
+        "https://www.abc.es/rss/espana/feed/",
+        "https://www.abc.es/rss/internacional/feed/",
+        "https://www.abc.es/rss/economia/feed/",
+        "https://www.abc.es/rss/deportes/feed/",
+        "https://www.abc.es/rss/cultura/feed/",
+        "https://www.abc.es/rss/tecnologia/feed/",
+        "https://www.abc.es/rss/deportes/real-madrid/feed/",
+        "https://www.abc.es/rss/deportes/atletico/feed/"
+      ],
       "description": "Periódico digital nacional"
     },
     {

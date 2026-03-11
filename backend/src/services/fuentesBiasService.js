@@ -62,6 +62,7 @@ export function getSourcesByBias() {
       name: s.name,
       url: s.url,
       rssUrl: s.rssUrl,
+      rssUrls: s.rssUrls,
       bias,
     }))
 
@@ -138,6 +139,22 @@ async function fetchFeedItems(rssUrl, sourceName, bias) {
   }
 }
 
+/** Por cada fuente con rssUrls o rssUrl devuelve tareas { url, name, bias } para consultar. */
+function getBiasFeedTasks(sources) {
+  const tasks = []
+  for (const s of sources) {
+    const urls = Array.isArray(s.rssUrls) && s.rssUrls.length > 0
+      ? s.rssUrls
+      : (s.rssUrl ? [s.rssUrl] : [])
+    for (const url of urls) {
+      if (url && String(url).trim()) {
+        tasks.push({ url: url.trim(), name: s.name, bias: s.bias })
+      }
+    }
+  }
+  return tasks
+}
+
 /**
  * Obtiene noticias agrupadas por sesgo
  * limitPerBias: cuántas noticias máximo por cada sesgo (default 15)
@@ -195,8 +212,9 @@ export async function fetchNewsByBiasMatched(limitGroups = 15) {
   for (const [bias, sources] of Object.entries(byBias)) {
     if (sources.length === 0) continue
 
+    const tasks = getBiasFeedTasks(sources)
     const results = await Promise.allSettled(
-      sources.map((s) => fetchFeedItems(s.rssUrl, s.name, bias))
+      tasks.map((t) => fetchFeedItems(t.url, t.name, t.bias))
     )
 
     const items = []

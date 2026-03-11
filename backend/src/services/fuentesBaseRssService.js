@@ -17,9 +17,14 @@ function loadFuentesBase() {
   ]
   for (const p of candidates) {
     if (fs.existsSync(p)) {
-      const raw = fs.readFileSync(p, 'utf8')
-      const data = JSON.parse(raw)
-      return Array.isArray(data.sources) ? data.sources : []
+      try {
+        const raw = fs.readFileSync(p, 'utf8')
+        const data = JSON.parse(raw)
+        return Array.isArray(data.sources) ? data.sources : []
+      } catch (err) {
+        if (VERBOSE_RSS) console.error('[fuentesBase] Error leyendo', p, err.message)
+        continue
+      }
     }
   }
   return []
@@ -71,12 +76,27 @@ async function fetchFeedItems(rssUrl, sourceName) {
   }
 }
 
+/** Una fuente puede tener rssUrl (uno) o rssUrls (varios). Devuelve [{ url, name }] para cada feed a consultar. */
+function getFeedTasks(sources) {
+  const tasks = []
+  for (const s of sources) {
+    const urls = Array.isArray(s.rssUrls) && s.rssUrls.length > 0
+      ? s.rssUrls
+      : (s.rssUrl ? [s.rssUrl] : [])
+    for (const url of urls) {
+      if (url && String(url).trim()) tasks.push({ url: url.trim(), name: s.name })
+    }
+  }
+  return tasks
+}
+
 export async function fetchFuentesBaseNews(limit = 50) {
   const sources = loadFuentesBase()
   if (sources.length === 0) return []
 
+  const tasks = getFeedTasks(sources)
   const results = await Promise.allSettled(
-    sources.map((s) => fetchFeedItems(s.rssUrl, s.name))
+    tasks.map((t) => fetchFeedItems(t.url, t.name))
   )
 
   const allItems = []
@@ -91,7 +111,7 @@ export async function fetchFuentesBaseNews(limit = 50) {
 
   if (failed > 0 && !VERBOSE_RSS) {
     console.log(
-      `[fuentesBase] ${failed}/${sources.length} fuentes no disponibles`
+      `[fuentesBase] ${failed}/${tasks.length} feeds no disponibles`
     )
   }
 
@@ -112,8 +132,9 @@ export async function fetchUltimaHoraNews(limit = 15) {
   const sources = loadFuentesBase()
   if (sources.length === 0) return []
 
+  const tasks = getFeedTasks(sources)
   const results = await Promise.allSettled(
-    sources.map((s) => fetchFeedItems(s.rssUrl, s.name))
+    tasks.map((t) => fetchFeedItems(t.url, t.name))
   )
 
   const allItems = []
@@ -150,8 +171,9 @@ export async function fetchNewsByCategory(category, limit = 20) {
   const sources = loadFuentesBase()
   if (sources.length === 0) return []
 
+  const tasks = getFeedTasks(sources)
   const results = await Promise.allSettled(
-    sources.map((s) => fetchFeedItems(s.rssUrl, s.name))
+    tasks.map((t) => fetchFeedItems(t.url, t.name))
   )
 
   const allItems = []
@@ -161,27 +183,33 @@ export async function fetchNewsByCategory(category, limit = 20) {
     }
   }
 
-  const cat = (category || '')
+  const cat = String(category || '')
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
   const match = (item) => {
     const cats = (item.categories || []).map((c) =>
-      (c || '')
+      String(c ?? '')
         .toLowerCase()
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
     )
-    const title = (item.title || '').toLowerCase()
-    const desc = (item.description || '').toLowerCase()
+    const title = String(item?.title ?? '').toLowerCase()
+    const desc = String(item?.description ?? '').toLowerCase()
     const all = [...cats, title, desc].join(' ')
-    return all.includes(cat) || cats.some((c) => c.includes(cat))
+    return (all && all.includes(cat)) || cats.some((c) => c && c.includes(cat))
   }
 
-  const filtered = allItems.filter(match)
+  const filtered = allItems.filter((item) => {
+    try {
+      return match(item)
+    } catch {
+      return false
+    }
+  })
   const sorted = filtered.sort((a, b) => {
-    const dateA = new Date(a.isoDate || a.pubDate || 0).getTime()
-    const dateB = new Date(b.isoDate || b.pubDate || 0).getTime()
+    const dateA = Number(new Date(a?.isoDate || a?.pubDate || 0)) || 0
+    const dateB = Number(new Date(b?.isoDate || b?.pubDate || 0)) || 0
     return dateB - dateA
   })
 

@@ -43,6 +43,10 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' })
 })
 
+app.get('/', (req, res) => {
+  res.json({ app: 'timeline-api', docs: '/api', health: '/health' })
+})
+
 app.use('/api', newsRoutes)
 app.use('/api', sourcesRoutes)
 app.use('/api', categoriesRoutes)
