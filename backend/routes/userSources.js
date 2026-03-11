@@ -6,6 +6,98 @@ const router = express.Router()
 
 router.use(authenticateToken)
 
+// GET /api/me/interests - obtener intereses (categorías) del usuario desde user_preferences
+router.get('/interests', async (req, res) => {
+  try {
+    const supabase = getSupabase()
+    const { data: row, error } = await supabase
+      .from('user_preferences')
+      .select('id, categories')
+      .eq('user_id', req.user.id)
+      .limit(1)
+      .maybeSingle()
+
+    if (error) throw error
+
+    let categories = []
+    if (row && row.categories) {
+      try {
+        const parsed = JSON.parse(row.categories)
+        if (Array.isArray(parsed)) {
+          categories = parsed
+            .map((c) => (typeof c === 'string' ? c.trim() : String(c || '').trim()))
+            .filter((c) => c.length > 0)
+        }
+      } catch {
+        // Si el JSON está corrupto, devolvemos lista vacía
+        categories = []
+      }
+    }
+
+    res.json({ categories })
+  } catch (error) {
+    console.error('Error obteniendo intereses del usuario:', error)
+    res.status(500).json({ error: 'Error al obtener tus intereses' })
+  }
+})
+
+// PUT /api/me/interests - guardar intereses (categorías) del usuario en user_preferences
+router.put('/interests', async (req, res) => {
+  const { categories } = req.body || {}
+
+  if (!Array.isArray(categories)) {
+    return res.status(400).json({
+      error: 'Datos inválidos',
+      message: 'El campo categories debe ser un array de strings',
+    })
+  }
+
+  const normalizedCategories = categories
+    .map((c) => (typeof c === 'string' ? c.trim() : String(c || '').trim()))
+    .filter((c) => c.length > 0)
+
+  try {
+    const supabase = getSupabase()
+    const now = new Date().toISOString()
+
+    // ¿Ya existe fila de preferencias para este usuario?
+    const { data: existing, error: selectError } = await supabase
+      .from('user_preferences')
+      .select('id')
+      .eq('user_id', req.user.id)
+      .limit(1)
+      .maybeSingle()
+
+    if (selectError) throw selectError
+
+    if (existing && existing.id) {
+      const { error: updateError } = await supabase
+        .from('user_preferences')
+        .update({
+          categories: JSON.stringify(normalizedCategories),
+          updated_at: now,
+        })
+        .eq('id', existing.id)
+
+      if (updateError) throw updateError
+    } else {
+      const { error: insertError } = await supabase.from('user_preferences').insert({
+        user_id: req.user.id,
+        categories: JSON.stringify(normalizedCategories),
+        created_at: now,
+        updated_at: now,
+      })
+
+      if (insertError) throw insertError
+    }
+
+    res.json({ categories: normalizedCategories })
+  } catch (error) {
+    console.error('Error guardando intereses del usuario:', error)
+    res.status(500).json({ error: 'Error al guardar tus intereses' })
+  }
+})
+
 // GET /api/me/sources
 router.get('/sources', async (req, res) => {
   try {
