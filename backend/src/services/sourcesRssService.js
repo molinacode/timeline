@@ -3,6 +3,7 @@
  */
 import Parser from 'rss-parser'
 import { getSupabase } from '../config/supabase.js'
+import { fetchFallbackImageFromHtml } from './imageExtractorService.js'
 
 const parser = new Parser({
   timeout: 15000,
@@ -54,13 +55,25 @@ async function upsertNewsItem(supabase, sourceId, item) {
   if (byLink) return false
 
   const now = new Date().toISOString()
+
+  let imageUrl = item.imageUrl || null
+  if (!imageUrl && link) {
+    try {
+      imageUrl = await fetchFallbackImageFromHtml(link)
+    } catch (err) {
+      console.error(
+        `[sourcesRss] Error obteniendo imagen fallback para ${link}:`,
+        err.message
+      )
+    }
+  }
   await supabase.from('news_items').insert({
     source_id: sourceId,
     title: item.title || '(sin título)',
     description: item.description || null,
     content: item.content || null,
     link: link || '',
-    image_url: item.imageUrl || null,
+    image_url: imageUrl || null,
     pub_date: item.pubDate || item.isoDate || null,
     guid: guid || null,
     category: null,
