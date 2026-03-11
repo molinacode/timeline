@@ -38,10 +38,17 @@ export function ReaderPage() {
 
   useEffect(() => {
     if (!item?.link) return
+    const controller = new AbortController()
+    const timeoutId = window.setTimeout(() => {
+      controller.abort()
+    }, 5000)
+
     setEnrichedLoading(true)
     setEnrichedError(null)
+
     fetch(apiUrl(`/api/reader?url=${encodeURIComponent(item.link)}`), {
       headers: {},
+      signal: controller.signal,
     })
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
@@ -51,11 +58,23 @@ export function ReaderPage() {
           setEnrichedHtml(null)
         }
       })
-      .catch(() => {
-        setEnrichedError('No se pudo cargar el modo lector enriquecido.')
+      .catch((err) => {
+        if (err.name === 'AbortError') {
+          setEnrichedError('El modo lector tardó demasiado en responder.')
+        } else {
+          setEnrichedError('No se pudo cargar el modo lector enriquecido.')
+        }
         setEnrichedHtml(null)
       })
-      .finally(() => setEnrichedLoading(false))
+      .finally(() => {
+        clearTimeout(timeoutId)
+        setEnrichedLoading(false)
+      })
+
+    return () => {
+      clearTimeout(timeoutId)
+      controller.abort()
+    }
   }, [item?.link])
 
   return (
