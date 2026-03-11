@@ -1,21 +1,12 @@
 /**
  * Obtiene RSS de las fuentes en news_sources y guarda/actualiza news_items.
  */
-import Parser from 'rss-parser'
 import { getSupabase } from '../config/supabase.js'
 import { fetchFallbackImageFromHtml } from './imageExtractorService.js'
-
-const parser = new Parser({
-  timeout: 15000,
-  headers: {
-    'User-Agent':
-      'Mozilla/5.0 (compatible; TimeLineRSS/1.0; +https://github.com/timeline)',
-    Accept: 'application/rss+xml, application/xml, text/xml, */*',
-  },
-})
+import { fetchAndParseRss } from './rssFetch.js'
 
 async function fetchFeed(rssUrl) {
-  const feed = await parser.parseURL(rssUrl)
+  const feed = await fetchAndParseRss(rssUrl, { timeout: 15000 })
   return (feed.items || []).map((item) => ({
     title: item.title?.trim() || '',
     link: item.link?.trim() || '',

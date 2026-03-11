@@ -1,21 +1,12 @@
 /**
  * Obtiene noticias desde las fuentes locales por región (sourcesByRegion.json).
  */
-import Parser from 'rss-parser'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { fetchAndParseRss } from './rssFetch.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-
-const parser = new Parser({
-  timeout: 12000,
-  headers: {
-    'User-Agent':
-      'Mozilla/5.0 (compatible; TimeLineRSS/1.0; +https://github.com/timeline)',
-    Accept: 'application/rss+xml, application/xml, text/xml, */*',
-  },
-})
 
 function loadSourcesByRegion() {
   const candidates = [
@@ -35,7 +26,7 @@ function loadSourcesByRegion() {
 
 async function fetchFeedItems(rssUrl, sourceName) {
   try {
-    const feed = await parser.parseURL(rssUrl)
+    const feed = await fetchAndParseRss(rssUrl, { timeout: 12000 })
     return (feed.items || []).map((item) => ({
       title: item.title?.trim() || '',
       link: item.link?.trim() || '',

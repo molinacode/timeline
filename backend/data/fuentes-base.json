@@ -25,7 +25,7 @@
       "id": "abc",
       "name": "ABC",
       "url": "https://www.abc.es",
-      "rssUrl": "https://www.abc.es/rss/abci-portada.xml",
+      "rssUrl": "https://www.abc.es/rss/feeds/abc_ultima.xml",
       "description": "Periódico digital nacional"
     },
     {
@@ -39,8 +39,8 @@
       "id": "publico",
       "name": "Público",
       "url": "https://www.publico.es",
-      "rssUrl": "https://www.publico.es/rss/",
-      "description": "Periódico digital nacional"
+      "rssUrl": "",
+      "description": "Periódico digital nacional (RSS no disponible)"
     },
     {
       "id": "elespanol",
@@ -60,8 +60,8 @@
       "id": "eldebate",
       "name": "El Debate",
       "url": "https://www.eldebate.com",
-      "rssUrl": "https://www.eldebate.com/rss/",
-      "description": "Periódico generalista digital"
+      "rssUrl": "",
+      "description": "Periódico generalista digital (RSS 403)"
     },
     {
       "id": "eldiario",
@@ -95,7 +95,7 @@
       "id": "libertaddigital",
       "name": "Libertad Digital",
       "url": "https://www.libertaddigital.com",
-      "rssUrl": "https://www.libertaddigital.com/rss/",
+      "rssUrl": "https://www.libertaddigital.com/ultimas-noticias.xml",
       "description": "Periódico generalista digital"
     },
     {
@@ -123,15 +123,15 @@
       "id": "cincodias",
       "name": "Cinco Días",
       "url": "https://cincodias.elpais.com",
-      "rssUrl": "https://cincodias.elpais.com/rss/",
+      "rssUrl": "https://cincodias.elpais.com/rss/cincodias/ultimas_noticias.xml",
       "description": "Periódico económico"
     },
     {
       "id": "eleconomista",
       "name": "El Economista",
       "url": "https://www.eleconomista.es",
-      "rssUrl": "https://www.eleconomista.es/rss/rss-economia.php",
-      "description": "Periódico económico"
+      "rssUrl": "",
+      "description": "Periódico económico (RSS 403)"
     },
     {
       "id": "expansion",
@@ -144,29 +144,29 @@
       "id": "rtve",
       "name": "RTVE",
       "url": "https://www.rtve.es",
-      "rssUrl": "https://api.rtve.es/api/noticias/ultima_hora/1.rss",
+      "rssUrl": "https://www.rtve.es/rss/temas_noticias.xml",
       "description": "Radio Televisión Española"
     },
     {
       "id": "infolibre",
       "name": "Infolibre",
       "url": "https://www.infolibre.es",
-      "rssUrl": "https://www.infolibre.es/feed/",
-      "description": "Diario"
+      "rssUrl": "",
+      "description": "Diario (RSS 404)"
     },
     {
       "id": "elplural",
       "name": "El Plural",
       "url": "https://www.elplural.com",
-      "rssUrl": "https://www.elplural.com/rss",
-      "description": "Diario"
+      "rssUrl": "",
+      "description": "Diario (RSS 404)"
     },
     {
       "id": "elsaltodiario",
       "name": "El Salto Diario",
       "url": "https://www.elsaltodiario.com",
-      "rssUrl": "https://www.elsaltodiario.com/feed",
-      "description": "Diario"
+      "rssUrl": "",
+      "description": "Diario (feed XML con errores)"
     },
     {
       "id": "lamarea",
@@ -179,15 +179,15 @@
       "id": "ctxt",
       "name": "CTXT",
       "url": "https://ctxt.es",
-      "rssUrl": "https://ctxt.es/feed/",
-      "description": "Diario"
+      "rssUrl": "",
+      "description": "Diario (RSS 404)"
     },
     {
       "id": "infobae",
       "name": "Infobae",
       "url": "https://www.infobae.com",
-      "rssUrl": "https://www.infobae.com/feed/",
-      "description": "Diario"
+      "rssUrl": "",
+      "description": "Diario (RSS 404)"
     },
     {
       "id": "theobjective",
