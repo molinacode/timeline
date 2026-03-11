@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../app/providers/AuthProvider'
+import { useMenuSide } from '../../contexts/MenuSideContext'
 import { BasePage } from '../../components/layout/BasePage'
 import { apiUrl } from '@/config/api'
 
@@ -15,9 +17,11 @@ type ProfileData = {
 
 export function UserProfilePage() {
   const { token, updateUser } = useAuth()
+  const navigate = useNavigate()
   const [profile, setProfile] = useState<ProfileData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [tab, setTab] = useState<'data' | 'password'>('data')
+  const [tab, setTab] = useState<'data' | 'password' | 'preferences'>('data')
+  const { menuSide, setMenuSide } = useMenuSide()
 
   // Formulario de datos
   const [formName, setFormName] = useState('')
@@ -155,6 +159,13 @@ export function UserProfilePage() {
           >
             Cambiar contraseña
           </button>
+          <button
+            type="button"
+            className={tab === 'preferences' ? 'active' : ''}
+            onClick={() => setTab('preferences')}
+          >
+            Preferencias
+          </button>
         </nav>
 
         {tab === 'data' && (
@@ -285,6 +296,46 @@ export function UserProfilePage() {
               {savingPassword ? 'Cambiando…' : 'Cambiar contraseña'}
             </button>
           </form>
+        )}
+
+        {tab === 'preferences' && (
+          <div className="app-profile-form">
+            <div className="app-form-group">
+              <label>Menú en móvil y tablet</label>
+              <p className="app-form-hint">
+                En pantallas pequeñas el menú se abre como panel. Elige por qué lado prefieres que aparezca.
+              </p>
+              <div className="app-drawer-preference-buttons app-drawer-preference-buttons--in-form">
+                <button
+                  type="button"
+                  className={menuSide === 'left' ? 'active' : ''}
+                  onClick={() => setMenuSide('left')}
+                >
+                  Izquierda
+                </button>
+                <button
+                  type="button"
+                  className={menuSide === 'right' ? 'active' : ''}
+                  onClick={() => setMenuSide('right')}
+                >
+                  Derecha
+                </button>
+              </div>
+            </div>
+            <div className="app-form-group">
+              <label>Intereses y categorías</label>
+              <p className="app-form-hint">
+                Elige los temas que más te interesan para personalizar tu TimeLine.
+              </p>
+              <button
+                type="button"
+                className="app-btn-secondary"
+                onClick={() => navigate('/me/interests')}
+              >
+                Configurar intereses
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </BasePage>

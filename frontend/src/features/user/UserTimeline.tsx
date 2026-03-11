@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { useRegionFromGeolocation } from '../../hooks/useRegionFromGeolocation'
 import { useNewsClickTracker } from '../../hooks/useNewsClickTracker'
@@ -22,6 +23,7 @@ const TABS: { id: TabId; label: string }[] = [
 export function UserTimeline() {
   const { token } = useAuth()
   const { trackClick } = useNewsClickTracker()
+  const navigate = useNavigate()
   const {
     regionId,
     loading: geoLoading,
@@ -45,6 +47,7 @@ export function UserTimeline() {
   const [addingSource, setAddingSource] = useState(false)
   const [addError, setAddError] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<TabId>('ultima-hora')
+  const [savingNewsId, setSavingNewsId] = useState<number | null>(null)
 
   const effectiveRegionId = regionId || 'madrid'
   const region = regionsData.regions.find((r) => r.id === effectiveRegionId) ?? null
@@ -108,6 +111,27 @@ export function UserTimeline() {
       .catch(() => setLocalNews([]))
       .finally(() => setLoadingLocalNews(false))
   }, [activeTab, effectiveRegionId])
+
+  async function handleSaveNews(newsId: number) {
+    if (!token) return
+    setSavingNewsId(newsId)
+    try {
+      const res = await fetch(apiUrl('/api/me/saved'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ news_id: newsId }),
+      })
+      if (!res.ok) throw new Error('Error al guardar')
+      // Opcional: mostrar toast o feedback. Por ahora solo quitamos el estado.
+    } catch {
+      // feedback opcional
+    } finally {
+      setSavingNewsId(null)
+    }
+  }
 
   async function loadUserSources() {
     if (!token) return
@@ -239,11 +263,16 @@ export function UserTimeline() {
               <div className="app-flex-col">
                 {lastHourItems.map((item, idx) => (
                   <TimelineArticleCard
-                    key={`${item.link}-${idx}`}
+                    key={item.id != null ? `id-${item.id}` : `${item.link}-${idx}`}
                     item={item}
                     formatDate
                     onLinkClick={(source, link) =>
                       trackClick(source, link || item.link)
+                    }
+                    onSave={item.id != null ? handleSaveNews : undefined}
+                    saving={savingNewsId !== null}
+                    onOpenReader={(article) =>
+                      navigate('/reader', { state: { item: article } })
                     }
                   />
                 ))}

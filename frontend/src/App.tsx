@@ -20,15 +20,21 @@ import { AdminUsersPage } from './features/admin/AdminUsersPage'
 import { AdminBiasPage } from './features/admin/bias/AdminBiasPage'
 import { BiasComparatorPage } from './features/news/comparator/BiasComparatorPage'
 import { UserProfilePage } from './features/user/UserProfilePage'
+import { SavedNewsPage } from './features/user/SavedNewsPage'
+import { InterestsOnboardingPage } from './features/user/InterestsOnboardingPage'
+import { ReaderPage } from './features/news/reader/ReaderPage'
+import { SearchPage } from './features/news/SearchPage'
 import { CookieBanner } from './components/CookieBanner'
 import { Analytics } from '@vercel/analytics/react'
 import { SessionExpiredHandler } from './app/SessionExpiredHandler'
 import { UserAgreementPage } from './features/legal/UserAgreementPage'
+import { MenuSideProvider } from './contexts/MenuSideContext'
 
 export function App() {
   return (
     <>
       <SessionExpiredHandler />
+      <MenuSideProvider>
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -39,6 +45,14 @@ export function App() {
               <RequireRole role="user">
                 <UserTimeline />
               </RequireRole>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <RequireAuth>
+                <SearchPage />
+              </RequireAuth>
             }
           />
           <Route
@@ -54,6 +68,30 @@ export function App() {
             element={
               <RequireAuth>
                 <UserProfilePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/me/saved"
+            element={
+              <RequireAuth>
+                <SavedNewsPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/me/interests"
+            element={
+              <RequireAuth>
+                <InterestsOnboardingPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/reader"
+            element={
+              <RequireAuth>
+                <ReaderPage />
               </RequireAuth>
             }
           />
@@ -90,6 +128,7 @@ export function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>
+      </MenuSideProvider>
       <CookieBanner />
       <Analytics />
     </>
