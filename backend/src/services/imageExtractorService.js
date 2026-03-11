@@ -62,6 +62,16 @@ export async function fetchFallbackImageFromHtml(pageUrl) {
       if (picked) return picked
     }
 
+    // El Español: imagen principal dentro de article (.article-media en article-body)
+    const espanolHigh = $('.article-body .article-media img[fetchpriority="high"]').first()
+    const espanolLead = espanolHigh.length > 0 ? espanolHigh : $('.article-body__container .article-media img, .article-body .article-media img').first()
+    if (espanolLead && espanolLead.length > 0) {
+      const srcset = espanolLead.attr('srcset')
+      const src = espanolLead.attr('src')
+      const picked = pickFromSrcset(srcset) || src
+      if (picked) return picked
+    }
+
     const elementorImg = $('.elementor-widget-container img').first()
     if (elementorImg && elementorImg.length > 0) {
       const srcset = elementorImg.attr('srcset') || elementorImg.attr('data-lazy-srcset')

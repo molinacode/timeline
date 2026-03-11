@@ -7,6 +7,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { getSupabase } from '../config/supabase.js'
 import { fetchAndParseRss } from './rssFetch.js'
+import { fetchFallbackImageFromHtml } from './imageExtractorService.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -292,6 +293,26 @@ export async function fetchNewsByBiasMatched(limitGroups = 15) {
       })
     }
   }
+
+  // Fallback de imagen desde HTML para artículos del comparador que no traen imagen en RSS
+  const articlesToEnrich = []
+  for (const g of groups) {
+    if (g.progressive?.link && !g.progressive?.image) articlesToEnrich.push(g.progressive)
+    if (g.centrist?.link && !g.centrist?.image) articlesToEnrich.push(g.centrist)
+    if (g.conservative?.link && !g.conservative?.image) articlesToEnrich.push(g.conservative)
+  }
+  await Promise.all(
+    articlesToEnrich.map(async (art) => {
+      try {
+        const url = await fetchFallbackImageFromHtml(art.link)
+        if (url) art.image = url
+      } catch (err) {
+        if (VERBOSE_RSS) {
+          console.error('[fuentesBias] Fallback imagen:', art.link, err.message)
+        }
+      }
+    })
+  )
 
   // Enriquecer con etiquetas basadas en categorías especiales de Supabase
   try {

@@ -251,10 +251,7 @@ export function UserTimeline() {
   }
 
   return (
-    <BasePage
-      title="Mi TimeLine"
-      subtitle="Tus fuentes, categorías y últimas noticias."
-    >
+    <BasePage title="Mi TimeLine">
       <div className="app-page-section">
         {categories.length > 0 && (
           <div className="app-category-carousel" aria-label="Categorías destacadas">
@@ -368,9 +365,6 @@ export function UserTimeline() {
             className="app-timeline-panel"
           >
             <h2 className="app-card-title">Categorías</h2>
-            <p className="app-card-subtitle app-page-subtitle--tight">
-              Noticias de las fuentes por categoría temática.
-            </p>
             {categories.length === 0 ? (
               <p className="app-muted-inline">
                 No hay categorías configuradas. El administrador puede crearlas en el panel de Admin.
@@ -537,9 +531,6 @@ export function UserTimeline() {
             className="app-timeline-panel"
           >
             <h2 className="app-card-title">Mis fuentes RSS</h2>
-            <p className="app-card-subtitle app-page-subtitle--tight">
-              Agrega tus propias fuentes RSS para seguir sus noticias.
-            </p>
 
             <form onSubmit={handleAddSource} className="app-add-source-form">
               <div className="app-form-row">

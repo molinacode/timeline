@@ -62,10 +62,7 @@ export function SavedNewsPage() {
   }
 
   return (
-    <BasePage
-      title="Noticias guardadas"
-      subtitle="Noticias que has guardado para leer más tarde."
-    >
+    <BasePage title="Noticias guardadas">
       <div className="app-page-section">
         {error && (
           <p className="app-muted-inline" role="alert">
