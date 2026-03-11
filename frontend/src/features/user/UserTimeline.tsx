@@ -31,6 +31,7 @@ export function UserTimeline() {
 
   const [lastHourItems, setLastHourItems] = useState<NewsItem[]>([])
   const [categories, setCategories] = useState<Category[]>([])
+  const [preferredCategoryIds, setPreferredCategoryIds] = useState<number[]>([])
   const [userSources, setUserSources] = useState<UserCustomSource[]>([])
   const [loadingLastHour, setLoadingLastHour] = useState(true)
   const [loadingCategories, setLoadingCategories] = useState(true)
@@ -81,20 +82,50 @@ export function UserTimeline() {
     ;(async () => {
       try {
         setLoadingCategories(true)
-        const res = await fetch(apiUrl('/api/categories'), {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        if (res.ok) {
-          const data = await res.json()
+        const headers: HeadersInit = {
+          Authorization: `Bearer ${token}`,
+        }
+
+        const [categoriesRes, interestsRes] = await Promise.all([
+          fetch(apiUrl('/api/categories'), { headers }),
+          fetch(apiUrl('/api/me/interests'), { headers }),
+        ])
+
+        if (categoriesRes.ok) {
+          const data = await categoriesRes.json()
           setCategories(Array.isArray(data) ? data : [])
+        } else {
+          setCategories([])
+        }
+
+        if (interestsRes.ok) {
+          const json = await interestsRes.json()
+          const ids =
+            Array.isArray(json.categories) && json.categories.length > 0
+              ? (json.categories as (number | string)[])
+                  .map((c) => Number(c))
+                  .filter((n) => Number.isFinite(n) && n > 0)
+              : []
+          setPreferredCategoryIds(ids)
+        } else {
+          setPreferredCategoryIds([])
         }
       } catch {
         setCategories([])
+        setPreferredCategoryIds([])
       } finally {
         setLoadingCategories(false)
       }
     })()
   }, [token])
+
+  useEffect(() => {
+    if (!categories.length || !preferredCategoryIds.length || selectedCategory) return
+    const firstPreferred = categories.find((c) => preferredCategoryIds.includes(c.id))
+    if (firstPreferred) {
+      loadNewsByCategory(firstPreferred.name)
+    }
+  }, [categories, preferredCategoryIds, selectedCategory])
 
   useEffect(() => {
     if (!token) return
@@ -225,6 +256,54 @@ export function UserTimeline() {
       subtitle="Tus fuentes, categorías y últimas noticias."
     >
       <div className="app-page-section">
+        {categories.length > 0 && (
+          <div className="app-category-carousel" aria-label="Categorías destacadas">
+            <div className="app-category-carousel-track">
+              {categories
+                .slice()
+                .sort((a, b) => {
+                  const aPreferred = preferredCategoryIds.includes(a.id)
+                  const bPreferred = preferredCategoryIds.includes(b.id)
+                  if (aPreferred !== bPreferred) return Number(bPreferred) - Number(aPreferred)
+                  return Number(!!b.isSpecial) - Number(!!a.isSpecial)
+                })
+                .map((c) => {
+                  const isPreferred = preferredCategoryIds.includes(c.id)
+                  const isActive = selectedCategory === c.name
+                  return (
+                    <button
+                      key={`carousel-${c.id}`}
+                      type="button"
+                      className={`app-category-chip app-category-carousel-chip ${
+                        c.isSpecial ? 'app-category-chip--special' : ''
+                      } ${isActive ? 'active' : ''} ${
+                        isPreferred ? 'app-category-chip--preferred' : ''
+                      }`}
+                      onClick={() => {
+                        setActiveTab('categorias')
+                        loadNewsByCategory(c.name)
+                      }}
+                      title={c.description || undefined}
+                    >
+                      {c.icon && <span className="app-category-chip-icon">{c.icon}</span>}
+                      <span>{c.name}</span>
+                      {isPreferred && (
+                        <span className="app-category-chip-preferred" aria-hidden="true">
+                          Para ti
+                        </span>
+                      )}
+                      {c.isSpecial && (
+                        <span className="app-category-chip-badge" aria-hidden="true">
+                          ⚡
+                        </span>
+                      )}
+                    </button>
+                  )
+                })}
+            </div>
+          </div>
+        )}
+
         <nav className="app-timeline-tabs" role="tablist">
           {TABS.map((tab) => {
             const isSelected = activeTab === tab.id
@@ -307,12 +386,21 @@ export function UserTimeline() {
                       type="button"
                       className={`app-category-chip ${
                         c.isSpecial ? 'app-category-chip--special' : ''
-                      } ${selectedCategory === c.name ? 'active' : ''}`}
+                      } ${selectedCategory === c.name ? 'active' : ''} ${
+                        preferredCategoryIds.includes(c.id)
+                          ? 'app-category-chip--preferred'
+                          : ''
+                      }`}
                       onClick={() => loadNewsByCategory(c.name)}
                       title={c.description || undefined}
                     >
                       {c.icon && <span className="app-category-chip-icon">{c.icon}</span>}
                       <span>{c.name}</span>
+                      {preferredCategoryIds.includes(c.id) && (
+                        <span className="app-category-chip-preferred" aria-hidden="true">
+                          Para ti
+                        </span>
+                      )}
                       {c.isSpecial && (
                         <span className="app-category-chip-badge" aria-hidden="true">
                           ⚡
