@@ -17,6 +17,1091 @@
           "url": "https://www.ideal.es",
           "rssUrl": "https://www.ideal.es/rss/",
           "city": "Granada"
+        },
+        {
+          "id": "andalucia-prensaescrita",
+          "name": "Prensaescrita",
+          "url": "https://prensaescrita.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elpais",
+          "name": "Elpais",
+          "url": "https://elpais.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elmundo",
+          "name": "Elmundo",
+          "url": "https://elmundo.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elespanol",
+          "name": "Elespanol",
+          "url": "https://elespanol.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-okdiario",
+          "name": "Okdiario",
+          "url": "https://okdiario.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-20minutos",
+          "name": "20minutos",
+          "url": "https://20minutos.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elconfidencial",
+          "name": "Elconfidencial",
+          "url": "https://elconfidencial.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-larazon",
+          "name": "Larazon",
+          "url": "https://larazon.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-abc",
+          "name": "Abc",
+          "url": "https://abc.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-eldiario",
+          "name": "Eldiario",
+          "url": "https://eldiario.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elperiodico",
+          "name": "Elperiodico",
+          "url": "https://elperiodico.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-facebook",
+          "name": "Facebook",
+          "url": "https://facebook.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-twitter",
+          "name": "Twitter",
+          "url": "https://twitter.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-marca",
+          "name": "Marca",
+          "url": "https://marca.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-as",
+          "name": "As",
+          "url": "https://as.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-mundodeportivo",
+          "name": "Mundodeportivo",
+          "url": "https://mundodeportivo.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-sport",
+          "name": "Sport",
+          "url": "https://sport.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-bolavip",
+          "name": "Bolavip",
+          "url": "https://bolavip.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-ole",
+          "name": "Ole",
+          "url": "https://ole.com.ar",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-record",
+          "name": "Record",
+          "url": "https://record.com.mx",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-mediotiempo",
+          "name": "Mediotiempo",
+          "url": "https://mediotiempo.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-depor",
+          "name": "Depor",
+          "url": "https://depor.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-libero",
+          "name": "Libero",
+          "url": "https://libero.pe",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-sevilla",
+          "name": "Sevilla",
+          "url": "https://sevilla.abc.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elcorreoweb",
+          "name": "Elcorreoweb",
+          "url": "https://elcorreoweb.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-sevillaactualidad",
+          "name": "Sevillaactualidad",
+          "url": "https://sevillaactualidad.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-sevillabuenasnoticias",
+          "name": "Sevillabuenasnoticias",
+          "url": "https://sevillabuenasnoticias.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-vivasevilla",
+          "name": "Vivasevilla",
+          "url": "https://vivasevilla.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-digitalsevilla",
+          "name": "Digitalsevilla",
+          "url": "https://digitalsevilla.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-aionsur",
+          "name": "Aionsur",
+          "url": "https://aionsur.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-eldesmarque",
+          "name": "Eldesmarque",
+          "url": "https://eldesmarque.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-estadiodeportivo",
+          "name": "Estadiodeportivo",
+          "url": "https://estadiodeportivo.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-doshermanasdiariodigital",
+          "name": "Doshermanasdiariodigital",
+          "url": "https://doshermanasdiariodigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-periodicolasemana",
+          "name": "Periodicolasemana",
+          "url": "https://periodicolasemana.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-periodicoelnazareno",
+          "name": "Periodicoelnazareno",
+          "url": "https://periodicoelnazareno.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-lavozdealcala",
+          "name": "Lavozdealcala",
+          "url": "https://lavozdealcala.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-noticiasdealcala",
+          "name": "Noticiasdealcala",
+          "url": "https://noticiasdealcala.info",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-utreradigital",
+          "name": "Utreradigital",
+          "url": "https://utreradigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-utreraweb",
+          "name": "Utreraweb",
+          "url": "https://utreraweb.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-utreraaldia",
+          "name": "Utreraaldia",
+          "url": "https://utreraaldia.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-aljarafeinforma",
+          "name": "Aljarafeinforma",
+          "url": "https://aljarafeinforma.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-noticiasaljarafe",
+          "name": "Noticiasaljarafe",
+          "url": "https://noticiasaljarafe.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-aljarafedigital",
+          "name": "Aljarafedigital",
+          "url": "https://aljarafedigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-ecijaweb",
+          "name": "Ecijaweb",
+          "url": "https://ecijaweb.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-ecijadigital",
+          "name": "Ecijadigital",
+          "url": "https://ecijadigital.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-ecijaldia",
+          "name": "Ecijaldia",
+          "url": "https://ecijaldia.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diariodemoron",
+          "name": "Diariodemoron",
+          "url": "https://diariodemoron.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-lavozdemoron",
+          "name": "Lavozdemoron",
+          "url": "https://lavozdemoron.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-moroninformacion",
+          "name": "Moroninformacion",
+          "url": "https://moroninformacion.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-larevistacarmona",
+          "name": "Larevistacarmona",
+          "url": "https://larevistacarmona.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-lebrijadigital",
+          "name": "Lebrijadigital",
+          "url": "https://lebrijadigital.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-ahoramairena",
+          "name": "Ahoramairena",
+          "url": "https://ahoramairena.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elperiodicodemairena",
+          "name": "Elperiodicodemairena",
+          "url": "https://elperiodicodemairena.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diarioavanza",
+          "name": "Diarioavanza",
+          "url": "https://diarioavanza.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diariosur",
+          "name": "Diariosur",
+          "url": "https://diariosur.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-laopiniondemalaga",
+          "name": "Laopiniondemalaga",
+          "url": "https://laopiniondemalaga.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-malagahoy",
+          "name": "Malagahoy",
+          "url": "https://malagahoy.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-alertadigital",
+          "name": "Alertadigital",
+          "url": "https://alertadigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-alsoldelacosta",
+          "name": "Alsoldelacosta",
+          "url": "https://alsoldelacosta.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elnoticierodigital",
+          "name": "Elnoticierodigital",
+          "url": "https://elnoticierodigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-vivamalaga",
+          "name": "Vivamalaga",
+          "url": "https://vivamalaga.net",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-azcostadelsol",
+          "name": "Azcostadelsol",
+          "url": "https://azcostadelsol.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-marbella24horas",
+          "name": "Marbella24horas",
+          "url": "https://marbella24horas.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-marbelladirecto",
+          "name": "Marbelladirecto",
+          "url": "https://marbelladirecto.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-marbellaconfidencial",
+          "name": "Marbellaconfidencial",
+          "url": "https://marbellaconfidencial.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-areacostadelsol",
+          "name": "Areacostadelsol",
+          "url": "https://areacostadelsol.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-infoaxarquia",
+          "name": "Infoaxarquia",
+          "url": "https://infoaxarquia.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diarioaxarquia",
+          "name": "Diarioaxarquia",
+          "url": "https://diarioaxarquia.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-axarquiaplus",
+          "name": "Axarquiaplus",
+          "url": "https://axarquiaplus.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-noticias24digital",
+          "name": "Noticias24digital",
+          "url": "https://noticias24digital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-mijascomunicacion",
+          "name": "Mijascomunicacion",
+          "url": "https://mijascomunicacion.org",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-torremolinoshoy",
+          "name": "Torremolinoshoy",
+          "url": "https://torremolinoshoy.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-olebenalmadena",
+          "name": "Olebenalmadena",
+          "url": "https://olebenalmadena.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diariocosta",
+          "name": "Diariocosta",
+          "url": "https://diariocosta.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elrinconhabla",
+          "name": "Elrinconhabla",
+          "url": "https://elrinconhabla.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elsoldeantequera",
+          "name": "Elsoldeantequera",
+          "url": "https://elsoldeantequera.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-las4esquinas",
+          "name": "Las4esquinas",
+          "url": "https://las4esquinas.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-alhaurindelatorre",
+          "name": "Alhaurindelatorre",
+          "url": "https://alhaurindelatorre.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-alhaurin",
+          "name": "Alhaurin",
+          "url": "https://alhaurin.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diarioronda",
+          "name": "Diarioronda",
+          "url": "https://diarioronda.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diariodecadiz",
+          "name": "Diariodecadiz",
+          "url": "https://diariodecadiz.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-lavozdigital",
+          "name": "Lavozdigital",
+          "url": "https://lavozdigital.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-cadizdirecto",
+          "name": "Cadizdirecto",
+          "url": "https://cadizdirecto.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-portaldecadiz",
+          "name": "Portaldecadiz",
+          "url": "https://portaldecadiz.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-cadizbuenasnoticias",
+          "name": "Cadizbuenasnoticias",
+          "url": "https://cadizbuenasnoticias.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-vivacadiz",
+          "name": "Vivacadiz",
+          "url": "https://vivacadiz.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diariobahiadecadiz",
+          "name": "Diariobahiadecadiz",
+          "url": "https://diariobahiadecadiz.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diariodejerez",
+          "name": "Diariodejerez",
+          "url": "https://diariodejerez.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-vivajerez",
+          "name": "Vivajerez",
+          "url": "https://vivajerez.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elmira",
+          "name": "Elmira",
+          "url": "https://elmira.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-lavozdelsur",
+          "name": "Lavozdelsur",
+          "url": "https://lavozdelsur.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-europasur",
+          "name": "Europasur",
+          "url": "https://europasur.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-horasur",
+          "name": "Horasur",
+          "url": "https://horasur.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-algecirasalminuto",
+          "name": "Algecirasalminuto",
+          "url": "https://algecirasalminuto.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elestrechodigital",
+          "name": "Elestrechodigital",
+          "url": "https://elestrechodigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-8directo",
+          "name": "8directo",
+          "url": "https://8directo.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diarioarea",
+          "name": "Diarioarea",
+          "url": "https://diarioarea.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diariodelalinea",
+          "name": "Diariodelalinea",
+          "url": "https://diariodelalinea.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elcastillodesanfernando",
+          "name": "Elcastillodesanfernando",
+          "url": "https://elcastillodesanfernando.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elpuertoactualidad",
+          "name": "Elpuertoactualidad",
+          "url": "https://elpuertoactualidad.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-puentechico",
+          "name": "Puentechico",
+          "url": "https://puentechico.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elperiodicodechiclana",
+          "name": "Elperiodicodechiclana",
+          "url": "https://elperiodicodechiclana.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-puertorealhoy",
+          "name": "Puertorealhoy",
+          "url": "https://puertorealhoy.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-noticiasdelavilla",
+          "name": "Noticiasdelavilla",
+          "url": "https://noticiasdelavilla.net",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-granadahoy",
+          "name": "Granadahoy",
+          "url": "https://granadahoy.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-granadadigital",
+          "name": "Granadadigital",
+          "url": "https://granadadigital.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-ahoragranada",
+          "name": "Ahoragranada",
+          "url": "https://ahoragranada.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elindependientedegranada",
+          "name": "Elindependientedegranada",
+          "url": "https://elindependientedegranada.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-granadaesnoticia",
+          "name": "Granadaesnoticia",
+          "url": "https://granadaesnoticia.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-elfaromotril",
+          "name": "Elfaromotril",
+          "url": "https://elfaromotril.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-motrildigital",
+          "name": "Motrildigital",
+          "url": "https://motrildigital.news",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-noticiasmotril",
+          "name": "Noticiasmotril",
+          "url": "https://noticiasmotril.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-infocostatropical",
+          "name": "Infocostatropical",
+          "url": "https://infocostatropical.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-almunecardigital",
+          "name": "Almunecardigital",
+          "url": "https://almunecardigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-costadigital",
+          "name": "Costadigital",
+          "url": "https://costadigital.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diariosexitano",
+          "name": "Diariosexitano",
+          "url": "https://diariosexitano.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diariocordoba",
+          "name": "Diariocordoba",
+          "url": "https://diariocordoba.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-eldiadecordoba",
+          "name": "Eldiadecordoba",
+          "url": "https://eldiadecordoba.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-cordopolis",
+          "name": "Cordopolis",
+          "url": "https://cordopolis.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-cordobahoy",
+          "name": "Cordobahoy",
+          "url": "https://cordobahoy.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-cordobabn",
+          "name": "Cordobabn",
+          "url": "https://cordobabn.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-lucenadigital",
+          "name": "Lucenadigital",
+          "url": "https://lucenadigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-lucenahoy",
+          "name": "Lucenahoy",
+          "url": "https://lucenahoy.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-lavozdelasubbetica",
+          "name": "Lavozdelasubbetica",
+          "url": "https://lavozdelasubbetica.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-puentegenilok",
+          "name": "Puentegenilok",
+          "url": "https://puentegenilok.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-montilladigital",
+          "name": "Montilladigital",
+          "url": "https://montilladigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-montillabierta",
+          "name": "Montillabierta",
+          "url": "https://montillabierta.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-vegadigital",
+          "name": "Vegadigital",
+          "url": "https://vegadigital.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-surdecordoba",
+          "name": "Surdecordoba",
+          "url": "https://surdecordoba.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-lavozdealmeria",
+          "name": "Lavozdealmeria",
+          "url": "https://lavozdealmeria.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diariodealmeria",
+          "name": "Diariodealmeria",
+          "url": "https://diariodealmeria.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-noticiasdealmeria",
+          "name": "Noticiasdealmeria",
+          "url": "https://noticiasdealmeria.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-lagacetadealmeria",
+          "name": "Lagacetadealmeria",
+          "url": "https://lagacetadealmeria.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-almeripress",
+          "name": "Almeripress",
+          "url": "https://almeripress.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-teleprensa",
+          "name": "Teleprensa",
+          "url": "https://teleprensa.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-almeriahoy",
+          "name": "Almeriahoy",
+          "url": "https://almeriahoy.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-d-cerca",
+          "name": "D-cerca",
+          "url": "https://d-cerca.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diariojaen",
+          "name": "Diariojaen",
+          "url": "https://diariojaen.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-horajaen",
+          "name": "Horajaen",
+          "url": "https://horajaen.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-lacontradejaen",
+          "name": "Lacontradejaen",
+          "url": "https://lacontradejaen.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-vivajaen",
+          "name": "Vivajaen",
+          "url": "https://vivajaen.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-linares28",
+          "name": "Linares28",
+          "url": "https://linares28.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-infolinares",
+          "name": "Infolinares",
+          "url": "https://infolinares.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-campinadigital",
+          "name": "Campinadigital",
+          "url": "https://campinadigital.me",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-huelvainformacion",
+          "name": "Huelvainformacion",
+          "url": "https://huelvainformacion.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-huelva24",
+          "name": "Huelva24",
+          "url": "https://huelva24.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-diariodehuelva",
+          "name": "Diariodehuelva",
+          "url": "https://diariodehuelva.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-huelvabuenasnoticias",
+          "name": "Huelvabuenasnoticias",
+          "url": "https://huelvabuenasnoticias.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-huelvahoy",
+          "name": "Huelvahoy",
+          "url": "https://huelvahoy.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-huelvaya",
+          "name": "Huelvaya",
+          "url": "https://huelvaya.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-vivahuelva",
+          "name": "Vivahuelva",
+          "url": "https://vivahuelva.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-huelvared",
+          "name": "Huelvared",
+          "url": "https://huelvared.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-lahiguerita",
+          "name": "Lahiguerita",
+          "url": "https://lahiguerita.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-lahiguerita-1",
+          "name": "Lahiguerita",
+          "url": "https://lahiguerita.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "andalucia-huelvacosta",
+          "name": "Huelvacosta",
+          "url": "https://huelvacosta.com",
+          "rssUrl": "",
+          "city": ""
         }
       ]
     },
@@ -37,6 +1122,307 @@
           "url": "https://www.mallorcasport.com",
           "rssUrl": "https://www.mallorcasport.com/feed",
           "city": "Palma"
+        },
+        {
+          "id": "baleares-prensaescrita",
+          "name": "Prensaescrita",
+          "url": "https://prensaescrita.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-elpais",
+          "name": "Elpais",
+          "url": "https://elpais.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-elmundo",
+          "name": "Elmundo",
+          "url": "https://elmundo.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-elespanol",
+          "name": "Elespanol",
+          "url": "https://elespanol.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-okdiario",
+          "name": "Okdiario",
+          "url": "https://okdiario.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-20minutos",
+          "name": "20minutos",
+          "url": "https://20minutos.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-elconfidencial",
+          "name": "Elconfidencial",
+          "url": "https://elconfidencial.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-larazon",
+          "name": "Larazon",
+          "url": "https://larazon.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-abc",
+          "name": "Abc",
+          "url": "https://abc.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-eldiario",
+          "name": "Eldiario",
+          "url": "https://eldiario.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-elperiodico",
+          "name": "Elperiodico",
+          "url": "https://elperiodico.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-facebook",
+          "name": "Facebook",
+          "url": "https://facebook.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-twitter",
+          "name": "Twitter",
+          "url": "https://twitter.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-marca",
+          "name": "Marca",
+          "url": "https://marca.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-as",
+          "name": "As",
+          "url": "https://as.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-mundodeportivo",
+          "name": "Mundodeportivo",
+          "url": "https://mundodeportivo.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-sport",
+          "name": "Sport",
+          "url": "https://sport.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-bolavip",
+          "name": "Bolavip",
+          "url": "https://bolavip.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-ole",
+          "name": "Ole",
+          "url": "https://ole.com.ar",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-record",
+          "name": "Record",
+          "url": "https://record.com.mx",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-mediotiempo",
+          "name": "Mediotiempo",
+          "url": "https://mediotiempo.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-depor",
+          "name": "Depor",
+          "url": "https://depor.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-libero",
+          "name": "Libero",
+          "url": "https://libero.pe",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-ultimahora",
+          "name": "Ultimahora",
+          "url": "https://ultimahora.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-diariodemallorca",
+          "name": "Diariodemallorca",
+          "url": "https://diariodemallorca.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-mallorcamagazin",
+          "name": "Mallorcamagazin",
+          "url": "https://mallorcamagazin.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-mallorcazeitung",
+          "name": "Mallorcazeitung",
+          "url": "https://mallorcazeitung.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-cronicabalear",
+          "name": "Cronicabalear",
+          "url": "https://cronicabalear.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-majorcadailybulletin",
+          "name": "Majorcadailybulletin",
+          "url": "https://majorcadailybulletin.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-mallorcadiario",
+          "name": "Mallorcadiario",
+          "url": "https://mallorcadiario.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-arabalears",
+          "name": "Arabalears",
+          "url": "https://arabalears.cat",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-dbalears",
+          "name": "Dbalears",
+          "url": "https://dbalears.cat",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-noticiasmallorca",
+          "name": "Noticiasmallorca",
+          "url": "https://noticiasmallorca.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-mallorcaconfidencial",
+          "name": "Mallorcaconfidencial",
+          "url": "https://mallorcaconfidencial.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-economiademallorca",
+          "name": "Economiademallorca",
+          "url": "https://economiademallorca.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-diariodeibiza",
+          "name": "Diariodeibiza",
+          "url": "https://diariodeibiza.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-periodicodeibiza",
+          "name": "Periodicodeibiza",
+          "url": "https://periodicodeibiza.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-noudiari",
+          "name": "Noudiari",
+          "url": "https://noudiari.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-menorca",
+          "name": "Menorca",
+          "url": "https://menorca.info",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-menorcaaldia",
+          "name": "Menorcaaldia",
+          "url": "https://menorcaaldia.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-calviahoy",
+          "name": "Calviahoy",
+          "url": "https://calviahoy.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-manacornoticias",
+          "name": "Manacornoticias",
+          "url": "https://manacornoticias.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "baleares-diariodemarratxi",
+          "name": "Diariodemarratxi",
+          "url": "https://diariodemarratxi.com",
+          "rssUrl": "",
+          "city": ""
         }
       ]
     },
@@ -57,6 +1443,699 @@
           "url": "https://www.madridiario.es",
           "rssUrl": "https://www.madridiario.es/feed/",
           "city": "Madrid"
+        },
+        {
+          "id": "madrid-prensaescrita",
+          "name": "Prensaescrita",
+          "url": "https://prensaescrita.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-elpais",
+          "name": "Elpais",
+          "url": "https://elpais.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-elmundo",
+          "name": "Elmundo",
+          "url": "https://elmundo.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-elespanol",
+          "name": "Elespanol",
+          "url": "https://elespanol.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-okdiario",
+          "name": "Okdiario",
+          "url": "https://okdiario.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-20minutos",
+          "name": "20minutos",
+          "url": "https://20minutos.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-elconfidencial",
+          "name": "Elconfidencial",
+          "url": "https://elconfidencial.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-larazon",
+          "name": "Larazon",
+          "url": "https://larazon.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-abc",
+          "name": "Abc",
+          "url": "https://abc.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-eldiario",
+          "name": "Eldiario",
+          "url": "https://eldiario.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-elperiodico",
+          "name": "Elperiodico",
+          "url": "https://elperiodico.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-facebook",
+          "name": "Facebook",
+          "url": "https://facebook.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-twitter",
+          "name": "Twitter",
+          "url": "https://twitter.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-marca",
+          "name": "Marca",
+          "url": "https://marca.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-as",
+          "name": "As",
+          "url": "https://as.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-mundodeportivo",
+          "name": "Mundodeportivo",
+          "url": "https://mundodeportivo.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-sport",
+          "name": "Sport",
+          "url": "https://sport.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-bolavip",
+          "name": "Bolavip",
+          "url": "https://bolavip.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-ole",
+          "name": "Ole",
+          "url": "https://ole.com.ar",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-record",
+          "name": "Record",
+          "url": "https://record.com.mx",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-mediotiempo",
+          "name": "Mediotiempo",
+          "url": "https://mediotiempo.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-depor",
+          "name": "Depor",
+          "url": "https://depor.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-libero",
+          "name": "Libero",
+          "url": "https://libero.pe",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-huffingtonpost",
+          "name": "Huffingtonpost",
+          "url": "https://huffingtonpost.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-eldebate",
+          "name": "Eldebate",
+          "url": "https://eldebate.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-libertaddigital",
+          "name": "Libertaddigital",
+          "url": "https://libertaddigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-theobjective",
+          "name": "Theobjective",
+          "url": "https://theobjective.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-publico",
+          "name": "Publico",
+          "url": "https://publico.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-vozpopuli",
+          "name": "Vozpopuli",
+          "url": "https://vozpopuli.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-europapress",
+          "name": "Europapress",
+          "url": "https://europapress.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-elplural",
+          "name": "Elplural",
+          "url": "https://elplural.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-elindependiente",
+          "name": "Elindependiente",
+          "url": "https://elindependiente.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-infolibre",
+          "name": "Infolibre",
+          "url": "https://infolibre.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-esdiario",
+          "name": "Esdiario",
+          "url": "https://esdiario.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-periodistadigital",
+          "name": "Periodistadigital",
+          "url": "https://periodistadigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-epe",
+          "name": "Epe",
+          "url": "https://epe.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-gaceta",
+          "name": "Gaceta",
+          "url": "https://gaceta.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-diario-red",
+          "name": "Diario-red",
+          "url": "https://diario-red.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-elconfidencialdigital",
+          "name": "Elconfidencialdigital",
+          "url": "https://elconfidencialdigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-elsaltodiario",
+          "name": "Elsaltodiario",
+          "url": "https://elsaltodiario.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-democrata",
+          "name": "Democrata",
+          "url": "https://democrata.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-articulo14",
+          "name": "Articulo14",
+          "url": "https://articulo14.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-moncloa",
+          "name": "Moncloa",
+          "url": "https://moncloa.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-diariocritico",
+          "name": "Diariocritico",
+          "url": "https://diariocritico.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-que",
+          "name": "Que",
+          "url": "https://que.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-losreplicantes",
+          "name": "Losreplicantes",
+          "url": "https://losreplicantes.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-estrelladigital",
+          "name": "Estrelladigital",
+          "url": "https://estrelladigital.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-nuevatribuna",
+          "name": "Nuevatribuna",
+          "url": "https://nuevatribuna.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-elimparcial",
+          "name": "Elimparcial",
+          "url": "https://elimparcial.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-hispanidad",
+          "name": "Hispanidad",
+          "url": "https://hispanidad.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-elcierredigital",
+          "name": "Elcierredigital",
+          "url": "https://elcierredigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-tercerainformacion",
+          "name": "Tercerainformacion",
+          "url": "https://tercerainformacion.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-madridactual",
+          "name": "Madridactual",
+          "url": "https://madridactual.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-gacetinmadrid",
+          "name": "Gacetinmadrid",
+          "url": "https://gacetinmadrid.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-cambio16",
+          "name": "Cambio16",
+          "url": "https://cambio16.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-fuentesinformadas",
+          "name": "Fuentesinformadas",
+          "url": "https://fuentesinformadas.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-madrid24horas",
+          "name": "Madrid24horas",
+          "url": "https://madrid24horas.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-noticieromadrid",
+          "name": "Noticieromadrid",
+          "url": "https://noticieromadrid.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-elmiradordemadrid",
+          "name": "Elmiradordemadrid",
+          "url": "https://elmiradordemadrid.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-elboletin",
+          "name": "Elboletin",
+          "url": "https://elboletin.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-eldiariodemadrid",
+          "name": "Eldiariodemadrid",
+          "url": "https://eldiariodemadrid.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-madridesnoticia",
+          "name": "Madridesnoticia",
+          "url": "https://madridesnoticia.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-defensacentral",
+          "name": "Defensacentral",
+          "url": "https://defensacentral.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-relevo",
+          "name": "Relevo",
+          "url": "https://relevo.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-bernabeudigital",
+          "name": "Bernabeudigital",
+          "url": "https://bernabeudigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-expansion",
+          "name": "Expansion",
+          "url": "https://expansion.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-cincodias",
+          "name": "Cincodias",
+          "url": "https://cincodias.elpais.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-eleconomista",
+          "name": "Eleconomista",
+          "url": "https://eleconomista.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-lainformacion",
+          "name": "Lainformacion",
+          "url": "https://lainformacion.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-libremercado",
+          "name": "Libremercado",
+          "url": "https://libremercado.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-capitalmadrid",
+          "name": "Capitalmadrid",
+          "url": "https://capitalmadrid.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-diariodecuba",
+          "name": "Diariodecuba",
+          "url": "https://diariodecuba.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-sur-madrid",
+          "name": "Sur-madrid",
+          "url": "https://sur-madrid.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-fuenlabradanoticias",
+          "name": "Fuenlabradanoticias",
+          "url": "https://fuenlabradanoticias.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-alcalahoy",
+          "name": "Alcalahoy",
+          "url": "https://alcalahoy.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-lalunadealcala",
+          "name": "Lalunadealcala",
+          "url": "https://lalunadealcala.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-dream-alcala",
+          "name": "Dream-alcala",
+          "url": "https://dream-alcala.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-leganews",
+          "name": "Leganews",
+          "url": "https://leganews.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-leganesactivo",
+          "name": "Leganesactivo",
+          "url": "https://leganesactivo.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-getafecapital",
+          "name": "Getafecapital",
+          "url": "https://getafecapital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-nuevocronica",
+          "name": "Nuevocronica",
+          "url": "https://nuevocronica.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-noticiasparamunicipios",
+          "name": "Noticiasparamunicipios",
+          "url": "https://noticiasparamunicipios.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-alcorconhoy",
+          "name": "Alcorconhoy",
+          "url": "https://alcorconhoy.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-tribunadelamoraleja",
+          "name": "Tribunadelamoraleja",
+          "url": "https://tribunadelamoraleja.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-bolsamania",
+          "name": "Bolsamania",
+          "url": "https://bolsamania.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-infolasrozas",
+          "name": "Infolasrozas",
+          "url": "https://infolasrozas.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-diariodesanse",
+          "name": "Diariodesanse",
+          "url": "https://diariodesanse.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-diariodepozuelo",
+          "name": "Diariodepozuelo",
+          "url": "https://diariodepozuelo.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-diarioderivas",
+          "name": "Diarioderivas",
+          "url": "https://diarioderivas.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-rivasactual",
+          "name": "Rivasactual",
+          "url": "https://rivasactual.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-el-comarcal",
+          "name": "El-comarcal",
+          "url": "https://el-comarcal.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-valdemorodigital",
+          "name": "Valdemorodigital",
+          "url": "https://valdemorodigital.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-noroestemadrid",
+          "name": "Noroestemadrid",
+          "url": "https://noroestemadrid.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-aquienlasierra",
+          "name": "Aquienlasierra",
+          "url": "https://aquienlasierra.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-diariodearganda",
+          "name": "Diariodearganda",
+          "url": "https://diariodearganda.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-actualarganda",
+          "name": "Actualarganda",
+          "url": "https://actualarganda.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-diariodeboadilla",
+          "name": "Diariodeboadilla",
+          "url": "https://diariodeboadilla.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-zigzagdigital",
+          "name": "Zigzagdigital",
+          "url": "https://zigzagdigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "madrid-madridnorte24horas",
+          "name": "Madridnorte24horas",
+          "url": "https://madridnorte24horas.com",
+          "rssUrl": "",
+          "city": ""
         }
       ]
     },
@@ -70,6 +2149,510 @@
           "url": "https://www.lavozdegalicia.es",
           "rssUrl": "https://www.lavozdegalicia.es/rss/portada.xml",
           "city": "A Coruña"
+        },
+        {
+          "id": "galicia-prensaescrita",
+          "name": "Prensaescrita",
+          "url": "https://prensaescrita.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-elpais",
+          "name": "Elpais",
+          "url": "https://elpais.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-elmundo",
+          "name": "Elmundo",
+          "url": "https://elmundo.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-elespanol",
+          "name": "Elespanol",
+          "url": "https://elespanol.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-okdiario",
+          "name": "Okdiario",
+          "url": "https://okdiario.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-20minutos",
+          "name": "20minutos",
+          "url": "https://20minutos.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-elconfidencial",
+          "name": "Elconfidencial",
+          "url": "https://elconfidencial.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-larazon",
+          "name": "Larazon",
+          "url": "https://larazon.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-abc",
+          "name": "Abc",
+          "url": "https://abc.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-eldiario",
+          "name": "Eldiario",
+          "url": "https://eldiario.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-elperiodico",
+          "name": "Elperiodico",
+          "url": "https://elperiodico.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-facebook",
+          "name": "Facebook",
+          "url": "https://facebook.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-twitter",
+          "name": "Twitter",
+          "url": "https://twitter.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-marca",
+          "name": "Marca",
+          "url": "https://marca.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-as",
+          "name": "As",
+          "url": "https://as.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-mundodeportivo",
+          "name": "Mundodeportivo",
+          "url": "https://mundodeportivo.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-sport",
+          "name": "Sport",
+          "url": "https://sport.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-bolavip",
+          "name": "Bolavip",
+          "url": "https://bolavip.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-ole",
+          "name": "Ole",
+          "url": "https://ole.com.ar",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-record",
+          "name": "Record",
+          "url": "https://record.com.mx",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-mediotiempo",
+          "name": "Mediotiempo",
+          "url": "https://mediotiempo.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-depor",
+          "name": "Depor",
+          "url": "https://depor.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-libero",
+          "name": "Libero",
+          "url": "https://libero.pe",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-laopinioncoruna",
+          "name": "Laopinioncoruna",
+          "url": "https://laopinioncoruna.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-mundiario",
+          "name": "Mundiario",
+          "url": "https://mundiario.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-elidealgallego",
+          "name": "Elidealgallego",
+          "url": "https://elidealgallego.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-riazor",
+          "name": "Riazor",
+          "url": "https://riazor.org",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-dxtcampeon",
+          "name": "Dxtcampeon",
+          "url": "https://dxtcampeon.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-elcorreogallego",
+          "name": "Elcorreogallego",
+          "url": "https://elcorreogallego.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-galiciapress",
+          "name": "Galiciapress",
+          "url": "https://galiciapress.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-nosdiario",
+          "name": "Nosdiario",
+          "url": "https://nosdiario.gal",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-diariodeferrol",
+          "name": "Diariodeferrol",
+          "url": "https://diariodeferrol.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-ferrol360",
+          "name": "Ferrol360",
+          "url": "https://ferrol360.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-enfoques",
+          "name": "Enfoques",
+          "url": "https://enfoques.gal",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-nhdiario",
+          "name": "Nhdiario",
+          "url": "https://nhdiario.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-diariodebergantinos",
+          "name": "Diariodebergantinos",
+          "url": "https://diariodebergantinos.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-21noticias",
+          "name": "21noticias",
+          "url": "https://21noticias.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-eldiariodearteixo",
+          "name": "Eldiariodearteixo",
+          "url": "https://eldiariodearteixo.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-galiciaconfidencial",
+          "name": "Galiciaconfidencial",
+          "url": "https://galiciaconfidencial.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-obarbanza",
+          "name": "Obarbanza",
+          "url": "https://obarbanza.gal",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-diariodepontevedra",
+          "name": "Diariodepontevedra",
+          "url": "https://diariodepontevedra.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-pontevedraviva",
+          "name": "Pontevedraviva",
+          "url": "https://pontevedraviva.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-noticiasgalicia",
+          "name": "Noticiasgalicia",
+          "url": "https://noticiasgalicia.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-farodevigo",
+          "name": "Farodevigo",
+          "url": "https://farodevigo.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-atlantico",
+          "name": "Atlantico",
+          "url": "https://atlantico.net",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-vigoalminuto",
+          "name": "Vigoalminuto",
+          "url": "https://vigoalminuto.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-vigoe",
+          "name": "Vigoe",
+          "url": "https://vigoe.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-xornaldevigo",
+          "name": "Xornaldevigo",
+          "url": "https://xornaldevigo.gal",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-vigohoy",
+          "name": "Vigohoy",
+          "url": "https://vigohoy.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-diariodearousa",
+          "name": "Diariodearousa",
+          "url": "https://diariodearousa.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-diariodosalnes",
+          "name": "Diariodosalnes",
+          "url": "https://diariodosalnes.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-morrazonoticias",
+          "name": "Morrazonoticias",
+          "url": "https://morrazonoticias.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-porrinodigital",
+          "name": "Porrinodigital",
+          "url": "https://porrinodigital.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-xornal21",
+          "name": "Xornal21",
+          "url": "https://xornal21.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-diarioluso-galaico",
+          "name": "Diarioluso-galaico",
+          "url": "https://diarioluso-galaico.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-telemarinas",
+          "name": "Telemarinas",
+          "url": "https://telemarinas.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-elprogreso",
+          "name": "Elprogreso",
+          "url": "https://elprogreso.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-galiciadigital",
+          "name": "Galiciadigital",
+          "url": "https://galiciadigital.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-lugoxornal",
+          "name": "Lugoxornal",
+          "url": "https://lugoxornal.gal",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-xornaldelemos",
+          "name": "Xornaldelemos",
+          "url": "https://xornaldelemos.gal",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-ribeirasacraxa",
+          "name": "Ribeirasacraxa",
+          "url": "https://ribeirasacraxa.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-aquilugo",
+          "name": "Aquilugo",
+          "url": "https://aquilugo.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-laregion",
+          "name": "Laregion",
+          "url": "https://laregion.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-ourense",
+          "name": "Ourense",
+          "url": "https://ourense.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-ourensenarede",
+          "name": "Ourensenarede",
+          "url": "https://ourensenarede.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-diariodegalicia",
+          "name": "Diariodegalicia",
+          "url": "https://diariodegalicia.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-economiaengalicia",
+          "name": "Economiaengalicia",
+          "url": "https://economiaengalicia.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-diariodotamega",
+          "name": "Diariodotamega",
+          "url": "https://diariodotamega.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-somoscomarca",
+          "name": "Somoscomarca",
+          "url": "https://somoscomarca.es",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-valdeorrasdecerca",
+          "name": "Valdeorrasdecerca",
+          "url": "https://valdeorrasdecerca.com",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-osil",
+          "name": "Osil",
+          "url": "https://osil.info",
+          "rssUrl": "",
+          "city": ""
+        },
+        {
+          "id": "galicia-dendealimia",
+          "name": "Dendealimia",
+          "url": "https://dendealimia.com",
+          "rssUrl": "",
+          "city": ""
         }
       ]
     }
