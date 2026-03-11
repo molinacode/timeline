@@ -151,6 +151,16 @@ export function Layout({ children }: { children: ReactNode }) {
         )}
         <nav className="app-header-nav" aria-label="Navegación principal">
           {navContent}
+          {user && (
+            <button
+              type="button"
+              className="app-header-button app-header-search-button"
+              onClick={() => navigate('/search')}
+              title="Buscar noticias"
+            >
+              Buscar
+            </button>
+          )}
         </nav>
       </header>
 

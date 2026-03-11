@@ -23,6 +23,7 @@ import { UserProfilePage } from './features/user/UserProfilePage'
 import { SavedNewsPage } from './features/user/SavedNewsPage'
 import { InterestsOnboardingPage } from './features/user/InterestsOnboardingPage'
 import { ReaderPage } from './features/news/reader/ReaderPage'
+import { SearchPage } from './features/news/SearchPage'
 import { CookieBanner } from './components/CookieBanner'
 import { Analytics } from '@vercel/analytics/react'
 import { SessionExpiredHandler } from './app/SessionExpiredHandler'
@@ -44,6 +45,14 @@ export function App() {
               <RequireRole role="user">
                 <UserTimeline />
               </RequireRole>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <RequireAuth>
+                <SearchPage />
+              </RequireAuth>
             }
           />
           <Route

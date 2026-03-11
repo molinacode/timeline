@@ -14,6 +14,7 @@ export function InterestsOnboardingPage() {
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY)
@@ -34,17 +35,39 @@ export function InterestsOnboardingPage() {
     ;(async () => {
       try {
         setLoading(true)
-        const res = await fetch(apiUrl('/api/categories'), {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        if (res.ok) {
-          const data = await res.json()
+        setError(null)
+
+        const headers: HeadersInit = {
+          Authorization: `Bearer ${token}`,
+        }
+
+        const [categoriesRes, interestsRes] = await Promise.all([
+          fetch(apiUrl('/api/categories'), { headers }),
+          fetch(apiUrl('/api/me/interests'), { headers }),
+        ])
+
+        if (categoriesRes.ok) {
+          const data = await categoriesRes.json()
           setCategories(Array.isArray(data) ? data : [])
         } else {
           setCategories([])
         }
+
+        if (interestsRes.ok) {
+          const json = await interestsRes.json()
+          const idsFromBackend = Array.isArray(json.categories)
+            ? (json.categories as (number | string)[])
+                .map((c) => Number(c))
+                .filter((n) => Number.isFinite(n) && n > 0)
+            : []
+          if (idsFromBackend.length > 0) {
+            setSelectedIds(idsFromBackend)
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(idsFromBackend))
+          }
+        }
       } catch {
         setCategories([])
+        setError('No se pudieron cargar tus intereses. Inténtalo de nuevo más tarde.')
       } finally {
         setLoading(false)
       }
@@ -60,14 +83,42 @@ export function InterestsOnboardingPage() {
     })
   }
 
-  function handleContinue() {
+  async function handleContinue() {
+    if (!token) {
+      navigate('/login')
+      return
+    }
+
     setSaving(true)
-    // En esta primera versión solo persistimos en localStorage.
-    // Más adelante podemos enviar al backend (user_preferences).
-    setTimeout(() => {
-      setSaving(false)
+    setError(null)
+    try {
+      const selectedCategories = selectedIds.map((id) => id.toString())
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(selectedIds))
+
+      const res = await fetch(apiUrl('/api/me/interests'), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ categories: selectedCategories }),
+      })
+
+      if (!res.ok) {
+        const json = await res.json().catch(() => null)
+        setError(
+          json?.message || 'No se pudieron guardar tus intereses. Inténtalo de nuevo.'
+        )
+        setSaving(false)
+        return
+      }
+
       navigate('/me/timeline', { replace: true })
-    }, 300)
+    } catch {
+      setError('Error de conexión al guardar tus intereses.')
+      setSaving(false)
+    }
   }
 
   return (
@@ -85,6 +136,7 @@ export function InterestsOnboardingPage() {
           </p>
         ) : (
           <>
+            {error && <p className="app-form-message app-form-message--error">{error}</p>}
             <div className="app-interests-grid">
               {categories.map((cat) => {
                 const selected = selectedIds.includes(cat.id)
