@@ -2,6 +2,7 @@ import express from 'express'
 import { authenticateToken, requireAdmin } from '../middleware/auth.js'
 import { getSupabase } from '../src/config/supabase.js'
 import { getErrorStats } from '../middleware/errorHandler.js'
+import { syncNewsSourcesFromJson } from '../src/services/syncNewsSourcesService.js'
 
 const router = express.Router()
 
@@ -310,6 +311,27 @@ router.post('/categories/seed', async (req, res) => {
   } catch (error) {
     console.error('Error sembrando categorías:', error)
     res.status(500).json({ error: 'Error al crear categorías' })
+  }
+})
+
+// POST /api/admin/sync-news-sources — sincroniza news_sources con fuentes-base.json
+router.post('/sync-news-sources', async (req, res) => {
+  try {
+    const supabase = getSupabase()
+    const result = await syncNewsSourcesFromJson(supabase)
+    res.json({
+      message: 'Sincronización completada',
+      updated: result.updated,
+      inserted: result.inserted,
+      deactivated: result.deactivated,
+      activeCount: result.activeCount,
+    })
+  } catch (error) {
+    console.error('Error sincronizando fuentes:', error)
+    res.status(500).json({
+      error: 'Error al sincronizar fuentes con fuentes-base.json',
+      detail: error.message,
+    })
   }
 })
 

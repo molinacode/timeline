@@ -21,7 +21,7 @@ const ADMIN_NAME = process.env.ADMIN_NAME || 'Administrador'
 
 const DEFAULT_SOURCES = [
   { name: 'El País', rssUrl: 'https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada', websiteUrl: 'https://elpais.com', category: 'Actualidad' },
-  { name: 'RTVE', rssUrl: 'https://www.rtve.es/api/noticias/rss/nacional', websiteUrl: 'https://www.rtve.es/noticias', category: 'Actualidad' },
+  { name: 'RTVE', rssUrl: 'https://www.rtve.es/rss/temas_noticias.xml', websiteUrl: 'https://www.rtve.es/noticias', category: 'Actualidad' },
   { name: 'El Mundo', rssUrl: 'https://e00-elmundo.uecdn.es/elmundo/rss/portada.xml', websiteUrl: 'https://www.elmundo.es', category: 'Actualidad' },
   { name: 'ABC', rssUrl: 'https://www.abc.es/rss/abci-portada.xml', websiteUrl: 'https://www.abc.es', category: 'Actualidad' },
   { name: 'La Vanguardia', rssUrl: 'https://www.lavanguardia.com/rss/portada.xml', websiteUrl: 'https://www.lavanguardia.com', category: 'Actualidad' },

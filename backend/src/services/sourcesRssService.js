@@ -1,20 +1,12 @@
 /**
  * Obtiene RSS de las fuentes en news_sources y guarda/actualiza news_items.
  */
-import Parser from 'rss-parser'
 import { getSupabase } from '../config/supabase.js'
-
-const parser = new Parser({
-  timeout: 15000,
-  headers: {
-    'User-Agent':
-      'Mozilla/5.0 (compatible; TimeLineRSS/1.0; +https://github.com/timeline)',
-    Accept: 'application/rss+xml, application/xml, text/xml, */*',
-  },
-})
+import { fetchFallbackImageFromHtml } from './imageExtractorService.js'
+import { fetchAndParseRss } from './rssFetch.js'
 
 async function fetchFeed(rssUrl) {
-  const feed = await parser.parseURL(rssUrl)
+  const feed = await fetchAndParseRss(rssUrl, { timeout: 15000 })
   return (feed.items || []).map((item) => ({
     title: item.title?.trim() || '',
     link: item.link?.trim() || '',
@@ -54,13 +46,25 @@ async function upsertNewsItem(supabase, sourceId, item) {
   if (byLink) return false
 
   const now = new Date().toISOString()
+
+  let imageUrl = item.imageUrl || null
+  if (!imageUrl && link) {
+    try {
+      imageUrl = await fetchFallbackImageFromHtml(link)
+    } catch (err) {
+      console.error(
+        `[sourcesRss] Error obteniendo imagen fallback para ${link}:`,
+        err.message
+      )
+    }
+  }
   await supabase.from('news_items').insert({
     source_id: sourceId,
     title: item.title || '(sin título)',
     description: item.description || null,
     content: item.content || null,
     link: link || '',
-    image_url: item.imageUrl || null,
+    image_url: imageUrl || null,
     pub_date: item.pubDate || item.isoDate || null,
     guid: guid || null,
     category: null,

@@ -150,8 +150,16 @@ npm start          # Servidor de producción
 npm run dev        # Servidor de desarrollo con nodemon
 npm run create-admin        # Crear usuario admin y sincronizar fuentes
 npm run reset-admin-password # Resetear contraseña del admin (solo dev/recuperación)
+npm run sync-news-sources   # Sincronizar news_sources con data/fuentes-base.json
+npm run import-razon-sitemap # Importar noticias de La Razón desde sitemap
+npm run check-sources       # Comparar fuentes-base con prensaescrita (y opcionalmente importar)
+npm run check-local-sources # Comparar fuentes locales por región e importar nuevas
 npm test           # Ejecutar tests
 ```
+
+### RSS y aviso DEP0169 (url.parse)
+
+En Node.js 22+ puede aparecer el aviso *DEP0169: url.parse() is deprecated*. El backend evita esa ruta usando **axios** para descargar el XML del feed y **rss-parser.parseString()** en lugar de `parseURL()`. La lógica está centralizada en `src/services/rssFetch.js` (`fetchAndParseRss`). Así no se usa el módulo `http` de Node con URL en string y el aviso no sale.
 
 ## 🧪 Testing
 

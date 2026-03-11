@@ -10,6 +10,13 @@ type AdminSummary = {
   categoriesTotal: number
 }
 
+type SyncResult = {
+  updated: number
+  inserted: number
+  deactivated: number
+  activeCount: number
+} | null
+
 const ZERO_SUMMARY: AdminSummary = {
   sourcesTotal: 0,
   sourcesActive: 0,
@@ -20,6 +27,9 @@ export function AdminDashboard() {
   const { token } = useAuth()
   const [summary, setSummary] = useState<AdminSummary>(ZERO_SUMMARY)
   const [loading, setLoading] = useState(true)
+  const [syncing, setSyncing] = useState(false)
+  const [syncResult, setSyncResult] = useState<SyncResult>(null)
+  const [syncError, setSyncError] = useState<string | null>(null)
 
   useEffect(() => {
     ;(async () => {
@@ -60,6 +70,42 @@ export function AdminDashboard() {
     })()
   }, [token])
 
+  const runSyncNewsSources = async () => {
+    if (!token || syncing) return
+    setSyncing(true)
+    setSyncError(null)
+    setSyncResult(null)
+    try {
+      const res = await fetch(apiUrl('/api/admin/sync-news-sources'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        setSyncError(data.error || data.detail || 'Error al sincronizar')
+        return
+      }
+      setSyncResult({
+        updated: data.updated ?? 0,
+        inserted: data.inserted ?? 0,
+        deactivated: data.deactivated ?? 0,
+        activeCount: data.activeCount ?? 0,
+      })
+      setSummary((prev) => ({
+        ...prev,
+        sourcesTotal: data.activeCount ?? prev.sourcesTotal,
+        sourcesActive: data.activeCount ?? prev.sourcesActive,
+      }))
+    } catch (e) {
+      setSyncError(e instanceof Error ? e.message : 'Error de conexión')
+    } finally {
+      setSyncing(false)
+    }
+  }
+
   return (
     <BasePage
       title="Panel de administración"
@@ -76,6 +122,22 @@ export function AdminDashboard() {
               </>
             )}
           </p>
+          <div className="app-admin-sync-row">
+            <button
+              type="button"
+              onClick={runSyncNewsSources}
+              disabled={syncing || !token}
+              className="app-button"
+            >
+              {syncing ? 'Sincronizando…' : 'Sincronizar fuentes con JSON'}
+            </button>
+            {syncResult && (
+              <span className="app-page-label app-page-label--normal">
+                {syncResult.updated} actualizadas, {syncResult.inserted} nuevas, {syncResult.deactivated} desactivadas. Activas: {syncResult.activeCount}
+              </span>
+            )}
+            {syncError && <span className="app-admin-sync-error">{syncError}</span>}
+          </div>
         </div>
         <nav className="app-nav-pills">
           <NavLink

@@ -2039,6 +2039,18 @@ button.app-category-chip {
   margin-bottom: var(--space-md);
 }
 
+.app-admin-sync-row {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.app-admin-sync-error {
+  color: var(--color-error, #c00);
+}
+
 /* Imágenes: coherentes en modo claro y oscuro (ver docs/guia-imagenes.md) */
 .app-img {
   display: block;
