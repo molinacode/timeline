@@ -9,7 +9,11 @@
     "dev": "nodemon src/server.js",
     "test": "jest",
     "create-admin": "node src/database/scripts/createAdmin.js",
-    "reset-admin-password": "node src/database/scripts/resetAdminPassword.js"
+    "reset-admin-password": "node src/database/scripts/resetAdminPassword.js",
+    "import-razon-sitemap": "node scripts/import-razon-sitemap.js",
+    "check-sources": "node scripts/check-sources.js",
+    "check-local-sources": "node scripts/check-local-sources.js",
+    "sync-news-sources": "node scripts/sync-news-sources-from-json.js"
   },
   "keywords": [
     "rss",
