@@ -18,6 +18,7 @@ import { RequireAuth } from './app/routing/RequireAuth'
 import { AdminLogsPage } from './features/admin/AdminLogsPage'
 import { AdminUsersPage } from './features/admin/AdminUsersPage'
 import { AdminBiasPage } from './features/admin/bias/AdminBiasPage'
+import { LocalSourcesAdminPage } from './features/admin/LocalSourcesAdminPage'
 import { BiasComparatorPage } from './features/news/comparator/BiasComparatorPage'
 import { UserProfilePage } from './features/user/UserProfilePage'
 import { CookieBanner } from './components/CookieBanner'
@@ -75,6 +76,7 @@ export function App() {
           >
             <Route index element={<Navigate to="/admin/sources" replace />} />
             <Route path="sources" element={<SourcesAdminPage />} />
+            <Route path="local-sources" element={<LocalSourcesAdminPage />} />
             <Route path="categories" element={<CategoriesAdminPage />} />
             <Route path="metrics" element={<RssMetricsPage />} />
             <Route path="bias" element={<AdminBiasPage />} />
