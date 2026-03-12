@@ -6,6 +6,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { fetchAndParseRss } from './rssFetch.js'
+import { fetchFallbackImageFromHtml } from './imageExtractorService.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -207,6 +208,24 @@ export async function fetchNewsByCategory(category, limit = 20) {
       return false
     }
   })
+
+  // Enriquecer con imagen de la página para algunos ítems sin imagen
+  const toEnrich = filtered
+    .filter((i) => !i.image && i.link)
+    .slice(0, 8)
+  if (toEnrich.length > 0) {
+    await Promise.all(
+      toEnrich.map(async (i) => {
+        try {
+          const url = await fetchFallbackImageFromHtml(i.link)
+          if (url) i.image = url
+        } catch {
+          // ignorar errores individuales
+        }
+      })
+    )
+  }
+
   const sorted = filtered.sort((a, b) => {
     const dateA = Number(new Date(a?.isoDate || a?.pubDate || 0)) || 0
     const dateB = Number(new Date(b?.isoDate || b?.pubDate || 0)) || 0

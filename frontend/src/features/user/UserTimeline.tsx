@@ -445,7 +445,12 @@ export function UserTimeline() {
                           )}
                           <p className="app-comparador-cell-source app-timeline-meta">
                             {item.source}
-                            {item.pubDate ? ` · ${item.pubDate}` : ''}
+                            {item.pubDate
+                              ? ` · ${new Date(item.pubDate).toLocaleString('es-ES', {
+                                  dateStyle: 'short',
+                                  timeStyle: 'short',
+                                })}`
+                              : ''}
                           </p>
                         </div>
                       </article>
