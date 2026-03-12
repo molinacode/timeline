@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useState, type ReactNode } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { useDate } from '../../hooks/useDate'
 import { useTheme } from '../../hooks/useTheme'
@@ -8,17 +8,15 @@ import { NavLinkWithActive } from './NavLinkWithActive'
 
 export function Layout({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth()
-  const navigate = useNavigate()
-  const location = useLocation()
   const { theme, toggleTheme } = useTheme()
   const date = useDate()
   const locationLabel = useGeolocationLabel()
 
-  const showBackButton = location.pathname !== '/' && location.pathname !== ''
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const themeButton = (
-    <button onClick={toggleTheme} className="app-header-button">
-      {theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+    <button onClick={toggleTheme} className="app-header-icon-button" title={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}>
+      {theme === 'dark' ? '☀️' : '🌙'}
     </button>
   )
 
@@ -51,41 +49,47 @@ export function Layout({ children }: { children: ReactNode }) {
             </div>
           </Link>
         </div>
-        {showBackButton && (
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="app-header-back"
-            title="Volver atrás"
-          >
-            ← Atrás
-          </button>
-        )}
-        <nav className="app-header-nav" aria-label="Navegación principal">
+        <button
+          type="button"
+          className="app-header-icon-button app-header-menu-toggle"
+          aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          ☰
+        </button>
+        <nav
+          className={`app-header-nav ${menuOpen ? 'app-header-nav--open' : ''}`}
+          aria-label="Navegación principal"
+        >
           {user?.role === 'admin' ? (
             <>
               <NavLinkWithActive to="/admin">Inicio</NavLinkWithActive>
               <NavLinkWithActive to="/admin/logs">Logs</NavLinkWithActive>
               <NavLinkWithActive to="/admin/users">Usuarios</NavLinkWithActive>
               {themeButton}
-              <button onClick={logout} className="app-header-button">
-                Cerrar sesión
+              <button onClick={logout} className="app-header-icon-button" title="Cerrar sesión">
+                ⏻
               </button>
             </>
           ) : user ? (
             <>
               <NavLinkWithActive to="/me/timeline">Mi TimeLine</NavLinkWithActive>
               <NavLinkWithActive to="/me/comparator">Comparador</NavLinkWithActive>
+              <NavLinkWithActive to="/me/saved">Guardadas</NavLinkWithActive>
               {themeButton}
               <Link
                 to="/me/profile"
-                className="app-header-nav-link app-header-email-link"
+                className="app-header-avatar-link"
                 title="Ver mi perfil"
               >
-                {user.email}
+                <span className="app-header-avatar-circle">
+                  {(user.name && user.name.trim()[0]) ||
+                    (user.email && user.email.trim()[0]) ||
+                    '?'}
+                </span>
               </Link>
-              <button onClick={logout} className="app-header-button">
-                Cerrar sesión
+              <button onClick={logout} className="app-header-icon-button" title="Cerrar sesión">
+                ⏻
               </button>
             </>
           ) : (
@@ -101,6 +105,13 @@ export function Layout({ children }: { children: ReactNode }) {
           )}
         </nav>
       </header>
+      {menuOpen && (
+        <div
+          className="app-header-overlay"
+          onClick={() => setMenuOpen(false)}
+          aria-hidden="true"
+        />
+      )}
       <main className="app-main">{children}</main>
     </div>
   )

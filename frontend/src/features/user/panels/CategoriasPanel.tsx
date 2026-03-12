@@ -35,34 +35,21 @@ export function CategoriasPanel({
         <p className="app-muted-inline">
           No hay categorías configuradas. El administrador puede crearlas en el panel de Admin.
         </p>
-      ) : (
-        <div className="app-categories-chips">
-          {categories.map((c) => (
-            <button
-              key={c.id}
-              type="button"
-              className={`app-category-chip ${selectedCategory === c.name ? 'active' : ''}`}
-              onClick={() => onSelectCategory(c.name)}
-              title={c.description || undefined}
-            >
-              {c.name}
-            </button>
-          ))}
-        </div>
-      )}
+      ) : null}
       {selectedCategory && (
         <>
           <h3 className="app-card-title app-category-news-title">{selectedCategory}</h3>
-          {loadingCategoryNews ? (
+          {loadingCategoryNews && categoryNews.length === 0 ? (
             <p className="app-muted-inline">Cargando noticias…</p>
           ) : categoryNews.length === 0 ? (
             <p className="app-muted-inline">No hay noticias en esta categoría por ahora.</p>
           ) : (
-            <div className="app-flex-col">
+            <div className="app-flex-col app-grid-responsive">
               {categoryNews.map((item, idx) => (
                 <TimelineArticleCard
                   key={`${item.link}-${idx}`}
                   item={item}
+                  formatDate
                   onLinkClick={() => onLinkClick(item.source, item.link)}
                 />
               ))}

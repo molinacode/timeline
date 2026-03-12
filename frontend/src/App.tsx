@@ -20,6 +20,8 @@ import { AdminUsersPage } from './features/admin/AdminUsersPage'
 import { AdminBiasPage } from './features/admin/bias/AdminBiasPage'
 import { BiasComparatorPage } from './features/news/comparator/BiasComparatorPage'
 import { UserProfilePage } from './features/user/UserProfilePage'
+import { SavedNewsPage } from './features/user/SavedNewsPage'
+import { ReaderPage } from './features/news/ReaderPage'
 import { CookieBanner } from './components/CookieBanner'
 import { Analytics } from '@vercel/analytics/react'
 import { SessionExpiredHandler } from './app/SessionExpiredHandler'
@@ -54,6 +56,22 @@ export function App() {
             element={
               <RequireAuth>
                 <UserProfilePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/me/reader"
+            element={
+              <RequireAuth>
+                <ReaderPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/me/saved"
+            element={
+              <RequireAuth>
+                <SavedNewsPage />
               </RequireAuth>
             }
           />
