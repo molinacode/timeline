@@ -44,15 +44,21 @@ function setInCache(cache, key, value, ttlMs) {
   })
 }
 
-// GET /api/news - noticias del timeline (desde news_items, fuentes RSS configuradas)
+// GET /api/news - noticias del timeline (desde news_items, con paginación limit/offset)
 router.get('/news', async (req, res) => {
   const send = (status, body) => {
     if (res.headersSent) return
     res.status(status).json(body)
   }
   try {
-    const limit = Math.min(Number(req.query.limit) || 50, 200)
-    const cacheKey = String(limit)
+    const rawLimit = Number(req.query.limit)
+    const limit = Number.isFinite(rawLimit) && rawLimit > 0 ? rawLimit : 50
+    const safeLimit = Math.min(limit, 100)
+
+    const rawOffset = Number(req.query.offset)
+    const offset = Number.isFinite(rawOffset) && rawOffset > 0 ? rawOffset : 0
+
+    const cacheKey = `${safeLimit}:${offset}`
     const cached = getFromCache(newsCache, cacheKey)
     if (cached) {
       return send(200, cached)
@@ -63,7 +69,7 @@ router.get('/news', async (req, res) => {
       .from('news_items')
       .select('id, source_id, title, description, link, image_url, pub_date, created_at')
       .order('pub_date', { ascending: false })
-      .limit(limit)
+      .range(offset, offset + safeLimit - 1)
 
     if (error) throw error
 

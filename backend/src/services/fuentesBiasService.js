@@ -220,19 +220,25 @@ export async function fetchNewsByBiasMatched(limitGroups = 15) {
   }
 
   const groups = []
-  const usedLinks = new Set()
+  const usedProgLinks = new Set()
+
+  if (VERBOSE_RSS) {
+    console.log(
+      `[fuentesBias] by-bias-matched: items por sesgo -> prog=${allByBias.progressive.length}, centrist=${allByBias.centrist.length}, cons=${allByBias.conservative.length}`
+    )
+  }
 
   for (const prog of allByBias.progressive) {
     if (groups.length >= limitGroups) break
+    if (!prog.link || usedProgLinks.has(prog.link)) continue
 
     const mainProg = prog
     let bestCentrist = null
-    let bestCentristSim = 0.3
+    let bestCentristSim = 0
     let bestConservative = null
-    let bestConservativeSim = 0.3
+    let bestConservativeSim = 0
 
     for (const c of allByBias.centrist) {
-      if (usedLinks.has(c.link)) continue
       const sim = titleSimilarity(prog.title, c.title)
       if (sim > bestCentristSim) {
         bestCentristSim = sim
@@ -240,7 +246,6 @@ export async function fetchNewsByBiasMatched(limitGroups = 15) {
       }
     }
     for (const c of allByBias.conservative) {
-      if (usedLinks.has(c.link)) continue
       const sim = titleSimilarity(prog.title, c.title)
       if (sim > bestConservativeSim) {
         bestConservativeSim = sim
@@ -248,13 +253,14 @@ export async function fetchNewsByBiasMatched(limitGroups = 15) {
       }
     }
 
-    const mainCentrist = bestCentrist
-    const mainConservative = bestConservative
+    const MIN_MAIN_SIM = 0.2
+    const mainCentrist = bestCentristSim >= MIN_MAIN_SIM ? bestCentrist : null
+    const mainConservative =
+      bestConservativeSim >= MIN_MAIN_SIM ? bestConservative : null
 
-    if (mainCentrist && mainConservative) {
-      usedLinks.add(mainProg.link)
-      usedLinks.add(mainCentrist.link)
-      usedLinks.add(mainConservative.link)
+    const sidesPresent = [mainProg, mainCentrist, mainConservative].filter(Boolean)
+    if (sidesPresent.length >= 2) {
+      usedProgLinks.add(mainProg.link)
 
       const allArticles = [
         mainProg,
@@ -281,7 +287,7 @@ export async function fetchNewsByBiasMatched(limitGroups = 15) {
         [mainProg.link, mainCentrist?.link, mainConservative?.link].filter(Boolean)
       )
       const otherSources = allArticles
-        .filter((a) => !mainSet.has(a.link))
+        .filter((a) => a && a.link && !mainSet.has(a.link))
         .slice(0, 15)
 
       groups.push({
@@ -291,6 +297,12 @@ export async function fetchNewsByBiasMatched(limitGroups = 15) {
         otherSources,
       })
     }
+  }
+
+  if (VERBOSE_RSS && groups.length < limitGroups) {
+    console.log(
+      `[fuentesBias] by-bias-matched: solo ${groups.length}/${limitGroups} grupos generados`
+    )
   }
 
   // Enriquecer con etiquetas basadas en categorías especiales de Supabase

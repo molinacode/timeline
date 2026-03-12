@@ -23,6 +23,16 @@ ALTER TABLE IF EXISTS users
 ALTER TABLE IF EXISTS users
   ADD COLUMN IF NOT EXISTS terms_accepted_at TIMESTAMPTZ;
 
+-- Campos para conexión con Bluesky / AT Protocol
+ALTER TABLE IF EXISTS users
+  ADD COLUMN IF NOT EXISTS atproto_did TEXT;
+
+ALTER TABLE IF EXISTS users
+  ADD COLUMN IF NOT EXISTS atproto_handle TEXT;
+
+ALTER TABLE IF EXISTS users
+  ADD COLUMN IF NOT EXISTS atproto_connected_at TIMESTAMPTZ;
+
 -- 2. Fuentes de noticias (incluye bias para comparador por sesgo)
 CREATE TABLE IF NOT EXISTS news_sources (
   id BIGSERIAL PRIMARY KEY,
