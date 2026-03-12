@@ -147,6 +147,12 @@ export function AdminDashboard() {
             Fuentes
           </NavLink>
           <NavLink
+            to="/admin/local-sources"
+            className={({ isActive }) => (isActive ? 'active' : '')}
+          >
+            Fuentes locales
+          </NavLink>
+          <NavLink
             to="/admin/categories"
             className={({ isActive }) => (isActive ? 'active' : '')}
           >

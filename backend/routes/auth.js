@@ -8,6 +8,10 @@ import {
   consumeEmailVerification,
 } from '../src/services/emailVerificationService.js'
 import { authenticateToken } from '../middleware/auth.js'
+import {
+  createBlueskySession,
+  createBlueskyPost,
+} from '../src/services/blueskyAuthService.js'
 
 const router = express.Router()
 
@@ -205,13 +209,182 @@ router.post('/auth/login', async (req, res) => {
   }
 })
 
+// POST /api/auth/login-bluesky
+// Iniciar sesión / registrarse usando cuenta Bluesky (AT Protocol) con app password.
+router.post('/auth/login-bluesky', async (req, res) => {
+  const supabase = getSupabase()
+  const { identifier, appPassword, email, name } = req.body || {}
+
+  if (!identifier || !appPassword) {
+    return res.status(400).json({
+      error: 'Datos inválidos',
+      message: 'Los campos identifier y appPassword son obligatorios',
+    })
+  }
+
+  try {
+    // 1) Validar credenciales contra Bluesky y obtener DID/handle/email
+    const session = await createBlueskySession(identifier, appPassword)
+    const did = session.did
+    const handle = session.handle
+    const bskyEmail = session.email
+
+    // 2) Buscar usuario existente por DID
+    let user = null
+    let userError = null
+    const { data: byDid, error: byDidError } = await supabase
+      .from('users')
+      .select(
+        'id, email, name, region, role, is_active, terms_version, terms_accepted_at, atproto_did, atproto_handle'
+      )
+      .eq('atproto_did', did)
+      .maybeSingle()
+
+    if (byDidError) userError = byDidError
+    if (byDid) user = byDid
+
+    // 3) Si no hay usuario por DID, intentar por email (el de Bluesky o el proporcionado)
+    if (!user && (bskyEmail || email)) {
+      const emailToUse = bskyEmail || email
+      const { data: byEmail, error: byEmailError } = await supabase
+        .from('users')
+        .select(
+          'id, email, name, region, role, is_active, terms_version, terms_accepted_at, atproto_did, atproto_handle'
+        )
+        .eq('email', emailToUse)
+        .maybeSingle()
+      if (byEmailError) userError = byEmailError
+      if (byEmail) user = byEmail
+    }
+
+    const nowIso = new Date().toISOString()
+
+    // 4) Si no existe usuario, crear uno nuevo "sin contraseña" ligado a Bluesky
+    if (!user) {
+      const finalEmail =
+        bskyEmail ||
+        email ||
+        `${did.replace(/^did:/, '').slice(0, 16)}@bluesky.local`
+      const displayName =
+        (name && String(name).trim()) || handle || finalEmail.split('@')[0]
+
+      // Usamos un hash de contraseña aleatorio porque este usuario no entra por email+password
+      const randomPasswordHash = await bcrypt.hash(
+        `bsky-${did}-${Date.now()}`,
+        10
+      )
+
+      const { data: inserted, error: insertError } = await supabase
+        .from('users')
+        .insert({
+          email: finalEmail,
+          password_hash: randomPasswordHash,
+          name: displayName,
+          region: null,
+          role: 'user',
+          preferences: JSON.stringify({}),
+          is_active: true,
+          created_at: nowIso,
+          updated_at: nowIso,
+          last_login: nowIso,
+          atproto_did: did,
+          atproto_handle: handle,
+          atproto_connected_at: nowIso,
+        })
+        .select(
+          'id, email, name, region, role, is_active, terms_version, terms_accepted_at, atproto_did, atproto_handle'
+        )
+        .single()
+
+      if (insertError) {
+        throw insertError
+      }
+      user = inserted
+    } else {
+      // 5) Actualizar usuario existente con DID/handle si aún no estaban guardados
+      const updates = {}
+      if (!user.atproto_did) updates.atproto_did = did
+      if (!user.atproto_handle) updates.atproto_handle = handle
+      if (Object.keys(updates).length > 0) {
+        updates.atproto_connected_at = nowIso
+        updates.updated_at = nowIso
+        const { data: updated, error: updateError } = await supabase
+          .from('users')
+          .update(updates)
+          .eq('id', user.id)
+          .select(
+            'id, email, name, region, role, is_active, terms_version, terms_accepted_at, atproto_did, atproto_handle'
+          )
+          .single()
+        if (updateError) throw updateError
+        user = updated
+      }
+    }
+
+    if (!user.is_active) {
+      // Si el usuario estaba creado pero inactivo, lo activamos al confirmar Bluesky
+      const { data: activated, error: activateError } = await supabase
+        .from('users')
+        .update({ is_active: true, updated_at: nowIso })
+        .eq('id', user.id)
+        .select(
+          'id, email, name, region, role, is_active, terms_version, terms_accepted_at, atproto_did, atproto_handle'
+        )
+        .single()
+      if (activateError) throw activateError
+      user = activated
+    }
+
+    // 6) Emitir nuestro JWT igual que en /auth/login
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET || 'timeline-secret-key',
+      { expiresIn: '8h' }
+    )
+
+    const expiresAt = new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString()
+
+    await supabase.from('sessions').insert({
+      user_id: user.id,
+      token,
+      expires_at: expiresAt,
+      created_at: nowIso,
+    })
+
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        region: user.region,
+        role: user.role,
+        hasAcceptedTerms: !!user.terms_accepted_at,
+        termsVersion: user.terms_version || null,
+        atprotoDid: user.atproto_did || null,
+        atprotoHandle: user.atproto_handle || null,
+      },
+    })
+  } catch (error) {
+    console.error('Error en login-bluesky:', error)
+    const status = error.statusCode || 500
+    res.status(status).json({
+      error: 'Error en login Bluesky',
+      message:
+        status === 401
+          ? 'Credenciales de Bluesky inválidas'
+          : error.message || 'No se pudo iniciar sesión con Bluesky',
+    })
+  }
+})
+
 // GET /api/auth/profile
 router.get('/auth/profile', authenticateToken, async (req, res) => {
   const supabase = getSupabase()
   const { data: user, error } = await supabase
     .from('users')
     .select(
-      'id, email, name, region, role, created_at, last_login, terms_version, terms_accepted_at'
+      'id, email, name, region, role, created_at, last_login, terms_version, terms_accepted_at, atproto_did, atproto_handle, atproto_connected_at'
     )
     .eq('id', req.user.id)
     .maybeSingle()
@@ -219,7 +392,12 @@ router.get('/auth/profile', authenticateToken, async (req, res) => {
   if (error || !user) {
     return res.status(404).json({ error: 'Usuario no encontrado' })
   }
-  res.json(user)
+  res.json({
+    ...user,
+    atprotoDid: user.atproto_did || null,
+    atprotoHandle: user.atproto_handle || null,
+    atprotoConnectedAt: user.atproto_connected_at || null,
+  })
 })
 
 // PUT /api/auth/profile
@@ -362,6 +540,109 @@ router.put('/auth/password', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Error cambiando contraseña:', error)
     res.status(500).json({ error: 'Error al cambiar contraseña' })
+  }
+})
+
+// GET /api/auth/connections - estado de conexiones externas (Bluesky, etc.)
+router.get('/auth/connections', authenticateToken, async (req, res) => {
+  const supabase = getSupabase()
+  try {
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('id, atproto_did, atproto_handle, atproto_connected_at')
+      .eq('id', req.user.id)
+      .maybeSingle()
+
+    if (error || !user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' })
+    }
+
+    res.json({
+      bluesky: {
+        connected: !!user.atproto_did,
+        did: user.atproto_did || null,
+        handle: user.atproto_handle || null,
+        connectedAt: user.atproto_connected_at || null,
+      },
+    })
+  } catch (err) {
+    console.error('Error en /auth/connections:', err)
+    res.status(500).json({ error: 'Error al obtener conexiones' })
+  }
+})
+
+// POST /api/share/bluesky - compartir una noticia en Bluesky
+router.post('/share/bluesky', authenticateToken, async (req, res) => {
+  const supabase = getSupabase()
+  const { text, url, identifier, appPassword } = req.body || {}
+
+  if (!appPassword) {
+    return res.status(400).json({
+      error: 'Datos inválidos',
+      message: 'Es necesario appPassword para publicar en Bluesky',
+    })
+  }
+
+  try {
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('id, email, name, atproto_did, atproto_handle')
+      .eq('id', req.user.id)
+      .maybeSingle()
+
+    if (error || !user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' })
+    }
+
+    const handleOrEmail =
+      identifier ||
+      user.atproto_handle ||
+      user.email ||
+      undefined
+
+    if (!handleOrEmail) {
+      return res.status(400).json({
+        error: 'Datos inválidos',
+        message:
+          'Falta identifier y no hay handle/email asociado para usar con Bluesky',
+      })
+    }
+
+    const session = await createBlueskySession(handleOrEmail, appPassword)
+    const did = session.did
+    const accessJwt = session.accessJwt
+
+    if (!accessJwt) {
+      throw new Error('Sesión Bluesky sin accessJwt')
+    }
+
+    const baseText = text && String(text).trim().length > 0 ? text.trim() : ''
+    const finalText =
+      url && url.trim()
+        ? `${baseText ? baseText + ' ' : ''}${url.trim()}`
+        : baseText
+
+    if (!finalText) {
+      return res.status(400).json({
+        error: 'Datos inválidos',
+        message: 'Debes enviar al menos texto o url para compartir',
+      })
+    }
+
+    const result = await createBlueskyPost(accessJwt, did, finalText)
+
+    res.status(201).json({
+      ok: true,
+      uri: result.uri || null,
+      cid: result.cid || null,
+    })
+  } catch (error) {
+    console.error('Error en /share/bluesky:', error)
+    const status = error.statusCode || 500
+    res.status(status).json({
+      error: 'Error al compartir en Bluesky',
+      message: error.message || 'No se pudo compartir en Bluesky',
+    })
   }
 })
 

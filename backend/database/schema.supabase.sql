@@ -23,6 +23,16 @@ ALTER TABLE IF EXISTS users
 ALTER TABLE IF EXISTS users
   ADD COLUMN IF NOT EXISTS terms_accepted_at TIMESTAMPTZ;
 
+-- Campos para conexión con Bluesky / AT Protocol
+ALTER TABLE IF EXISTS users
+  ADD COLUMN IF NOT EXISTS atproto_did TEXT;
+
+ALTER TABLE IF EXISTS users
+  ADD COLUMN IF NOT EXISTS atproto_handle TEXT;
+
+ALTER TABLE IF EXISTS users
+  ADD COLUMN IF NOT EXISTS atproto_connected_at TIMESTAMPTZ;
+
 -- 2. Fuentes de noticias (incluye bias para comparador por sesgo)
 CREATE TABLE IF NOT EXISTS news_sources (
   id BIGSERIAL PRIMARY KEY,
@@ -219,4 +229,20 @@ CREATE TABLE IF NOT EXISTS bias_matched_snapshots (
   id BIGSERIAL PRIMARY KEY,
   payload JSONB NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- 17. Fuentes locales por región (monitorización similar a news_sources)
+CREATE TABLE IF NOT EXISTS local_news_sources (
+  id BIGSERIAL PRIMARY KEY,
+  region_id TEXT NOT NULL,
+  region_name TEXT,
+  name TEXT NOT NULL,
+  website_url TEXT,
+  rss_url TEXT,
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  last_fetched TIMESTAMPTZ,
+  last_status TEXT,
+  last_error_message TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

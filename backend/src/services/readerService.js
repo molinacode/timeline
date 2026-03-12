@@ -2,6 +2,7 @@ import axios from 'axios'
 import * as cheerio from 'cheerio'
 import { JSDOM } from 'jsdom'
 import { Readability } from '@mozilla/readability'
+import { fetchFallbackImageFromHtml } from './imageExtractorService.js'
 
 const USER_AGENT =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122 Safari/537.36'
@@ -106,4 +107,43 @@ export async function extractArticleFromUrl(url) {
   }
 }
 
+/**
+ * Wrapper específico para el endpoint /api/reader
+ * Devuelve un objeto normalizado para el lector interno del frontend.
+ */
+export async function fetchArticleForReader(url) {
+  if (!url || typeof url !== 'string') {
+    throw new Error('URL inválida')
+  }
+
+  try {
+    const article = await extractArticleFromUrl(url)
+
+    let image = article.image || null
+    if (!image && url) {
+      try {
+        image = await fetchFallbackImageFromHtml(url)
+      } catch {
+        // ignorar errores de imagen
+      }
+    }
+
+    return {
+      title: article.title || null,
+      contentHtml: article.contentHtml || null,
+      image: image || null,
+      source: null,
+      site: null,
+      pubDate: null,
+      url,
+    }
+  } catch (err) {
+    console.error(
+      '[readerService] Error obteniendo artículo para lector:',
+      url,
+      err.message
+    )
+    throw new Error('No se pudo obtener el contenido del artículo')
+  }
+}
 

@@ -38,6 +38,13 @@ async function fetchFeedItems(rssUrl, sourceName) {
       source: sourceName,
     }))
   } catch (err) {
+    console.error(
+      '[localSources] Error obteniendo RSS de',
+      sourceName,
+      rssUrl,
+      '-',
+      err.message
+    )
     return []
   }
 }
@@ -52,19 +59,47 @@ export async function fetchNewsByRegion(regionId, limit = 30) {
   const region = regions.find((r) => r.id === regionId)
   if (!region?.sources?.length) return []
 
-  const sourcesWithRss = region.sources.filter((s) => s.rssUrl)
-  if (sourcesWithRss.length === 0) return []
+  const sourcesWithRss = region.sources.filter(
+    (s) => s.rssUrl && String(s.rssUrl).trim() !== ''
+  )
+  if (sourcesWithRss.length === 0) {
+    console.error(
+      '[localSources] Región sin fuentes con rssUrl:',
+      regionId,
+      '- total fuentes definidas:',
+      region.sources.length
+    )
+    return []
+  }
 
   const results = await Promise.allSettled(
     sourcesWithRss.map((s) => fetchFeedItems(s.rssUrl, s.name))
   )
 
   const allItems = []
-  for (const r of results) {
-    if (r.status === 'fulfilled' && Array.isArray(r.value)) {
-      allItems.push(...r.value)
+  results.forEach((result, index) => {
+    const s = sourcesWithRss[index]
+    if (result.status === 'fulfilled') {
+      const items = Array.isArray(result.value) ? result.value : []
+      if (items.length === 0) {
+        console.warn(
+          '[localSources] Fuente local sin noticias:',
+          s.name,
+          s.rssUrl
+        )
+      } else {
+        allItems.push(...items)
+      }
+    } else {
+      console.error(
+        '[localSources] Promesa rechazada para fuente local:',
+        s.name,
+        s.rssUrl,
+        '-',
+        result.reason?.message || result.reason
+      )
     }
-  }
+  })
 
   const sorted = allItems.sort((a, b) => {
     const dateA = new Date(a.isoDate || a.pubDate || 0).getTime()

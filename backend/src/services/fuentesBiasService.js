@@ -241,6 +241,12 @@ export async function fetchNewsByBiasMatched(limitGroups = 15) {
   const groups = []
   const usedProgLinks = new Set()
 
+  if (VERBOSE_RSS) {
+    console.log(
+      `[fuentesBias] by-bias-matched: items por sesgo -> prog=${allByBias.progressive.length}, centrist=${allByBias.centrist.length}, cons=${allByBias.conservative.length}`
+    )
+  }
+
   for (const prog of allByBias.progressive) {
     if (groups.length >= limitGroups) break
     if (!prog.link || usedProgLinks.has(prog.link)) continue
@@ -266,13 +272,11 @@ export async function fetchNewsByBiasMatched(limitGroups = 15) {
       }
     }
 
-    // Requerimos al menos cierta similitud baja para considerar que comparten historia
     const MIN_MAIN_SIM = 0.2
     const mainCentrist = bestCentristSim >= MIN_MAIN_SIM ? bestCentrist : null
     const mainConservative =
       bestConservativeSim >= MIN_MAIN_SIM ? bestConservative : null
 
-    // Aceptar grupo aunque falte una de las columnas, siempre que haya al menos 2 lados
     const sidesPresent = [mainProg, mainCentrist, mainConservative].filter(Boolean)
     if (sidesPresent.length >= 2) {
       usedProgLinks.add(mainProg.link)
@@ -323,9 +327,11 @@ export async function fetchNewsByBiasMatched(limitGroups = 15) {
   // Fallback de imagen desde HTML para artículos del comparador que no traen imagen en RSS
   const articlesToEnrich = []
   for (const g of groups) {
-    if (g.progressive?.link && !g.progressive?.image) articlesToEnrich.push(g.progressive)
+    if (g.progressive?.link && !g.progressive?.image)
+      articlesToEnrich.push(g.progressive)
     if (g.centrist?.link && !g.centrist?.image) articlesToEnrich.push(g.centrist)
-    if (g.conservative?.link && !g.conservative?.image) articlesToEnrich.push(g.conservative)
+    if (g.conservative?.link && !g.conservative?.image)
+      articlesToEnrich.push(g.conservative)
   }
   await Promise.all(
     articlesToEnrich.map(async (art) => {

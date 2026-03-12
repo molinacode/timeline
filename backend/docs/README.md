@@ -59,6 +59,9 @@ JWT_REFRESH_SECRET=tu-clave-refresh-super-segura
 
 # Frontend
 FRONTEND_URL=http://localhost:5173
+
+# Bluesky / AT Protocol (opcional)
+BSKY_PDS_URL=https://bsky.social
 ```
 
 ## 📚 API Endpoints
@@ -66,17 +69,21 @@ FRONTEND_URL=http://localhost:5173
 ### 🔐 Autenticación
 
 ```http
-POST /api/auth/register    # Registro de usuario
-POST /api/auth/login       # Inicio de sesión
-POST /api/auth/refresh     # Renovar token
-POST /api/auth/logout      # Cerrar sesión
-GET  /api/auth/verify      # Verificar token
+POST /api/auth/register        # Registro de usuario
+POST /api/auth/login           # Inicio de sesión con email/password
+POST /api/auth/refresh         # Renovar token
+POST /api/auth/logout          # Cerrar sesión
+GET  /api/auth/verify          # Verificar token
+POST /api/auth/login-bluesky   # Login/vinculación con Bluesky (AT Protocol) usando app password
+GET  /api/auth/profile         # Perfil del usuario (incluye atprotoDid/atprotoHandle si están vinculados)
+GET  /api/auth/connections     # Estado de conexiones externas (por ahora Bluesky)
+POST /api/share/bluesky        # Compartir una noticia en Bluesky (texto + URL)
 ```
 
 ### 📰 Noticias
 
 ```http
-GET  /api/news                    # Obtener noticias (con filtros)
+GET  /api/news                    # Obtener noticias (con filtros, limit/offset, máx. 100)
 GET  /api/news/featured           # Noticias destacadas
 GET  /api/news/latest             # Últimas noticias
 GET  /api/news/categories         # Estadísticas por categoría
@@ -84,6 +91,7 @@ GET  /api/news/regions            # Estadísticas por región
 GET  /api/news/:id                # Noticia por ID
 POST /api/news/:id/view           # Incrementar vistas
 GET  /api/news/search/suggestions # Sugerencias de búsqueda
+GET  /api/news/by-category        # Noticias por categoría (limit configurable, máx. 50)
 ```
 
 ### 📡 Fuentes
@@ -160,6 +168,18 @@ npm test           # Ejecutar tests
 ### RSS y aviso DEP0169 (url.parse)
 
 En Node.js 22+ puede aparecer el aviso *DEP0169: url.parse() is deprecated*. El backend evita esa ruta usando **axios** para descargar el XML del feed y **rss-parser.parseString()** en lugar de `parseURL()`. La lógica está centralizada en `src/services/rssFetch.js` (`fetchAndParseRss`). Así no se usa el módulo `http` de Node con URL en string y el aviso no sale.
+
+### Codificación y UTF‑8
+
+- Todos los textos se manejan como **UTF‑8** de extremo a extremo:
+  - `axios` descarga RSS y HTML en UTF‑8 (o negocia según `content-type`).
+  - Supabase almacena cadenas en columnas `TEXT` (UTF‑8).
+  - Express responde siempre con JSON UTF‑8 (`res.json(...)`).
+- Al normalizar títulos/descripciones/categorías (comparador y categorías) se usan:
+  - `.normalize('NFD')` y eliminación de diacríticos.
+  - Conversión segura a `String(...)` para evitar errores con tipos inesperados.
+- Si algún feed usa un encoding raro o incorrecto en cabecera, los logs en modo
+  `RSS_VERBOSE_ERRORS=true` ayudan a detectar problemas concretos de parsing.
 
 ## 🧪 Testing
 

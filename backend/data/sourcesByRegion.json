@@ -29,42 +29,42 @@
           "id": "andalucia-elpais",
           "name": "Elpais",
           "url": "https://elpais.com",
-          "rssUrl": "",
+          "rssUrl": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
           "city": ""
         },
         {
           "id": "andalucia-elmundo",
           "name": "Elmundo",
           "url": "https://elmundo.es",
-          "rssUrl": "",
+          "rssUrl": "https://e00-elmundo.uecdn.es/elmundo/rss/portada.xml",
           "city": ""
         },
         {
           "id": "andalucia-elespanol",
           "name": "Elespanol",
           "url": "https://elespanol.com",
-          "rssUrl": "",
+          "rssUrl": "https://www.elespanol.com/rss/",
           "city": ""
         },
         {
           "id": "andalucia-okdiario",
           "name": "Okdiario",
           "url": "https://okdiario.com",
-          "rssUrl": "",
+          "rssUrl": "https://okdiario.com/rss",
           "city": ""
         },
         {
           "id": "andalucia-20minutos",
           "name": "20minutos",
           "url": "https://20minutos.es",
-          "rssUrl": "",
+          "rssUrl": "https://www.20minutos.es/rss/",
           "city": ""
         },
         {
           "id": "andalucia-elconfidencial",
           "name": "Elconfidencial",
           "url": "https://elconfidencial.com",
-          "rssUrl": "",
+          "rssUrl": "https://rss.elconfidencial.com/espana/",
           "city": ""
         },
         {
@@ -78,14 +78,14 @@
           "id": "andalucia-abc",
           "name": "Abc",
           "url": "https://abc.es",
-          "rssUrl": "",
+          "rssUrl": "https://www.abc.es/rss/feeds/abc_ultima.xml",
           "city": ""
         },
         {
           "id": "andalucia-eldiario",
           "name": "Eldiario",
           "url": "https://eldiario.es",
-          "rssUrl": "",
+          "rssUrl": "https://www.eldiario.es/rss/",
           "city": ""
         },
         {
@@ -113,21 +113,21 @@
           "id": "andalucia-marca",
           "name": "Marca",
           "url": "https://marca.com",
-          "rssUrl": "",
+          "rssUrl": "https://e00-marca.uecdn.es/rss/portada.xml",
           "city": ""
         },
         {
           "id": "andalucia-as",
           "name": "As",
           "url": "https://as.com",
-          "rssUrl": "",
+          "rssUrl": "https://as.com/rss/tags/ultimas_noticias.xml",
           "city": ""
         },
         {
           "id": "andalucia-mundodeportivo",
           "name": "Mundodeportivo",
           "url": "https://mundodeportivo.com",
-          "rssUrl": "",
+          "rssUrl": "https://www.mundodeportivo.com/feed/rss/home",
           "city": ""
         },
         {
@@ -1134,42 +1134,42 @@
           "id": "baleares-elpais",
           "name": "Elpais",
           "url": "https://elpais.com",
-          "rssUrl": "",
+          "rssUrl": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
           "city": ""
         },
         {
           "id": "baleares-elmundo",
           "name": "Elmundo",
           "url": "https://elmundo.es",
-          "rssUrl": "",
+          "rssUrl": "https://e00-elmundo.uecdn.es/elmundo/rss/portada.xml",
           "city": ""
         },
         {
           "id": "baleares-elespanol",
           "name": "Elespanol",
           "url": "https://elespanol.com",
-          "rssUrl": "",
+          "rssUrl": "https://www.elespanol.com/rss/",
           "city": ""
         },
         {
           "id": "baleares-okdiario",
           "name": "Okdiario",
           "url": "https://okdiario.com",
-          "rssUrl": "",
+          "rssUrl": "https://okdiario.com/rss",
           "city": ""
         },
         {
           "id": "baleares-20minutos",
           "name": "20minutos",
           "url": "https://20minutos.es",
-          "rssUrl": "",
+          "rssUrl": "https://www.20minutos.es/rss/",
           "city": ""
         },
         {
           "id": "baleares-elconfidencial",
           "name": "Elconfidencial",
           "url": "https://elconfidencial.com",
-          "rssUrl": "",
+          "rssUrl": "https://rss.elconfidencial.com/espana/",
           "city": ""
         },
         {
@@ -1183,14 +1183,14 @@
           "id": "baleares-abc",
           "name": "Abc",
           "url": "https://abc.es",
-          "rssUrl": "",
+          "rssUrl": "https://www.abc.es/rss/feeds/abc_ultima.xml",
           "city": ""
         },
         {
           "id": "baleares-eldiario",
           "name": "Eldiario",
           "url": "https://eldiario.es",
-          "rssUrl": "",
+          "rssUrl": "https://www.eldiario.es/rss/",
           "city": ""
         },
         {
@@ -1218,21 +1218,21 @@
           "id": "baleares-marca",
           "name": "Marca",
           "url": "https://marca.com",
-          "rssUrl": "",
+          "rssUrl": "https://e00-marca.uecdn.es/rss/portada.xml",
           "city": ""
         },
         {
           "id": "baleares-as",
           "name": "As",
           "url": "https://as.com",
-          "rssUrl": "",
+          "rssUrl": "https://as.com/rss/tags/ultimas_noticias.xml",
           "city": ""
         },
         {
           "id": "baleares-mundodeportivo",
           "name": "Mundodeportivo",
           "url": "https://mundodeportivo.com",
-          "rssUrl": "",
+          "rssUrl": "https://www.mundodeportivo.com/feed/rss/home",
           "city": ""
         },
         {
@@ -1455,42 +1455,42 @@
           "id": "madrid-elpais",
           "name": "Elpais",
           "url": "https://elpais.com",
-          "rssUrl": "",
+          "rssUrl": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
           "city": ""
         },
         {
           "id": "madrid-elmundo",
           "name": "Elmundo",
           "url": "https://elmundo.es",
-          "rssUrl": "",
+          "rssUrl": "https://e00-elmundo.uecdn.es/elmundo/rss/portada.xml",
           "city": ""
         },
         {
           "id": "madrid-elespanol",
           "name": "Elespanol",
           "url": "https://elespanol.com",
-          "rssUrl": "",
+          "rssUrl": "https://www.elespanol.com/rss/",
           "city": ""
         },
         {
           "id": "madrid-okdiario",
           "name": "Okdiario",
           "url": "https://okdiario.com",
-          "rssUrl": "",
+          "rssUrl": "https://okdiario.com/rss",
           "city": ""
         },
         {
           "id": "madrid-20minutos",
           "name": "20minutos",
           "url": "https://20minutos.es",
-          "rssUrl": "",
+          "rssUrl": "https://www.20minutos.es/rss/",
           "city": ""
         },
         {
           "id": "madrid-elconfidencial",
           "name": "Elconfidencial",
           "url": "https://elconfidencial.com",
-          "rssUrl": "",
+          "rssUrl": "https://rss.elconfidencial.com/espana/",
           "city": ""
         },
         {
@@ -1504,14 +1504,14 @@
           "id": "madrid-abc",
           "name": "Abc",
           "url": "https://abc.es",
-          "rssUrl": "",
+          "rssUrl": "https://www.abc.es/rss/feeds/abc_ultima.xml",
           "city": ""
         },
         {
           "id": "madrid-eldiario",
           "name": "Eldiario",
           "url": "https://eldiario.es",
-          "rssUrl": "",
+          "rssUrl": "https://www.eldiario.es/rss/",
           "city": ""
         },
         {
@@ -1539,21 +1539,21 @@
           "id": "madrid-marca",
           "name": "Marca",
           "url": "https://marca.com",
-          "rssUrl": "",
+          "rssUrl": "https://e00-marca.uecdn.es/rss/portada.xml",
           "city": ""
         },
         {
           "id": "madrid-as",
           "name": "As",
           "url": "https://as.com",
-          "rssUrl": "",
+          "rssUrl": "https://as.com/rss/tags/ultimas_noticias.xml",
           "city": ""
         },
         {
           "id": "madrid-mundodeportivo",
           "name": "Mundodeportivo",
           "url": "https://mundodeportivo.com",
-          "rssUrl": "",
+          "rssUrl": "https://www.mundodeportivo.com/feed/rss/home",
           "city": ""
         },
         {
@@ -1609,7 +1609,7 @@
           "id": "madrid-huffingtonpost",
           "name": "Huffingtonpost",
           "url": "https://huffingtonpost.es",
-          "rssUrl": "",
+          "rssUrl": "https://www.huffingtonpost.es/feeds/index.xml",
           "city": ""
         },
         {
@@ -1623,14 +1623,14 @@
           "id": "madrid-libertaddigital",
           "name": "Libertaddigital",
           "url": "https://libertaddigital.com",
-          "rssUrl": "",
+          "rssUrl": "https://www.libertaddigital.com/ultimas-noticias.xml",
           "city": ""
         },
         {
           "id": "madrid-theobjective",
           "name": "Theobjective",
           "url": "https://theobjective.com",
-          "rssUrl": "",
+          "rssUrl": "https://theobjective.com/feed/",
           "city": ""
         },
         {
@@ -1644,7 +1644,7 @@
           "id": "madrid-vozpopuli",
           "name": "Vozpopuli",
           "url": "https://vozpopuli.com",
-          "rssUrl": "",
+          "rssUrl": "https://www.vozpopuli.com/rss/",
           "city": ""
         },
         {
@@ -1903,14 +1903,14 @@
           "id": "madrid-expansion",
           "name": "Expansion",
           "url": "https://expansion.com",
-          "rssUrl": "",
+          "rssUrl": "https://e00-expansion.uecdn.es/rss/portada.xml",
           "city": ""
         },
         {
           "id": "madrid-cincodias",
           "name": "Cincodias",
           "url": "https://cincodias.elpais.com",
-          "rssUrl": "",
+          "rssUrl": "https://cincodias.elpais.com/rss/cincodias/ultimas_noticias.xml",
           "city": ""
         },
         {
@@ -2161,42 +2161,42 @@
           "id": "galicia-elpais",
           "name": "Elpais",
           "url": "https://elpais.com",
-          "rssUrl": "",
+          "rssUrl": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
           "city": ""
         },
         {
           "id": "galicia-elmundo",
           "name": "Elmundo",
           "url": "https://elmundo.es",
-          "rssUrl": "",
+          "rssUrl": "https://e00-elmundo.uecdn.es/elmundo/rss/portada.xml",
           "city": ""
         },
         {
           "id": "galicia-elespanol",
           "name": "Elespanol",
           "url": "https://elespanol.com",
-          "rssUrl": "",
+          "rssUrl": "https://www.elespanol.com/rss/",
           "city": ""
         },
         {
           "id": "galicia-okdiario",
           "name": "Okdiario",
           "url": "https://okdiario.com",
-          "rssUrl": "",
+          "rssUrl": "https://okdiario.com/rss",
           "city": ""
         },
         {
           "id": "galicia-20minutos",
           "name": "20minutos",
           "url": "https://20minutos.es",
-          "rssUrl": "",
+          "rssUrl": "https://www.20minutos.es/rss/",
           "city": ""
         },
         {
           "id": "galicia-elconfidencial",
           "name": "Elconfidencial",
           "url": "https://elconfidencial.com",
-          "rssUrl": "",
+          "rssUrl": "https://rss.elconfidencial.com/espana/",
           "city": ""
         },
         {
@@ -2210,14 +2210,14 @@
           "id": "galicia-abc",
           "name": "Abc",
           "url": "https://abc.es",
-          "rssUrl": "",
+          "rssUrl": "https://www.abc.es/rss/feeds/abc_ultima.xml",
           "city": ""
         },
         {
           "id": "galicia-eldiario",
           "name": "Eldiario",
           "url": "https://eldiario.es",
-          "rssUrl": "",
+          "rssUrl": "https://www.eldiario.es/rss/",
           "city": ""
         },
         {
@@ -2245,21 +2245,21 @@
           "id": "galicia-marca",
           "name": "Marca",
           "url": "https://marca.com",
-          "rssUrl": "",
+          "rssUrl": "https://e00-marca.uecdn.es/rss/portada.xml",
           "city": ""
         },
         {
           "id": "galicia-as",
           "name": "As",
           "url": "https://as.com",
-          "rssUrl": "",
+          "rssUrl": "https://as.com/rss/tags/ultimas_noticias.xml",
           "city": ""
         },
         {
           "id": "galicia-mundodeportivo",
           "name": "Mundodeportivo",
           "url": "https://mundodeportivo.com",
-          "rssUrl": "",
+          "rssUrl": "https://www.mundodeportivo.com/feed/rss/home",
           "city": ""
         },
         {
