@@ -3,6 +3,7 @@ import { authenticateToken, requireAdmin } from '../middleware/auth.js'
 import { getSupabase } from '../src/config/supabase.js'
 import { getErrorStats } from '../middleware/errorHandler.js'
 import { syncNewsSourcesFromJson } from '../src/services/syncNewsSourcesService.js'
+import { listLocalNewsSourcesWithStatus, syncLocalNewsSourcesFromJson } from '../src/services/localNewsSourcesService.js'
 
 const router = express.Router()
 
@@ -355,6 +356,47 @@ router.get('/stats', async (req, res) => {
   } catch (error) {
     console.error('Error obteniendo stats:', error)
     res.status(500).json({ error: 'Error al obtener estadísticas' })
+  }
+})
+
+// GET /api/admin/local-sources-with-status
+router.get('/local-sources-with-status', async (req, res) => {
+  try {
+    const rows = await listLocalNewsSourcesWithStatus()
+    res.json(
+      rows.map((r) => ({
+        id: r.id,
+        regionId: r.region_id,
+        regionName: r.region_name,
+        name: r.name,
+        websiteUrl: r.website_url,
+        rssUrl: r.rss_url,
+        isActive: !!r.is_active,
+        lastFetched: r.last_fetched,
+        lastStatus: r.last_status,
+        lastErrorMessage: r.last_error_message,
+      }))
+    )
+  } catch (error) {
+    console.error('Error obteniendo fuentes locales con estado:', error)
+    res.status(500).json({ error: 'Error al obtener fuentes locales' })
+  }
+})
+
+// POST /api/admin/sync-local-news-sources — sincroniza local_news_sources con sourcesByRegion.json
+router.post('/sync-local-news-sources', async (req, res) => {
+  try {
+    const result = await syncLocalNewsSourcesFromJson()
+    res.json({
+      message: 'Sincronización de fuentes locales completada',
+      upserted: result.upserted,
+    })
+  } catch (error) {
+    console.error('Error sincronizando fuentes locales:', error)
+    res.status(500).json({
+      error: 'Error al sincronizar fuentes locales con sourcesByRegion.json',
+      detail: error.message,
+    })
   }
 })
 

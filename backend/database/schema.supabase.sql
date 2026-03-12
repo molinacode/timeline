@@ -230,3 +230,19 @@ CREATE TABLE IF NOT EXISTS bias_matched_snapshots (
   payload JSONB NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- 17. Fuentes locales por región (monitorización similar a news_sources)
+CREATE TABLE IF NOT EXISTS local_news_sources (
+  id BIGSERIAL PRIMARY KEY,
+  region_id TEXT NOT NULL,
+  region_name TEXT,
+  name TEXT NOT NULL,
+  website_url TEXT,
+  rss_url TEXT,
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  last_fetched TIMESTAMPTZ,
+  last_status TEXT,
+  last_error_message TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
