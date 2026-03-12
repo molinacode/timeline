@@ -13,7 +13,8 @@
     "import-razon-sitemap": "node scripts/import-razon-sitemap.js",
     "check-sources": "node scripts/check-sources.js",
     "check-local-sources": "node scripts/check-local-sources.js",
-    "sync-news-sources": "node scripts/sync-news-sources-from-json.js"
+    "sync-news-sources": "node scripts/sync-news-sources-from-json.js",
+    "fill-local-rss": "node scripts/fill-local-rss-from-fuentes-base.js"
   },
   "keywords": [
     "rss",
