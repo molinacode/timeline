@@ -5,9 +5,15 @@ interface TimelineArticleCardProps {
   item: NewsItem
   formatDate?: boolean
   onLinkClick?: (source: string, link: string) => void
+  // API clásica basada en id
   onSave?: (newsId: number) => void
   saving?: boolean
   onOpenReader?: (item: NewsItem) => void
+  // API nueva basada en item completo
+  isSaved?: boolean
+  onSaveClick?: () => void
+  onReaderClick?: () => void
+  onShareClick?: () => void
 }
 
 export function TimelineArticleCard({
@@ -17,6 +23,10 @@ export function TimelineArticleCard({
   onSave,
   saving,
   onOpenReader,
+  isSaved,
+  onSaveClick,
+  onReaderClick,
+  onShareClick,
 }: TimelineArticleCardProps) {
   const dateStr = item.pubDate
     ? formatDate
@@ -53,24 +63,41 @@ export function TimelineArticleCard({
         <div className="app-article-card-footer">
           {dateStr && <span className="app-article-card-date">{dateStr}</span>}
           <div className="app-article-card-actions">
-            {onOpenReader && (
+            {(onReaderClick || onOpenReader) && (
               <button
                 type="button"
                 className="app-header-button"
-                onClick={() => onOpenReader(item)}
+                onClick={() =>
+                  onReaderClick ? onReaderClick() : onOpenReader?.(item)
+                }
               >
                 Ver en lector
               </button>
             )}
-            {onSave && item.id != null && (
+            {(onSaveClick || (onSave && item.id != null)) && (
               <button
                 type="button"
                 className="app-header-button"
                 disabled={saving}
-                onClick={() => onSave(item.id!)}
+                onClick={() =>
+                  onSaveClick ? onSaveClick() : onSave?.(item.id as number)
+                }
                 aria-label="Guardar noticia"
               >
-                {saving ? 'Guardando…' : 'Guardar'}
+                {saving
+                  ? 'Guardando…'
+                  : isSaved
+                  ? 'Guardada'
+                  : 'Guardar'}
+              </button>
+            )}
+            {onShareClick && (
+              <button
+                type="button"
+                className="app-header-button"
+                onClick={onShareClick}
+              >
+                Compartir
               </button>
             )}
           </div>

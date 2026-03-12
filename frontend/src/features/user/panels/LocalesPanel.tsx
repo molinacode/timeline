@@ -38,7 +38,7 @@ export function LocalesPanel({
       ) : items.length === 0 ? (
         <p className="app-muted-inline">No hay noticias disponibles para {regionName}.</p>
       ) : (
-        <div className="app-flex-col">
+        <div className="app-flex-col app-grid-responsive">
           {items.map((item, idx) => (
             <TimelineArticleCard
               key={`${item.link}-${idx}`}

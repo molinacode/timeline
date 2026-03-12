@@ -11,12 +11,12 @@ const DRAWER_BREAKPOINT = 900
 
 export function Layout({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth()
-  const navigate = useNavigate()
-  const location = useLocation()
   const { theme, toggleTheme } = useTheme()
   const date = useDate()
   const locationLabel = useGeolocationLabel()
   const { menuSide } = useMenuSide()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [isNarrow, setIsNarrow] = useState(
@@ -42,15 +42,17 @@ export function Layout({ children }: { children: ReactNode }) {
     }
   }, [drawerOpen])
 
-  const showBackButton = location.pathname !== '/' && location.pathname !== ''
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const themeButton = (
-    <button onClick={toggleTheme} className="app-header-button">
-      {theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+    <button onClick={toggleTheme} className="app-header-icon-button" title={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}>
+      {theme === 'dark' ? '☀️' : '🌙'}
     </button>
   )
 
   const closeDrawer = () => setDrawerOpen(false)
+
+  const showBackButton = location.pathname !== '/'
 
   const navContent = (
     <>
@@ -68,7 +70,6 @@ export function Layout({ children }: { children: ReactNode }) {
         <>
           <NavLinkWithActive to="/me/timeline" onClick={closeDrawer}>Mi TimeLine</NavLinkWithActive>
           <NavLinkWithActive to="/me/comparator" onClick={closeDrawer}>Comparador</NavLinkWithActive>
-          <NavLinkWithActive to="/me/saved" onClick={closeDrawer}>Guardadas</NavLinkWithActive>
           {themeButton}
           <Link
             to="/me/profile"
@@ -171,9 +172,6 @@ export function Layout({ children }: { children: ReactNode }) {
           </NavLinkWithActive>
           <NavLinkWithActive to="/me/comparator" onClick={closeDrawer}>
             Comparador
-          </NavLinkWithActive>
-          <NavLinkWithActive to="/me/saved" onClick={closeDrawer}>
-            Guardadas
           </NavLinkWithActive>
         </nav>
       )}

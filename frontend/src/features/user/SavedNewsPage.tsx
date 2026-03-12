@@ -1,112 +1,49 @@
-import { useEffect, useState } from 'react'
+import { BasePage } from '@/components/layout/BasePage'
+import { TimelineArticleCard } from '@/components/TimelineArticleCard'
+import { useSavedArticles } from '@/hooks/useSavedArticles'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../app/providers/AuthProvider'
-import { useNewsClickTracker } from '../../hooks/useNewsClickTracker'
-import { apiUrl } from '@/config/api'
-import { BasePage } from '../../components/layout/BasePage'
-import { TimelineArticleCard } from '../../components/TimelineArticleCard'
-import type { NewsItem } from '../../types/news'
-
-interface SavedItem extends NewsItem {
-  savedId: number
-  savedAt: string
-  notes?: string | null
-}
 
 export function SavedNewsPage() {
-  const { token } = useAuth()
-  const { trackClick } = useNewsClickTracker()
+  const { saved, toggleSaved, isSaved } = useSavedArticles()
   const navigate = useNavigate()
-  const [items, setItems] = useState<SavedItem[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [removingId, setRemovingId] = useState<number | null>(null)
-
-  useEffect(() => {
-    if (!token) return
-    let cancelled = false
-    setLoading(true)
-    setError(null)
-    fetch(apiUrl('/api/me/saved'), {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error('Error al cargar noticias guardadas')
-        return res.json()
-      })
-      .then((data) => {
-        if (!cancelled) setItems(Array.isArray(data) ? data : [])
-      })
-      .catch((e) => {
-        if (!cancelled) setError(e.message)
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false)
-      })
-    return () => { cancelled = true }
-  }, [token])
-
-  function handleRemove(savedId: number) {
-    if (!token || removingId != null) return
-    setRemovingId(savedId)
-    fetch(apiUrl(`/api/me/saved/${savedId}`), {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error('Error al quitar')
-        setItems((prev) => prev.filter((i) => i.savedId !== savedId))
-      })
-      .catch(() => setError('No se pudo quitar la noticia'))
-      .finally(() => setRemovingId(null))
-  }
 
   return (
     <BasePage title="Noticias guardadas">
       <div className="app-page-section">
-        {error && (
-          <p className="app-muted-inline" role="alert">
-            {error}
-          </p>
-        )}
-        {loading ? (
-          <p className="app-muted-inline">Cargando…</p>
-        ) : items.length === 0 ? (
+        {saved.length === 0 ? (
           <p className="app-muted-inline">
-            Aún no has guardado ninguna noticia. En el timeline o el comparador puedes guardar
-            noticias para verlas aquí.
+            Aún no has guardado ninguna noticia. Usa el icono 💾 en las tarjetas para guardarlas aquí.
           </p>
         ) : (
-          <div className="app-flex-col">
-            {items.map((item) => (
-              <div key={item.savedId} className="app-card app-article-card-wrapper">
-                <TimelineArticleCard
-                  item={{
-                    title: item.title,
-                    link: item.link,
-                    description: item.description,
-                    source: item.source,
-                    pubDate: item.pubDate,
-                    image: item.image,
-                  }}
-                  formatDate
-                  onLinkClick={(source, link) => trackClick(source, link || item.link)}
-                  onOpenReader={(article) =>
-                    navigate('/reader', { state: { item: article } })
+          <div className="app-flex-col app-grid-responsive">
+            {saved.map((item, idx) => (
+              <TimelineArticleCard
+                key={`${item.link}-${idx}`}
+                item={item}
+                formatDate
+                isSaved={isSaved(item)}
+                onSaveClick={() => toggleSaved(item)}
+                onReaderClick={() =>
+                  navigate(`/me/reader?url=${encodeURIComponent(item.link)}`)
+                }
+                onShareClick={async () => {
+                  try {
+                    if (navigator.share) {
+                      await navigator.share({
+                        title: item.title,
+                        text: item.description || item.title,
+                        url: item.link,
+                      })
+                    } else {
+                      await navigator.clipboard.writeText(item.link)
+                      // eslint-disable-next-line no-alert
+                      alert('Enlace copiado al portapapeles')
+                    }
+                  } catch {
+                    // usuario canceló o error silencioso
                   }
-                />
-                <div className="app-article-card-actions">
-                  <button
-                    type="button"
-                    className="app-header-button"
-                    disabled={removingId === item.savedId}
-                    onClick={() => handleRemove(item.savedId)}
-                    aria-label="Quitar de guardadas"
-                  >
-                    {removingId === item.savedId ? 'Quitando…' : 'Quitar de guardadas'}
-                  </button>
-                </div>
-              </div>
+                }}
+              />
             ))}
           </div>
         )}
@@ -114,3 +51,4 @@ export function SavedNewsPage() {
     </BasePage>
   )
 }
+

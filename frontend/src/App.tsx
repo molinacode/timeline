@@ -21,7 +21,6 @@ import { AdminBiasPage } from './features/admin/bias/AdminBiasPage'
 import { LocalSourcesAdminPage } from './features/admin/LocalSourcesAdminPage'
 import { BiasComparatorPage } from './features/news/comparator/BiasComparatorPage'
 import { UserProfilePage } from './features/user/UserProfilePage'
-import { SavedNewsPage } from './features/user/SavedNewsPage'
 import { InterestsOnboardingPage } from './features/user/InterestsOnboardingPage'
 import { ReaderPage } from './features/news/reader/ReaderPage'
 import { SearchPage } from './features/news/SearchPage'
@@ -72,14 +71,7 @@ export function App() {
               </RequireAuth>
             }
           />
-          <Route
-            path="/me/saved"
-            element={
-              <RequireAuth>
-                <SavedNewsPage />
-              </RequireAuth>
-            }
-          />
+          
           <Route
             path="/me/interests"
             element={
