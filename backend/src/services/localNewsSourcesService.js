@@ -57,15 +57,21 @@ export async function syncLocalNewsSourcesFromJson() {
   let upserted = 0
 
   for (const r of rows) {
-    const { data: existing } = await supabase
+    // 1) Buscar si ya existe la fuente para esa región+nombre
+    const { data: existing, error: selectError } = await supabase
       .from('local_news_sources')
       .select('id')
       .eq('region_id', r.region_id)
       .eq('name', r.name)
       .maybeSingle()
 
+    if (selectError) {
+      // Cualquier error de lectura aborta la sincronización completa
+      throw selectError
+    }
+
     if (existing) {
-      await supabase
+      const { error: updateError } = await supabase
         .from('local_news_sources')
         .update({
           website_url: r.website_url,
@@ -74,9 +80,15 @@ export async function syncLocalNewsSourcesFromJson() {
           updated_at: now,
         })
         .eq('id', existing.id)
+
+      if (updateError) {
+        // No contamos esta fila como upserted y propagamos el fallo
+        throw updateError
+      }
+
       upserted += 1
     } else {
-      await supabase.from('local_news_sources').insert({
+      const { error: insertError } = await supabase.from('local_news_sources').insert({
         region_id: r.region_id,
         region_name: r.region_name,
         name: r.name,
@@ -86,6 +98,12 @@ export async function syncLocalNewsSourcesFromJson() {
         created_at: now,
         updated_at: now,
       })
+
+      if (insertError) {
+        // De nuevo: no incrementamos contador y abortamos
+        throw insertError
+      }
+
       upserted += 1
     }
   }
