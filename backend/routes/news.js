@@ -12,6 +12,7 @@ import {
   fetchNewsByBiasMatched,
   getSourcesByBias,
 } from '../src/services/fuentesBiasService.js'
+import { fetchArticleForReader } from '../src/services/readerService.js'
 import { authenticateToken } from '../middleware/auth.js'
 
 const router = express.Router()
@@ -344,6 +345,23 @@ router.post('/news/click', authenticateToken, async (req, res) => {
   } catch (err) {
     console.error('Error registrando clic:', err.message)
     res.status(500).json({ error: 'Error al registrar' })
+  }
+})
+
+// GET /api/reader?url=... - contenido para lector interno
+router.get('/reader', async (req, res) => {
+  const { url } = req.query || {}
+  if (!url || typeof url !== 'string' || !url.trim()) {
+    return res.status(400).json({ error: 'Parámetro url es obligatorio' })
+  }
+  try {
+    const article = await fetchArticleForReader(String(url).trim())
+    return res.json(article)
+  } catch (err) {
+    console.error('Error en /api/reader:', err.message)
+    return res
+      .status(500)
+      .json({ error: 'Error al obtener contenido para el lector' })
   }
 })
 
