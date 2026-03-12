@@ -619,54 +619,6 @@ export function UserTimeline() {
                         </div>
                       </article>
                     ))}
-=======
-              <>
-                <div className="app-flex-col app-grid-responsive">
-                  {lastHourItems.map((item, idx) => (
-                    <TimelineArticleCard
-                      key={`${item.link}-${idx}`}
-                      item={item}
-                      formatDate
-                      isSaved={isSaved(item)}
-                      onLinkClick={(source, link) =>
-                        trackClick(source, link || item.link)
-                      }
-                      onSaveClick={() => toggleSaved(item)}
-                      onReaderClick={() =>
-                        navigate(
-                          `/me/reader?url=${encodeURIComponent(item.link)}`
-                        )
-                      }
-                      onShareClick={async () => {
-                        try {
-                          if (navigator.share) {
-                            await navigator.share({
-                              title: item.title,
-                              text: item.description || item.title,
-                              url: item.link,
-                            })
-                          } else {
-                            await navigator.clipboard.writeText(item.link)
-                            // eslint-disable-next-line no-alert
-                            alert('Enlace copiado al portapapeles')
-                          }
-                        } catch {
-                          // usuario canceló o fallo silencioso
-                        }
-                      }}
-                    />
-                  ))}
-                </div>
-                {lastHourHasMore && (
-                  <div className="app-load-more">
-                    <button
-                      type="button"
-                      className="app-button app-btn-secondary"
-                      disabled={loadingLastHour}
-                      onClick={loadMoreLastHour}
-                    >
-                      {loadingLastHour ? 'Cargando…' : 'Cargar más'}
-                    </button>
                   </div>
                 )}
               </>
