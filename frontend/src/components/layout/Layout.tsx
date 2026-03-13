@@ -42,8 +42,6 @@ export function Layout({ children }: { children: ReactNode }) {
     }
   }, [drawerOpen])
 
-  const showBackButton = location.pathname !== '/' && location.pathname !== ''
-
   const themeButton = (
     <button onClick={toggleTheme} className="app-header-button">
       {theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
@@ -100,7 +98,11 @@ export function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="app-root">
-      <header className="app-header">
+      <header
+        className={`app-header ${
+          menuSide === 'right' ? 'app-header--drawer-right' : ''
+        }`}
+      >
         <div className="app-header-left">
           {isNarrow && (
             <button
@@ -139,16 +141,6 @@ export function Layout({ children }: { children: ReactNode }) {
             </div>
           </Link>
         </div>
-        {showBackButton && (
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="app-header-back"
-            title="Volver atrás"
-          >
-            ← Atrás
-          </button>
-        )}
         <nav className="app-header-nav" aria-label="Navegación principal">
           {navContent}
           {user && (

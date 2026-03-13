@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { useRegionFromGeolocation } from '../../hooks/useRegionFromGeolocation'
@@ -50,9 +50,33 @@ export function UserTimeline() {
   const [activeTab, setActiveTab] = useState<TabId>('ultima-hora')
   const [savingNewsId, setSavingNewsId] = useState<number | null>(null)
 
+  const swipeStartXRef = useRef<number | null>(null)
+
   const effectiveRegionId = regionId || 'madrid'
   const region = regionsData.regions.find((r) => r.id === effectiveRegionId) ?? null
   const isDefaultMadrid = !regionId && effectiveRegionId === 'madrid'
+
+  const handlePanelsTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0]
+    swipeStartXRef.current = touch.clientX
+  }
+
+  const handlePanelsTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    const startX = swipeStartXRef.current
+    if (startX == null) return
+    const touch = e.changedTouches[0]
+    const diff = touch.clientX - startX
+    const MIN_SWIPE = 50
+    if (Math.abs(diff) < MIN_SWIPE) return
+
+    const currentIndex = TABS.findIndex((t) => t.id === activeTab)
+    if (currentIndex === -1) return
+
+    const nextIndex = diff < 0 ? currentIndex + 1 : currentIndex - 1
+    if (nextIndex < 0 || nextIndex >= TABS.length) return
+
+    setActiveTab(TABS[nextIndex].id)
+  }
 
   useEffect(() => {
     ;(async () => {
@@ -251,10 +275,7 @@ export function UserTimeline() {
   }
 
   return (
-    <BasePage
-      title="Mi TimeLine"
-      subtitle="Tus fuentes, categorías y últimas noticias."
-    >
+    <BasePage subtitle="Tus fuentes, categorías y últimas noticias.">
       <div className="app-page-section">
         {categories.length > 0 && (
           <div className="app-category-carousel" aria-label="Categorías destacadas">
@@ -324,7 +345,11 @@ export function UserTimeline() {
           })}
         </nav>
 
-        <div className="app-timeline-panels">
+        <div
+          className="app-timeline-panels"
+          onTouchStart={handlePanelsTouchStart}
+          onTouchEnd={handlePanelsTouchEnd}
+        >
           {/* 1. Última hora */}
           <section
             id="panel-ultima-hora"
@@ -351,7 +376,7 @@ export function UserTimeline() {
                     onSave={item.id != null ? handleSaveNews : undefined}
                     saving={savingNewsId !== null}
                     onOpenReader={(article) =>
-                      navigate('/reader', { state: { item: article } })
+                      navigate('/reader', { state: { item: article, fromTab: 'Última hora' } })
                     }
                   />
                 ))}

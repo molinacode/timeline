@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { useNewsClickTracker } from '../../hooks/useNewsClickTracker'
-import { apiUrl } from '@/config/api'
 import { BasePage } from '../../components/layout/BasePage'
 import { TimelineArticleCard } from '../../components/TimelineArticleCard'
+import { apiUrl } from '@/config/api'
 import type { NewsItem } from '../../types/news'
 
 interface SavedItem extends NewsItem {
   savedId: number
-  savedAt: string
+  savedAt?: string | null
   notes?: string | null
 }
 
@@ -17,6 +17,7 @@ export function SavedNewsPage() {
   const { token } = useAuth()
   const { trackClick } = useNewsClickTracker()
   const navigate = useNavigate()
+
   const [items, setItems] = useState<SavedItem[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -25,40 +26,56 @@ export function SavedNewsPage() {
   useEffect(() => {
     if (!token) return
     let cancelled = false
-    setLoading(true)
-    setError(null)
-    fetch(apiUrl('/api/me/saved'), {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error('Error al cargar noticias guardadas')
-        return res.json()
-      })
-      .then((data) => {
-        if (!cancelled) setItems(Array.isArray(data) ? data : [])
-      })
-      .catch((e) => {
-        if (!cancelled) setError(e.message)
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false)
-      })
-    return () => { cancelled = true }
+
+    const load = async () => {
+      setLoading(true)
+      setError(null)
+      try {
+        const res = await fetch(apiUrl('/api/me/saved'), {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        if (!res.ok) {
+          throw new Error('Error al cargar noticias guardadas')
+        }
+        const data = await res.json()
+        if (!cancelled) {
+          setItems(Array.isArray(data) ? (data as SavedItem[]) : [])
+        }
+      } catch (e: any) {
+        if (!cancelled) {
+          setError(e?.message || 'No se pudieron cargar las noticias guardadas')
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false)
+        }
+      }
+    }
+
+    load()
+
+    return () => {
+      cancelled = true
+    }
   }, [token])
 
-  function handleRemove(savedId: number) {
+  async function handleRemove(savedId: number) {
     if (!token || removingId != null) return
     setRemovingId(savedId)
-    fetch(apiUrl(`/api/me/saved/${savedId}`), {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error('Error al quitar')
-        setItems((prev) => prev.filter((i) => i.savedId !== savedId))
+    try {
+      const res = await fetch(apiUrl(`/api/me/saved/${savedId}`), {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
       })
-      .catch(() => setError('No se pudo quitar la noticia'))
-      .finally(() => setRemovingId(null))
+      if (!res.ok) {
+        throw new Error('Error al quitar la noticia guardada')
+      }
+      setItems((prev) => prev.filter((i) => i.savedId !== savedId))
+    } catch {
+      setError('No se pudo quitar la noticia')
+    } finally {
+      setRemovingId(null)
+    }
   }
 
   return (
@@ -93,9 +110,13 @@ export function SavedNewsPage() {
                     image: item.image,
                   }}
                   formatDate
-                  onLinkClick={(source, link) => trackClick(source, link || item.link)}
+                  onLinkClick={(source, link) =>
+                    trackClick(source, link || item.link)
+                  }
                   onOpenReader={(article) =>
-                    navigate('/reader', { state: { item: article } })
+                    navigate('/reader', {
+                      state: { item: article, fromTab: 'Guardadas' },
+                    })
                   }
                 />
                 <div className="app-article-card-actions">
@@ -117,3 +138,4 @@ export function SavedNewsPage() {
     </BasePage>
   )
 }
+
