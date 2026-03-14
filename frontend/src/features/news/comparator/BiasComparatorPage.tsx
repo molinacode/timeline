@@ -1,6 +1,7 @@
 /** Comparador: 15 noticias, 3 cards principales + lista otras fuentes (estilo ground.news) */
 import { useAuth } from '../../../app/providers/AuthProvider'
 import { BiasArticleCard } from './BiasArticleCard'
+import { BiasDistributionBlock } from './BiasDistributionBlock'
 import { useNewsClickTracker } from '../../../hooks/useNewsClickTracker'
 import { useBiasComparator } from '../../../hooks/useBiasComparator'
 
@@ -48,6 +49,10 @@ export function BiasComparatorPage() {
           </h1>
         </div>
       </section>
+
+      <div className="app-page-section comparador-bias-distribution-wrap">
+        <BiasDistributionBlock />
+      </div>
 
       <div id="panel" className="app-page-section">
         {groups.length === 0 ? (

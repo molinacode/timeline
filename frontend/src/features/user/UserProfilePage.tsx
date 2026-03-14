@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { BasePage } from '../../components/layout/BasePage'
 import { apiUrl } from '@/config/api'
@@ -155,6 +156,12 @@ export function UserProfilePage() {
           >
             Cambiar contraseña
           </button>
+          <Link
+            to="/me/interests"
+            className="app-nav-pills-link"
+          >
+            Ajustar intereses
+          </Link>
         </nav>
 
         {tab === 'data' && (

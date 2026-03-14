@@ -21,6 +21,8 @@ import { AdminBiasPage } from './features/admin/bias/AdminBiasPage'
 import { BiasComparatorPage } from './features/news/comparator/BiasComparatorPage'
 import { UserProfilePage } from './features/user/UserProfilePage'
 import { SavedNewsPage } from './features/user/SavedNewsPage'
+import { InterestsOnboardingPage } from './features/user/InterestsOnboardingPage'
+import { SearchPage } from './features/news/SearchPage'
 import { ReaderPage } from './features/news/ReaderPage'
 import { CookieBanner } from './components/CookieBanner'
 import { Analytics } from '@vercel/analytics/react'
@@ -52,6 +54,14 @@ export function App() {
             }
           />
           <Route
+            path="/search"
+            element={
+              <RequireAuth>
+                <SearchPage />
+              </RequireAuth>
+            }
+          />
+          <Route
             path="/me/profile"
             element={
               <RequireAuth>
@@ -72,6 +82,14 @@ export function App() {
             element={
               <RequireAuth>
                 <SavedNewsPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/me/interests"
+            element={
+              <RequireAuth>
+                <InterestsOnboardingPage />
               </RequireAuth>
             }
           />

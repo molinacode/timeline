@@ -1,10 +1,12 @@
-import { useState, type ReactNode } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, type ReactNode } from 'react'
+import { Link, NavLink } from 'react-router-dom'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { useDate } from '../../hooks/useDate'
 import { useTheme } from '../../hooks/useTheme'
 import { useGeolocationLabel } from '../../hooks/useGeolocationLabel'
 import { NavLinkWithActive } from './NavLinkWithActive'
+
+const BOTTOM_NAV_BREAKPOINT = 768
 
 export function Layout({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth()
@@ -13,6 +15,16 @@ export function Layout({ children }: { children: ReactNode }) {
   const locationLabel = useGeolocationLabel()
 
   const [menuOpen, setMenuOpen] = useState(false)
+  const [showBottomNav, setShowBottomNav] = useState(
+    typeof window !== 'undefined' ? window.innerWidth < BOTTOM_NAV_BREAKPOINT : false
+  )
+
+  useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${BOTTOM_NAV_BREAKPOINT - 1}px)`)
+    const handler = () => setShowBottomNav(mql.matches)
+    mql.addEventListener('change', handler)
+    return () => mql.removeEventListener('change', handler)
+  }, [])
 
   const themeButton = (
     <button onClick={toggleTheme} className="app-header-icon-button" title={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}>
@@ -76,6 +88,7 @@ export function Layout({ children }: { children: ReactNode }) {
               <NavLinkWithActive to="/me/timeline">Mi TimeLine</NavLinkWithActive>
               <NavLinkWithActive to="/me/comparator">Comparador</NavLinkWithActive>
               <NavLinkWithActive to="/me/saved">Guardadas</NavLinkWithActive>
+              <NavLinkWithActive to="/search">Buscar</NavLinkWithActive>
               {themeButton}
               <Link
                 to="/me/profile"
@@ -112,7 +125,49 @@ export function Layout({ children }: { children: ReactNode }) {
           aria-hidden="true"
         />
       )}
-      <main className="app-main">{children}</main>
+      <main className={`app-main ${showBottomNav && user && user.role !== 'admin' ? 'app-main--with-bottom-nav' : ''}`}>
+        {children}
+      </main>
+      {showBottomNav && user && user.role !== 'admin' && (
+        <nav className="app-bottom-nav" aria-label="Navegación principal (móvil)">
+          <NavLink
+            to="/me/timeline"
+            end
+            className={({ isActive }) => `app-bottom-nav-link ${isActive ? 'active' : ''}`}
+          >
+            <span className="app-bottom-nav-icon" aria-hidden>📰</span>
+            <span>TimeLine</span>
+          </NavLink>
+          <NavLink
+            to="/me/comparator"
+            className={({ isActive }) => `app-bottom-nav-link ${isActive ? 'active' : ''}`}
+          >
+            <span className="app-bottom-nav-icon" aria-hidden>⚖️</span>
+            <span>Comparador</span>
+          </NavLink>
+          <NavLink
+            to="/me/saved"
+            className={({ isActive }) => `app-bottom-nav-link ${isActive ? 'active' : ''}`}
+          >
+            <span className="app-bottom-nav-icon" aria-hidden>💾</span>
+            <span>Guardadas</span>
+          </NavLink>
+          <NavLink
+            to="/search"
+            className={({ isActive }) => `app-bottom-nav-link ${isActive ? 'active' : ''}`}
+          >
+            <span className="app-bottom-nav-icon" aria-hidden>🔍</span>
+            <span>Buscar</span>
+          </NavLink>
+          <NavLink
+            to="/me/profile"
+            className={({ isActive }) => `app-bottom-nav-link ${isActive ? 'active' : ''}`}
+          >
+            <span className="app-bottom-nav-icon" aria-hidden>👤</span>
+            <span>Perfil</span>
+          </NavLink>
+        </nav>
+      )}
     </div>
   )
 }
