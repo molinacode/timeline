@@ -128,12 +128,16 @@ export function InterestsOnboardingPage() {
     >
       <div className="app-page-section">
         {loading ? (
-          <p className="app-muted-inline">Cargando categorías…</p>
+          <div className="app-empty-state">
+            <p className="app-empty-state-message">Cargando categorías…</p>
+          </div>
         ) : categories.length === 0 ? (
-          <p className="app-muted-inline">
-            Todavía no hay categorías configuradas. Pídele al administrador que cree algunas desde el panel de
-            administración.
-          </p>
+          <div className="app-empty-state">
+            <p className="app-empty-state-message">
+              Todavía no hay categorías configuradas. Pídele al administrador que cree algunas desde el panel de
+              administración.
+            </p>
+          </div>
         ) : (
           <>
             {error && <p className="app-form-message app-form-message--error">{error}</p>}

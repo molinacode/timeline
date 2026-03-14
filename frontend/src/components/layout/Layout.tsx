@@ -11,18 +11,16 @@ const DRAWER_BREAKPOINT = 900
 
 export function Layout({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
   const { theme, toggleTheme } = useTheme()
   const date = useDate()
   const locationLabel = useGeolocationLabel()
   const { menuSide } = useMenuSide()
-  const navigate = useNavigate()
-  const location = useLocation()
 
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [isNarrow, setIsNarrow] = useState(
-    typeof window !== 'undefined'
-      ? window.innerWidth <= DRAWER_BREAKPOINT
-      : false,
+    typeof window !== 'undefined' ? window.innerWidth <= DRAWER_BREAKPOINT : false
   )
 
   useEffect(() => {
@@ -45,54 +43,41 @@ export function Layout({ children }: { children: ReactNode }) {
   }, [drawerOpen])
 
   const themeButton = (
-    <button
-      onClick={toggleTheme}
-      className="app-header-icon-button"
-      title={
-        theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'
-      }
-    >
-      {theme === 'dark' ? '☀️' : '🌙'}
+    <button onClick={toggleTheme} className="app-header-button">
+      {theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
     </button>
   )
 
   const closeDrawer = () => setDrawerOpen(false)
 
-  const showBackButton = location.pathname !== '/'
-
   const navContent = (
     <>
       {user?.role === 'admin' ? (
         <>
-          <NavLinkWithActive to="/admin" onClick={closeDrawer}>
-            Inicio
-          </NavLinkWithActive>
-          <NavLinkWithActive to="/admin/logs" onClick={closeDrawer}>
-            Logs
-          </NavLinkWithActive>
-          <NavLinkWithActive to="/admin/users" onClick={closeDrawer}>
-            Usuarios
-          </NavLinkWithActive>
+          <NavLinkWithActive to="/admin" onClick={closeDrawer}>Inicio</NavLinkWithActive>
+          <NavLinkWithActive to="/admin/logs" onClick={closeDrawer}>Logs</NavLinkWithActive>
+          <NavLinkWithActive to="/admin/users" onClick={closeDrawer}>Usuarios</NavLinkWithActive>
           {themeButton}
-          <button
-            onClick={() => {
-              closeDrawer()
-              logout()
-            }}
-            className="app-header-button"
-          >
+          <button onClick={() => { closeDrawer(); logout(); }} className="app-header-button">
             Cerrar sesión
           </button>
         </>
       ) : user ? (
         <>
-          <NavLinkWithActive to="/me/timeline" onClick={closeDrawer}>
-            Mi TimeLine
-          </NavLinkWithActive>
-          <NavLinkWithActive to="/me/comparator" onClick={closeDrawer}>
-            Comparador
-          </NavLinkWithActive>
+          <NavLinkWithActive to="/me/timeline" onClick={closeDrawer}>Mi TimeLine</NavLinkWithActive>
+          <NavLinkWithActive to="/me/comparator" onClick={closeDrawer}>Comparador</NavLinkWithActive>
+          <NavLinkWithActive to="/me/saved" onClick={closeDrawer}>Guardadas</NavLinkWithActive>
+          <NavLinkWithActive to="/me/lists" onClick={closeDrawer}>Mis listas</NavLinkWithActive>
           {themeButton}
+          <button
+            type="button"
+            className="app-header-button app-header-search-button"
+            onClick={() => navigate('/search')}
+            title="Buscar noticias"
+            aria-label="Buscar noticias"
+          >
+            Buscar
+          </button>
           <Link
             to="/me/profile"
             onClick={closeDrawer}
@@ -101,37 +86,19 @@ export function Layout({ children }: { children: ReactNode }) {
           >
             {user.email}
           </Link>
-          <button
-            onClick={() => {
-              closeDrawer()
-              logout()
-            }}
-            className="app-header-button"
-          >
+          <button onClick={() => { closeDrawer(); logout(); }} className="app-header-button">
             Cerrar sesión
           </button>
         </>
       ) : (
         <>
-          <NavLinkWithActive to="/" end onClick={closeDrawer}>
-            Inicio
-          </NavLinkWithActive>
-          <NavLinkWithActive to="/timeline" onClick={closeDrawer}>
-            Mi TimeLine
-          </NavLinkWithActive>
-          <NavLinkWithActive to="/demo/clusters" onClick={closeDrawer}>
-            Comparador
-          </NavLinkWithActive>
-          <NavLinkWithActive to="/demo/bias" onClick={closeDrawer}>
-            Sesgo TimeLine
-          </NavLinkWithActive>
-          <NavLinkWithActive to="/sources" onClick={closeDrawer}>
-            Fuentes
-          </NavLinkWithActive>
+          <NavLinkWithActive to="/" end onClick={closeDrawer}>Inicio</NavLinkWithActive>
+          <NavLinkWithActive to="/timeline" onClick={closeDrawer}>Mi TimeLine</NavLinkWithActive>
+          <NavLinkWithActive to="/demo/clusters" onClick={closeDrawer}>Comparador</NavLinkWithActive>
+          <NavLinkWithActive to="/demo/bias" onClick={closeDrawer}>Sesgo TimeLine</NavLinkWithActive>
+          <NavLinkWithActive to="/sources" onClick={closeDrawer}>Fuentes</NavLinkWithActive>
           {themeButton}
-          <NavLinkWithActive to="/login" onClick={closeDrawer}>
-            Entrar
-          </NavLinkWithActive>
+          <NavLinkWithActive to="/login" onClick={closeDrawer}>Entrar</NavLinkWithActive>
         </>
       )}
     </>
@@ -141,10 +108,11 @@ export function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="app-root">
+      <a href="#main-content" className="app-skip-link">
+        Saltar al contenido
+      </a>
       <header
-        className={`app-header ${
-          menuSide === 'right' ? 'app-header--drawer-right' : ''
-        }`}
+        className={`app-header ${menuSide === 'right' ? 'app-header--drawer-right' : ''}`}
       >
         <div className="app-header-left">
           {isNarrow && (
@@ -160,11 +128,7 @@ export function Layout({ children }: { children: ReactNode }) {
             </button>
           )}
           <Link to="/" className="app-header-logo-link">
-            <img
-              src="/images/logo.svg"
-              alt="TimeLine"
-              className="app-header-logo"
-            />
+            <img src="/images/logo.svg" alt="TimeLine" className="app-header-logo" />
             <div>
               <div className="app-header-title">TimeLine</div>
               <div className="app-header-subtitle">El mundo a tu alrededor</div>
@@ -186,16 +150,6 @@ export function Layout({ children }: { children: ReactNode }) {
         </div>
         <nav className="app-header-nav" aria-label="Navegación principal">
           {navContent}
-          {user && (
-            <button
-              type="button"
-              className="app-header-button app-header-search-button"
-              onClick={() => navigate('/search')}
-              title="Buscar noticias"
-            >
-              Buscar
-            </button>
-          )}
         </nav>
       </header>
 
@@ -207,10 +161,12 @@ export function Layout({ children }: { children: ReactNode }) {
           <NavLinkWithActive to="/me/comparator" onClick={closeDrawer}>
             Comparador
           </NavLinkWithActive>
+          <NavLinkWithActive to="/me/saved" onClick={closeDrawer}>
+            Guardadas
+          </NavLinkWithActive>
         </nav>
       )}
 
-      {/* Drawer móvil/tablet */}
       {drawerOpen && (
         <>
           <div
@@ -244,7 +200,15 @@ export function Layout({ children }: { children: ReactNode }) {
       )}
 
       <main
-        className={isComparatorPage ? 'app-main app-main--wide' : 'app-main'}
+        id="main-content"
+        tabIndex={-1}
+        className={[
+          'app-main',
+          isComparatorPage && 'app-main--wide',
+          isNarrow && user && 'app-main--with-bottom-nav',
+        ]
+          .filter(Boolean)
+          .join(' ')}
       >
         {children}
       </main>

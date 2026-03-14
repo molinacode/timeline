@@ -5,11 +5,9 @@ interface TimelineArticleCardProps {
   item: NewsItem
   formatDate?: boolean
   onLinkClick?: (source: string, link: string) => void
-  // API clásica basada en id
   onSave?: (newsId: number) => void
   saving?: boolean
   onOpenReader?: (item: NewsItem) => void
-  // API nueva basada en item completo
   isSaved?: boolean
   onSaveClick?: () => void
   onReaderClick?: () => void
@@ -30,7 +28,12 @@ export function TimelineArticleCard({
 }: TimelineArticleCardProps) {
   const dateStr = item.pubDate
     ? formatDate
-      ? getRelativeTimeFromNow(item.pubDate)
+      ? new Date(item.pubDate).toLocaleString('es-ES', {
+          day: '2-digit',
+          month: 'short',
+          hour: '2-digit',
+          minute: '2-digit',
+        })
       : item.pubDate
     : ''
 
@@ -38,12 +41,6 @@ export function TimelineArticleCard({
     <article className="app-card app-article-card">
       <NewsImage src={item.image} />
       <div className="app-article-card-body">
-        <div className="app-article-card-header">
-          <span className="app-article-card-source">{item.source}</span>
-          {item.programName && (
-            <span className="app-article-card-program">{item.programName}</span>
-          )}
-        </div>
         <h2 className="app-page-title app-headline-link">
           <a
             href={item.link}
@@ -61,7 +58,13 @@ export function TimelineArticleCard({
           </p>
         )}
         <div className="app-article-card-footer">
-          {dateStr && <span className="app-article-card-date">{dateStr}</span>}
+          {(item.source || dateStr) && (
+            <p className="app-comparador-cell-source app-timeline-meta">
+              {item.source}
+              {item.programName ? ` · ${item.programName}` : ''}
+              {dateStr ? ` · ${dateStr}` : ''}
+            </p>
+          )}
           <div className="app-article-card-actions">
             {(onReaderClick || onOpenReader) && (
               <button
@@ -87,8 +90,8 @@ export function TimelineArticleCard({
                 {saving
                   ? 'Guardando…'
                   : isSaved
-                  ? 'Guardada'
-                  : 'Guardar'}
+                    ? 'Guardada'
+                    : 'Guardar'}
               </button>
             )}
             {onShareClick && (
@@ -105,28 +108,4 @@ export function TimelineArticleCard({
       </div>
     </article>
   )
-}
-
-function getRelativeTimeFromNow(dateString: string): string {
-  const date = new Date(dateString)
-  if (Number.isNaN(date.getTime())) return ''
-
-  const now = Date.now()
-  const diffMs = now - date.getTime()
-  const diffMinutes = Math.floor(diffMs / 60000)
-
-  if (diffMinutes < 1) return 'Hace un momento'
-  if (diffMinutes < 60) return `Hace ${diffMinutes} min`
-
-  const diffHours = Math.floor(diffMinutes / 60)
-  if (diffHours < 24) return `Hace ${diffHours} h`
-
-  const diffDays = Math.floor(diffHours / 24)
-  if (diffDays < 30) return `Hace ${diffDays} días`
-
-  const diffMonths = Math.floor(diffDays / 30)
-  if (diffMonths < 12) return `Hace ${diffMonths} meses`
-
-  const diffYears = Math.floor(diffMonths / 12)
-  return `Hace ${diffYears} años`
 }
