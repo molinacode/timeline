@@ -27,3 +27,4 @@ pnpm-debug.log*
 
 # Configuración de editores (opcionales)
 .vscode/
+backend/postman/
