@@ -4,6 +4,8 @@ import { NewsImage } from './NewsImage'
 interface TimelineArticleCardProps {
   item: NewsItem
   formatDate?: boolean
+  /** Etiqueta de categoría (pill tipo Squid) */
+  categoryLabel?: string | null
   onLinkClick?: (source: string, link: string) => void
   onSave?: (newsId: number) => void
   saving?: boolean
@@ -17,6 +19,7 @@ interface TimelineArticleCardProps {
 export function TimelineArticleCard({
   item,
   formatDate,
+  categoryLabel,
   onLinkClick,
   onSave,
   saving,
@@ -38,8 +41,13 @@ export function TimelineArticleCard({
     : ''
 
   return (
-    <article className="app-card app-article-card">
-      <NewsImage src={item.image} />
+    <article className="app-card app-article-card app-article-card--mobile-hero">
+      <div className="app-article-card-media-wrap">
+        {categoryLabel && (
+          <span className="app-article-card-pill">{categoryLabel}</span>
+        )}
+        <NewsImage src={item.image} />
+      </div>
       <div className="app-article-card-body">
         <h2 className="app-page-title app-headline-link">
           <a
