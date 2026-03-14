@@ -360,9 +360,13 @@ export function UserTimeline() {
           >
             <h2 className="app-card-title">Última hora</h2>
             {loadingLastHour ? (
-              <p className="app-muted-inline">Cargando…</p>
+              <div className="app-empty-state">
+                <p className="app-empty-state-message">Cargando…</p>
+              </div>
             ) : lastHourItems.length === 0 ? (
-              <p className="app-muted-inline">No hay noticias disponibles.</p>
+              <div className="app-empty-state">
+                <p className="app-empty-state-message">No hay noticias disponibles.</p>
+              </div>
             ) : (
               <div className="app-flex-col">
                 {lastHourItems.map((item, idx) => (
@@ -397,9 +401,11 @@ export function UserTimeline() {
               Noticias de las fuentes por categoría temática.
             </p>
             {categories.length === 0 ? (
-              <p className="app-muted-inline">
-                No hay categorías configuradas. El administrador puede crearlas en el panel de Admin.
-              </p>
+              <div className="app-empty-state">
+                <p className="app-empty-state-message">
+                  No hay categorías configuradas. El administrador puede crearlas en el panel de Admin.
+                </p>
+              </div>
             ) : (
               <div className="app-categories-chips">
                 {categories
@@ -441,11 +447,15 @@ export function UserTimeline() {
                   {selectedCategory}
                 </h3>
                 {loadingCategoryNews ? (
-                  <p className="app-muted-inline">Cargando noticias…</p>
+                  <div className="app-empty-state">
+                    <p className="app-empty-state-message">Cargando noticias…</p>
+                  </div>
                 ) : categoryNews.length === 0 ? (
-                  <p className="app-muted-inline">
-                    No hay noticias en esta categoría por ahora.
-                  </p>
+                  <div className="app-empty-state">
+                    <p className="app-empty-state-message">
+                      No hay noticias en esta categoría por ahora.
+                    </p>
+                  </div>
                 ) : (
                   <div className="app-flex-col">
                     {categoryNews.map((item, idx) => (
@@ -502,13 +512,19 @@ export function UserTimeline() {
                 : `Noticias de ${region?.name || 'tu región'}.`}
             </p>
             {geoLoading ? (
-              <p className="app-muted-inline">Detectando ubicación…</p>
+              <div className="app-empty-state">
+                <p className="app-empty-state-message">Detectando ubicación…</p>
+              </div>
             ) : loadingLocalNews ? (
-              <p className="app-muted-inline">Cargando noticias…</p>
+              <div className="app-empty-state">
+                <p className="app-empty-state-message">Cargando noticias…</p>
+              </div>
             ) : localNews.length === 0 ? (
-              <p className="app-muted-inline">
-                No hay noticias disponibles para {region?.name || 'esta región'}.
-              </p>
+              <div className="app-empty-state">
+                <p className="app-empty-state-message">
+                  No hay noticias disponibles para {region?.name || 'esta región'}.
+                </p>
+              </div>
             ) : (
               <div className="app-flex-col">
                 {localNews.map((item, idx) => (
@@ -598,11 +614,15 @@ export function UserTimeline() {
             </form>
 
             {loadingUserSources ? (
-              <p className="app-muted-inline">Cargando tus fuentes…</p>
+              <div className="app-empty-state">
+                <p className="app-empty-state-message">Cargando tus fuentes…</p>
+              </div>
             ) : userSources.length === 0 ? (
-              <p className="app-muted-inline">
-                No has agregado ninguna fuente RSS todavía.
-              </p>
+              <div className="app-empty-state">
+                <p className="app-empty-state-message">
+                  No has agregado ninguna fuente RSS todavía.
+                </p>
+              </div>
             ) : (
               <ul className="app-sources-list">
                 {userSources.map((s) => (

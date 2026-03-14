@@ -99,6 +99,9 @@ export function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="app-root">
+      <a href="#main-content" className="app-skip-link">
+        Saltar al contenido
+      </a>
       <header
         className={`app-header ${
           menuSide === 'right' ? 'app-header--drawer-right' : ''
@@ -150,6 +153,7 @@ export function Layout({ children }: { children: ReactNode }) {
               className="app-header-button app-header-search-button"
               onClick={() => navigate('/search')}
               title="Buscar noticias"
+              aria-label="Buscar noticias"
             >
               Buscar
             </button>
@@ -207,6 +211,8 @@ export function Layout({ children }: { children: ReactNode }) {
       )}
 
       <main
+        id="main-content"
+        tabIndex={-1}
         className={
           [
             'app-main',

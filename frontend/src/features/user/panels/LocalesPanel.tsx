@@ -32,11 +32,17 @@ export function LocalesPanel({
           : `Noticias de ${regionName}.`}
       </p>
       {geoLoading ? (
-        <p className="app-muted-inline">Detectando ubicación…</p>
+        <div className="app-empty-state">
+          <p className="app-empty-state-message">Detectando ubicación…</p>
+        </div>
       ) : loading ? (
-        <p className="app-muted-inline">Cargando noticias…</p>
+        <div className="app-empty-state">
+          <p className="app-empty-state-message">Cargando noticias…</p>
+        </div>
       ) : items.length === 0 ? (
-        <p className="app-muted-inline">No hay noticias disponibles para {regionName}.</p>
+        <div className="app-empty-state">
+          <p className="app-empty-state-message">No hay noticias disponibles para {regionName}.</p>
+        </div>
       ) : (
         <div className="app-flex-col">
           {items.map((item, idx) => (

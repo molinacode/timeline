@@ -85,17 +85,21 @@ export function SavedNewsPage() {
     >
       <div className="app-page-section">
         {error && (
-          <p className="app-muted-inline" role="alert">
+          <p className="app-form-message app-form-message--error" role="alert">
             {error}
           </p>
         )}
         {loading ? (
-          <p className="app-muted-inline">Cargando…</p>
+          <div className="app-empty-state">
+            <p className="app-empty-state-message">Cargando…</p>
+          </div>
         ) : items.length === 0 ? (
-          <p className="app-muted-inline">
-            Aún no has guardado ninguna noticia. En el timeline o el comparador puedes guardar
-            noticias para verlas aquí.
-          </p>
+          <div className="app-empty-state">
+            <p className="app-empty-state-message">
+              Aún no has guardado ninguna noticia. En el timeline o el comparador puedes guardar
+              noticias para verlas aquí.
+            </p>
+          </div>
         ) : (
           <div className="app-flex-col">
             {items.map((item) => (

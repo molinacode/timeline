@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../../app/providers/AuthProvider'
 import { BasePage } from '../../../components/layout/BasePage'
 import { apiUrl } from '@/config/api'
@@ -50,6 +50,11 @@ export function ListCreatePage() {
       subtitle="Crea una lista para agrupar fuentes."
     >
       <div className="app-page-section">
+        <p className="app-list-detail-back">
+          <Link to="/me/lists" className="app-btn-link">
+            ← Volver a Mis listas
+          </Link>
+        </p>
         <form onSubmit={handleSubmit} className="app-form">
           <div className="app-form-group">
             <label htmlFor="list-name">Nombre *</label>

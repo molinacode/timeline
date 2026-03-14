@@ -69,7 +69,9 @@ export function ListsListPage() {
         )}
 
         {loading ? (
-          <p className="app-muted-inline">Cargando listas…</p>
+          <div className="app-empty-state">
+            <p className="app-empty-state-message">Cargando listas…</p>
+          </div>
         ) : lists.length === 0 ? (
           <div className="app-empty-state">
             <p className="app-empty-state-message">

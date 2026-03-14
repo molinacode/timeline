@@ -224,7 +224,9 @@ export function ListDetailPage() {
           {error ? (
             <p className="app-form-message app-form-message--error">{error}</p>
           ) : (
-            <p className="app-muted-inline">Cargando…</p>
+            <div className="app-empty-state">
+              <p className="app-empty-state-message">Cargando…</p>
+            </div>
           )}
         </div>
       </BasePage>

@@ -62,7 +62,9 @@ export function RssMetricsPage() {
         <>
           <h3 className="app-page-title app-page-title--sm">Clics por fuente</h3>
           {data.bySource.length === 0 ? (
-            <p className="app-muted-inline">Aún no hay clics registrados.</p>
+            <div className="app-empty-state">
+              <p className="app-empty-state-message">Aún no hay clics registrados.</p>
+            </div>
           ) : (
             <div className="app-metrics-chart">
               {data.bySource.map((s) => (
@@ -86,7 +88,9 @@ export function RssMetricsPage() {
             Detalle por usuario y fuente
           </h3>
           {data.byUser.length === 0 ? (
-            <p className="app-muted-inline">No hay datos.</p>
+            <div className="app-empty-state">
+              <p className="app-empty-state-message">No hay datos.</p>
+            </div>
           ) : (
             <div className="app-table-wrap">
               <table className="app-table">
