@@ -7,6 +7,7 @@ import { apiUrl } from '@/config/api'
 
 type LocationState = {
   item?: NewsItem
+  fromTab?: string
 }
 
 export function ReaderPage() {
@@ -14,6 +15,7 @@ export function ReaderPage() {
   const location = useLocation()
   const state = (location.state || {}) as LocationState
   const item = state.item
+  const fromTab = state.fromTab
   const [mode, setMode] = useState<'reader' | 'web'>('reader')
   const [enrichedHtml, setEnrichedHtml] = useState<string | null>(null)
   const [enrichedLoading, setEnrichedLoading] = useState(false)
@@ -77,6 +79,20 @@ export function ReaderPage() {
     }
   }, [item?.link])
 
+  const timeAgo = (() => {
+    if (!item.pubDate) return ''
+    const date = new Date(item.pubDate)
+    if (Number.isNaN(date.getTime())) return ''
+    const diffMs = Date.now() - date.getTime()
+    const diffMin = Math.floor(diffMs / 60000)
+    if (diffMin < 1) return 'Hace un momento'
+    if (diffMin < 60) return `Hace ${diffMin} min`
+    const diffH = Math.floor(diffMin / 60)
+    if (diffH < 24) return `Hace ${diffH} h`
+    const diffD = Math.floor(diffH / 24)
+    return `Hace ${diffD} días`
+  })()
+
   return (
     <BasePage
       title="Lector de noticias"
@@ -114,10 +130,16 @@ export function ReaderPage() {
           <article className="app-card app-reader-article">
             <NewsImage src={item.image} />
             <div className="app-reader-body">
+              {fromTab && (
+                <p className="app-page-label app-page-label--normal">
+                  {fromTab.toUpperCase()}
+                </p>
+              )}
               <h1 className="app-page-title">{item.title}</h1>
               <p className="app-reader-meta">
                 {item.source}
                 {domain ? ` · ${domain}` : ''}
+                {timeAgo ? ` · ${timeAgo}` : ''}
               </p>
               {enrichedLoading && (
                 <p className="app-reader-text">Cargando versión para lector…</p>
@@ -138,6 +160,38 @@ export function ReaderPage() {
                   abrirla en la web original.
                 </p>
               )}
+              <div className="app-reader-meta app-reader-meta--external">
+                <button
+                  type="button"
+                  className="app-header-button"
+                  onClick={() => window.open(item.link, '_blank')}
+                >
+                  Ver en web original
+                </button>
+                <button
+                  type="button"
+                  className="app-header-button"
+                  onClick={async () => {
+                    try {
+                      if (navigator.share) {
+                        await navigator.share({
+                          title: item.title,
+                          text: item.description || item.title,
+                          url: item.link,
+                        })
+                      } else {
+                        await navigator.clipboard.writeText(item.link)
+                        // eslint-disable-next-line no-alert
+                        alert('Enlace copiado al portapapeles')
+                      }
+                    } catch {
+                      // usuario canceló o error silencioso
+                    }
+                  }}
+                >
+                  Compartir
+                </button>
+              </div>
             </div>
           </article>
         </div>
