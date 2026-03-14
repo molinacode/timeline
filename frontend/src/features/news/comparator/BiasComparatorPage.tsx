@@ -1,13 +1,17 @@
 /** Comparador: 15 noticias, 3 cards principales + lista otras fuentes (estilo ground.news) */
+import { useState, useMemo } from 'react'
 import { useAuth } from '../../../app/providers/AuthProvider'
 import { BiasArticleCard } from './BiasArticleCard'
 import { useNewsClickTracker } from '../../../hooks/useNewsClickTracker'
 import { useBiasComparator } from '../../../hooks/useBiasComparator'
 
+type BiasTab = 'all' | 'progressive' | 'centrist' | 'conservative'
+
 export function BiasComparatorPage() {
   const { token } = useAuth()
   const { trackClick } = useNewsClickTracker()
   const { data, loading, error } = useBiasComparator(token)
+  const [biasTab, setBiasTab] = useState<BiasTab>('all')
 
   if (loading) {
     return (
@@ -28,6 +32,17 @@ export function BiasComparatorPage() {
   }
 
   const groups = data?.groups ?? []
+  const filteredGroups = useMemo(() => {
+    if (biasTab === 'all') return groups
+    return groups.filter((g) => g[biasTab] != null)
+  }, [groups, biasTab])
+
+  const tabs: { id: BiasTab; label: string }[] = [
+    { id: 'all', label: 'Todas' },
+    { id: 'progressive', label: 'Progresista' },
+    { id: 'centrist', label: 'Centrista' },
+    { id: 'conservative', label: 'Conservador' },
+  ]
 
   return (
     <div className="comparador-layout">
@@ -54,14 +69,31 @@ export function BiasComparatorPage() {
         <h2 className="comparador-section-title">
           Panel comparativo (estilo ground.news)
         </h2>
-        {groups.length === 0 ? (
-          <p className="comparator-column-empty">
-            No se encontraron noticias coincidentes en las tres fuentes. Intenta
-            más tarde.
-          </p>
+        <div className="comparador-tabs" role="tablist" aria-label="Filtrar por sesgo">
+          {tabs.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              aria-selected={biasTab === t.id}
+              className={`comparador-tab ${biasTab === t.id ? 'comparador-tab--active' : ''}`}
+              onClick={() => setBiasTab(t.id)}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+        {filteredGroups.length === 0 ? (
+          <div className="app-empty-state">
+            <p className="app-empty-state-message">
+              {groups.length === 0
+                ? 'No se encontraron noticias coincidentes en las tres fuentes. Intenta más tarde.'
+                : 'No hay historias en esta pestaña.'}
+            </p>
+          </div>
         ) : (
           <div className="comparador-stories">
-            {groups.map((group, idx) => (
+            {filteredGroups.map((group, idx) => (
               <article
                 key={idx}
                 className="comparador-story-card app-card app-card--spaced"

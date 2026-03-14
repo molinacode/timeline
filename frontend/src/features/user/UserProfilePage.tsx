@@ -335,6 +335,19 @@ export function UserProfilePage() {
                 Configurar intereses
               </button>
             </div>
+            <div className="app-form-group">
+              <label>Mis listas</label>
+              <p className="app-form-hint">
+                Crea y gestiona listas de fuentes para organizar tu lectura.
+              </p>
+              <button
+                type="button"
+                className="app-btn-secondary"
+                onClick={() => navigate('/me/lists')}
+              >
+                Ver mis listas
+              </button>
+            </div>
           </div>
         )}
       </div>

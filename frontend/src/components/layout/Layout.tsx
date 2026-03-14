@@ -67,6 +67,7 @@ export function Layout({ children }: { children: ReactNode }) {
           <NavLinkWithActive to="/me/timeline" onClick={closeDrawer}>Mi TimeLine</NavLinkWithActive>
           <NavLinkWithActive to="/me/comparator" onClick={closeDrawer}>Comparador</NavLinkWithActive>
           <NavLinkWithActive to="/me/saved" onClick={closeDrawer}>Guardadas</NavLinkWithActive>
+          <NavLinkWithActive to="/me/lists" onClick={closeDrawer}>Mis listas</NavLinkWithActive>
           {themeButton}
           <Link
             to="/me/profile"
@@ -205,7 +206,17 @@ export function Layout({ children }: { children: ReactNode }) {
         </>
       )}
 
-      <main className={isComparatorPage ? 'app-main app-main--wide' : 'app-main'}>
+      <main
+        className={
+          [
+            'app-main',
+            isComparatorPage && 'app-main--wide',
+            isNarrow && user && 'app-main--with-bottom-nav',
+          ]
+            .filter(Boolean)
+            .join(' ')
+        }
+      >
         {children}
       </main>
     </div>

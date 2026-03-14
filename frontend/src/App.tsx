@@ -22,6 +22,9 @@ import { BiasComparatorPage } from './features/news/comparator/BiasComparatorPag
 import { UserProfilePage } from './features/user/UserProfilePage'
 import { SavedNewsPage } from './features/user/SavedNewsPage'
 import { InterestsOnboardingPage } from './features/user/InterestsOnboardingPage'
+import { ListsListPage } from './features/user/lists/ListsListPage'
+import { ListCreatePage } from './features/user/lists/ListCreatePage'
+import { ListDetailPage } from './features/user/lists/ListDetailPage'
 import { ReaderPage } from './features/news/reader/ReaderPage'
 import { SearchPage } from './features/news/SearchPage'
 import { CookieBanner } from './components/CookieBanner'
@@ -84,6 +87,30 @@ export function App() {
             element={
               <RequireAuth>
                 <InterestsOnboardingPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/me/lists"
+            element={
+              <RequireAuth>
+                <ListsListPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/me/lists/new"
+            element={
+              <RequireAuth>
+                <ListCreatePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/me/lists/:id"
+            element={
+              <RequireAuth>
+                <ListDetailPage />
               </RequireAuth>
             }
           />

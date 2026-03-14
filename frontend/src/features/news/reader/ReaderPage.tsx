@@ -117,7 +117,7 @@ export function ReaderPage() {
           </button>
           <button
             type="button"
-            className=""
+            className={mode === 'web' ? 'active' : ''}
             onClick={() => window.open(item.link, '_blank')}
           >
             Web original
