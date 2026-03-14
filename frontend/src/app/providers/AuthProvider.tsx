@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react'
 import { apiUrl } from '@/config/api'
+import { fetchApi } from '@/api/client'
 
 type Role = 'user' | 'admin'
 
@@ -63,18 +64,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       token,
       hydrated,
       async login(email, password) {
-        const res = await fetch(apiUrl('/api/auth/login'), {
+        const data = await fetchApi<{
+          user: { id: number; email: string; name: string; region?: string; role: string; hasAcceptedTerms?: boolean; termsVersion?: string | null }
+          token: string
+        }>(apiUrl('/api/auth/login'), {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
+          body: { email, password },
         })
-
-        if (!res.ok) {
-          const error = await res.json().catch(() => ({}))
-          throw new Error(error.message || 'Error al iniciar sesión')
-        }
-
-        const data = await res.json()
         const userData: DemoUser = {
           id: String(data.user.id),
           email: data.user.email,
@@ -92,17 +88,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return userData
       },
       async register(name, email, _password) {
-        const res = await fetch(apiUrl('/api/auth/register'), {
+        await fetchApi(apiUrl('/api/auth/register'), {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, password: _password }),
+          body: { name, email, password: _password },
         })
-
-        if (!res.ok) {
-          const error = await res.json().catch(() => ({}))
-          throw new Error(error.message || 'Error al registrar usuario')
-        }
-
         // No iniciamos sesión automáticamente hasta que confirme el correo
       },
       logout() {

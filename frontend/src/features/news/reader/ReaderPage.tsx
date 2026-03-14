@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { BasePage } from '../../../components/layout/BasePage'
 import { NewsImage } from '../../../components/NewsImage'
 import type { NewsItem } from '../../../types/news'
@@ -13,18 +13,83 @@ type LocationState = {
 export function ReaderPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const [searchParams] = useSearchParams()
+  const urlParam = searchParams.get('url')
   const state = (location.state || {}) as LocationState
-  const item = state.item
+  const stateItem = state.item
   const fromTab = state.fromTab
+
+  const [item, setItem] = useState<NewsItem | null>(stateItem ?? null)
+  const [recoverLoading, setRecoverLoading] = useState(Boolean(urlParam && !stateItem))
+  const [recoverError, setRecoverError] = useState<string | null>(null)
   const [mode, setMode] = useState<'reader' | 'web'>('reader')
   const [enrichedHtml, setEnrichedHtml] = useState<string | null>(null)
   const [enrichedLoading, setEnrichedLoading] = useState(false)
   const [enrichedError, setEnrichedError] = useState<string | null>(null)
 
+  // Recuperar noticia por URL al recargar (cuando no hay state)
+  useEffect(() => {
+    if (stateItem) {
+      setItem(stateItem)
+      setRecoverLoading(false)
+      setRecoverError(null)
+      return
+    }
+    if (!urlParam || urlParam.trim() === '') {
+      setRecoverLoading(false)
+      return
+    }
+    const controller = new AbortController()
+    fetch(apiUrl(`/api/news/by-url?url=${encodeURIComponent(urlParam.trim())}`), {
+      signal: controller.signal,
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(res.status === 404 ? 'Noticia no encontrada' : 'Error al cargar')
+        return res.json()
+      })
+      .then((data) => {
+        setItem({
+          id: data.id,
+          title: data.title,
+          link: data.link,
+          description: data.description ?? '',
+          pubDate: data.pubDate ?? null,
+          image: data.image ?? null,
+          source: data.source ?? '',
+          programName: data.programName ?? null,
+        })
+        setRecoverError(null)
+      })
+      .catch((err) => {
+        if (err.name === 'AbortError') return
+        setRecoverError(err.message || 'No se pudo cargar la noticia.')
+        setItem(null)
+      })
+      .finally(() => setRecoverLoading(false))
+    return () => controller.abort()
+  }, [urlParam, stateItem])
+
+  if (recoverLoading) {
+    return (
+      <BasePage centered title="Lector de noticias">
+        <div className="app-empty-state">
+          <p className="app-empty-state-message">Cargando noticia…</p>
+        </div>
+      </BasePage>
+    )
+  }
+
   if (!item) {
     return (
       <BasePage centered title="Lector de noticias">
-        <p>No se ha encontrado la noticia. Vuelve al timeline y ábrela de nuevo.</p>
+        <div className="app-empty-state">
+          <p className="app-empty-state-message">
+            {recoverError || 'No se ha encontrado la noticia.'} Vuelve al timeline y ábrela de nuevo.
+          </p>
+          <button type="button" className="app-btn-primary" onClick={() => navigate('/me/timeline')}>
+            Ir a Mi TimeLine
+          </button>
+        </div>
       </BasePage>
     )
   }

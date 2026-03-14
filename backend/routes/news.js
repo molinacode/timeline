@@ -179,6 +179,52 @@ router.get('/news/ultima-hora', async (req, res) => {
   }
 })
 
+// GET /api/news/by-url?url=... — una noticia por URL (para recuperar en lector al recargar)
+router.get('/news/by-url', async (req, res) => {
+  const rawUrl = req.query.url
+  if (!rawUrl || typeof rawUrl !== 'string') {
+    return res.status(400).json({ error: 'Parámetro url obligatorio' })
+  }
+  let url
+  try {
+    url = decodeURIComponent(rawUrl.trim())
+  } catch {
+    return res.status(400).json({ error: 'URL no válida' })
+  }
+  try {
+    const supabase = getSupabase()
+    const { data: row, error } = await supabase
+      .from('news_items')
+      .select('id, source_id, title, description, link, image_url, pub_date')
+      .eq('link', url)
+      .limit(1)
+      .maybeSingle()
+    if (error) throw error
+    if (!row) return res.status(404).json({ error: 'Noticia no encontrada' })
+    const sourceMap = new Map()
+    if (row.source_id) {
+      const { data: sources } = await supabase
+        .from('news_sources')
+        .select('id, name')
+        .eq('id', row.source_id)
+      ;(sources || []).forEach((s) => sourceMap.set(s.id, s.name))
+    }
+    res.json({
+      id: row.id,
+      title: row.title,
+      link: row.link,
+      description: row.description || '',
+      pubDate: row.pub_date,
+      image: row.image_url,
+      source: sourceMap.get(row.source_id) ?? null,
+      programName: null,
+    })
+  } catch (err) {
+    console.error('Error en /api/news/by-url:', err.message)
+    res.status(500).json({ error: 'Error al obtener la noticia' })
+  }
+})
+
 // GET /api/news/by-region - noticias de fuentes locales por región (madrid, andalucia, etc.)
 router.get('/news/by-region', async (req, res) => {
   const regionId = req.query.region || 'madrid'

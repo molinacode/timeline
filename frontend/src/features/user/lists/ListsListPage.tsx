@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../app/providers/AuthProvider'
 import { BasePage } from '../../../components/layout/BasePage'
 import { apiUrl } from '@/config/api'
+import { fetchApi } from '@/api/client'
 
 type ListSource = {
   id: number
@@ -33,14 +34,8 @@ export function ListsListPage() {
   useEffect(() => {
     if (!token) return
     let cancelled = false
-    fetch(apiUrl('/api/me/lists?withSources=1'), {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error('Error al cargar listas')
-        return res.json()
-      })
-      .then((data: ListItem[]) => {
+    fetchApi<ListItem[]>(apiUrl('/api/me/lists?withSources=1'), { token })
+      .then((data) => {
         if (!cancelled) setLists(Array.isArray(data) ? data : [])
       })
       .catch((e) => {

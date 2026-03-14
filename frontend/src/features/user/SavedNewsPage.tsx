@@ -118,7 +118,7 @@ export function SavedNewsPage() {
                     trackClick(source, link || item.link)
                   }
                   onOpenReader={(article) =>
-                    navigate('/reader', {
+                    navigate(`/reader?url=${encodeURIComponent(article.link)}`, {
                       state: { item: article, fromTab: 'Guardadas' },
                     })
                   }

@@ -30,15 +30,11 @@ export function CategoriasPanel({
     >
       <h2 className="app-card-title">Categorías</h2>
       {loadingCategories ? (
-        <div className="app-empty-state">
-          <p className="app-empty-state-message">Cargando…</p>
-        </div>
+        <p className="app-muted-inline">Cargando…</p>
       ) : categories.length === 0 ? (
-        <div className="app-empty-state">
-          <p className="app-empty-state-message">
-            No hay categorías configuradas. El administrador puede crearlas en el panel de Admin.
-          </p>
-        </div>
+        <p className="app-muted-inline">
+          No hay categorías configuradas. El administrador puede crearlas en el panel de Admin.
+        </p>
       ) : (
         <div className="app-categories-chips">
           {categories.map((c) => (
@@ -58,13 +54,9 @@ export function CategoriasPanel({
         <>
           <h3 className="app-card-title app-category-news-title">{selectedCategory}</h3>
           {loadingCategoryNews ? (
-            <div className="app-empty-state">
-              <p className="app-empty-state-message">Cargando noticias…</p>
-            </div>
+            <p className="app-muted-inline">Cargando noticias…</p>
           ) : categoryNews.length === 0 ? (
-            <div className="app-empty-state">
-              <p className="app-empty-state-message">No hay noticias en esta categoría por ahora.</p>
-            </div>
+            <p className="app-muted-inline">No hay noticias en esta categoría por ahora.</p>
           ) : (
             <div className="app-flex-col">
               {categoryNews.map((item, idx) => (

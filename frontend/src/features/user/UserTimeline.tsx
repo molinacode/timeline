@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { useRegionFromGeolocation } from '../../hooks/useRegionFromGeolocation'
 import { useNewsClickTracker } from '../../hooks/useNewsClickTracker'
@@ -23,7 +22,6 @@ const TABS: { id: TabId; label: string }[] = [
 export function UserTimeline() {
   const { token } = useAuth()
   const { trackClick } = useNewsClickTracker()
-  const navigate = useNavigate()
   const {
     regionId,
     loading: geoLoading,
@@ -31,7 +29,6 @@ export function UserTimeline() {
 
   const [lastHourItems, setLastHourItems] = useState<NewsItem[]>([])
   const [categories, setCategories] = useState<Category[]>([])
-  const [preferredCategoryIds, setPreferredCategoryIds] = useState<number[]>([])
   const [userSources, setUserSources] = useState<UserCustomSource[]>([])
   const [loadingLastHour, setLoadingLastHour] = useState(true)
   const [loadingCategories, setLoadingCategories] = useState(true)
@@ -48,35 +45,10 @@ export function UserTimeline() {
   const [addingSource, setAddingSource] = useState(false)
   const [addError, setAddError] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<TabId>('ultima-hora')
-  const [savingNewsId, setSavingNewsId] = useState<number | null>(null)
-
-  const swipeStartXRef = useRef<number | null>(null)
 
   const effectiveRegionId = regionId || 'madrid'
   const region = regionsData.regions.find((r) => r.id === effectiveRegionId) ?? null
   const isDefaultMadrid = !regionId && effectiveRegionId === 'madrid'
-
-  const handlePanelsTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    const touch = e.touches[0]
-    swipeStartXRef.current = touch.clientX
-  }
-
-  const handlePanelsTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
-    const startX = swipeStartXRef.current
-    if (startX == null) return
-    const touch = e.changedTouches[0]
-    const diff = touch.clientX - startX
-    const MIN_SWIPE = 50
-    if (Math.abs(diff) < MIN_SWIPE) return
-
-    const currentIndex = TABS.findIndex((t) => t.id === activeTab)
-    if (currentIndex === -1) return
-
-    const nextIndex = diff < 0 ? currentIndex + 1 : currentIndex - 1
-    if (nextIndex < 0 || nextIndex >= TABS.length) return
-
-    setActiveTab(TABS[nextIndex].id)
-  }
 
   useEffect(() => {
     ;(async () => {
@@ -106,50 +78,20 @@ export function UserTimeline() {
     ;(async () => {
       try {
         setLoadingCategories(true)
-        const headers: HeadersInit = {
-          Authorization: `Bearer ${token}`,
-        }
-
-        const [categoriesRes, interestsRes] = await Promise.all([
-          fetch(apiUrl('/api/categories'), { headers }),
-          fetch(apiUrl('/api/me/interests'), { headers }),
-        ])
-
-        if (categoriesRes.ok) {
-          const data = await categoriesRes.json()
+        const res = await fetch(apiUrl('/api/categories'), {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        if (res.ok) {
+          const data = await res.json()
           setCategories(Array.isArray(data) ? data : [])
-        } else {
-          setCategories([])
-        }
-
-        if (interestsRes.ok) {
-          const json = await interestsRes.json()
-          const ids =
-            Array.isArray(json.categories) && json.categories.length > 0
-              ? (json.categories as (number | string)[])
-                  .map((c) => Number(c))
-                  .filter((n) => Number.isFinite(n) && n > 0)
-              : []
-          setPreferredCategoryIds(ids)
-        } else {
-          setPreferredCategoryIds([])
         }
       } catch {
         setCategories([])
-        setPreferredCategoryIds([])
       } finally {
         setLoadingCategories(false)
       }
     })()
   }, [token])
-
-  useEffect(() => {
-    if (!categories.length || !preferredCategoryIds.length || selectedCategory) return
-    const firstPreferred = categories.find((c) => preferredCategoryIds.includes(c.id))
-    if (firstPreferred) {
-      loadNewsByCategory(firstPreferred.name)
-    }
-  }, [categories, preferredCategoryIds, selectedCategory])
 
   useEffect(() => {
     if (!token) return
@@ -166,27 +108,6 @@ export function UserTimeline() {
       .catch(() => setLocalNews([]))
       .finally(() => setLoadingLocalNews(false))
   }, [activeTab, effectiveRegionId])
-
-  async function handleSaveNews(newsId: number) {
-    if (!token) return
-    setSavingNewsId(newsId)
-    try {
-      const res = await fetch(apiUrl('/api/me/saved'), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ news_id: newsId }),
-      })
-      if (!res.ok) throw new Error('Error al guardar')
-      // Opcional: mostrar toast o feedback. Por ahora solo quitamos el estado.
-    } catch {
-      // feedback opcional
-    } finally {
-      setSavingNewsId(null)
-    }
-  }
 
   async function loadUserSources() {
     if (!token) return
@@ -275,56 +196,11 @@ export function UserTimeline() {
   }
 
   return (
-    <BasePage subtitle="Tus fuentes, categorías y últimas noticias.">
+    <BasePage
+      title="Mi TimeLine"
+      subtitle="Tus fuentes, categorías y últimas noticias."
+    >
       <div className="app-page-section">
-        {categories.length > 0 && (
-          <div className="app-category-carousel" aria-label="Categorías destacadas">
-            <div className="app-category-carousel-track">
-              {categories
-                .slice()
-                .sort((a, b) => {
-                  const aPreferred = preferredCategoryIds.includes(a.id)
-                  const bPreferred = preferredCategoryIds.includes(b.id)
-                  if (aPreferred !== bPreferred) return Number(bPreferred) - Number(aPreferred)
-                  return Number(!!b.isSpecial) - Number(!!a.isSpecial)
-                })
-                .map((c) => {
-                  const isPreferred = preferredCategoryIds.includes(c.id)
-                  const isActive = selectedCategory === c.name
-                  return (
-                    <button
-                      key={`carousel-${c.id}`}
-                      type="button"
-                      className={`app-category-chip app-category-carousel-chip ${
-                        c.isSpecial ? 'app-category-chip--special' : ''
-                      } ${isActive ? 'active' : ''} ${
-                        isPreferred ? 'app-category-chip--preferred' : ''
-                      }`}
-                      onClick={() => {
-                        setActiveTab('categorias')
-                        loadNewsByCategory(c.name)
-                      }}
-                      title={c.description || undefined}
-                    >
-                      {c.icon && <span className="app-category-chip-icon">{c.icon}</span>}
-                      <span>{c.name}</span>
-                      {isPreferred && (
-                        <span className="app-category-chip-preferred" aria-hidden="true">
-                          Para ti
-                        </span>
-                      )}
-                      {c.isSpecial && (
-                        <span className="app-category-chip-badge" aria-hidden="true">
-                          ⚡
-                        </span>
-                      )}
-                    </button>
-                  )
-                })}
-            </div>
-          </div>
-        )}
-
         <nav className="app-timeline-tabs" role="tablist">
           {TABS.map((tab) => {
             const isSelected = activeTab === tab.id
@@ -345,11 +221,7 @@ export function UserTimeline() {
           })}
         </nav>
 
-        <div
-          className="app-timeline-panels"
-          onTouchStart={handlePanelsTouchStart}
-          onTouchEnd={handlePanelsTouchEnd}
-        >
+        <div className="app-timeline-panels">
           {/* 1. Última hora */}
           <section
             id="panel-ultima-hora"
@@ -360,27 +232,18 @@ export function UserTimeline() {
           >
             <h2 className="app-card-title">Última hora</h2>
             {loadingLastHour ? (
-              <div className="app-empty-state">
-                <p className="app-empty-state-message">Cargando…</p>
-              </div>
+              <p className="app-muted-inline">Cargando…</p>
             ) : lastHourItems.length === 0 ? (
-              <div className="app-empty-state">
-                <p className="app-empty-state-message">No hay noticias disponibles.</p>
-              </div>
+              <p className="app-muted-inline">No hay noticias disponibles.</p>
             ) : (
               <div className="app-flex-col">
                 {lastHourItems.map((item, idx) => (
                   <TimelineArticleCard
-                    key={item.id != null ? `id-${item.id}` : `${item.link}-${idx}`}
+                    key={`${item.link}-${idx}`}
                     item={item}
                     formatDate
                     onLinkClick={(source, link) =>
                       trackClick(source, link || item.link)
-                    }
-                    onSave={item.id != null ? handleSaveNews : undefined}
-                    saving={savingNewsId !== null}
-                    onOpenReader={(article) =>
-                      navigate('/reader', { state: { item: article, fromTab: 'Última hora' } })
                     }
                   />
                 ))}
@@ -401,11 +264,9 @@ export function UserTimeline() {
               Noticias de las fuentes por categoría temática.
             </p>
             {categories.length === 0 ? (
-              <div className="app-empty-state">
-                <p className="app-empty-state-message">
-                  No hay categorías configuradas. El administrador puede crearlas en el panel de Admin.
-                </p>
-              </div>
+              <p className="app-muted-inline">
+                No hay categorías configuradas. El administrador puede crearlas en el panel de Admin.
+              </p>
             ) : (
               <div className="app-categories-chips">
                 {categories
@@ -417,21 +278,12 @@ export function UserTimeline() {
                       type="button"
                       className={`app-category-chip ${
                         c.isSpecial ? 'app-category-chip--special' : ''
-                      } ${selectedCategory === c.name ? 'active' : ''} ${
-                        preferredCategoryIds.includes(c.id)
-                          ? 'app-category-chip--preferred'
-                          : ''
-                      }`}
+                      } ${selectedCategory === c.name ? 'active' : ''}`}
                       onClick={() => loadNewsByCategory(c.name)}
                       title={c.description || undefined}
                     >
                       {c.icon && <span className="app-category-chip-icon">{c.icon}</span>}
                       <span>{c.name}</span>
-                      {preferredCategoryIds.includes(c.id) && (
-                        <span className="app-category-chip-preferred" aria-hidden="true">
-                          Para ti
-                        </span>
-                      )}
                       {c.isSpecial && (
                         <span className="app-category-chip-badge" aria-hidden="true">
                           ⚡
@@ -447,15 +299,11 @@ export function UserTimeline() {
                   {selectedCategory}
                 </h3>
                 {loadingCategoryNews ? (
-                  <div className="app-empty-state">
-                    <p className="app-empty-state-message">Cargando noticias…</p>
-                  </div>
+                  <p className="app-muted-inline">Cargando noticias…</p>
                 ) : categoryNews.length === 0 ? (
-                  <div className="app-empty-state">
-                    <p className="app-empty-state-message">
-                      No hay noticias en esta categoría por ahora.
-                    </p>
-                  </div>
+                  <p className="app-muted-inline">
+                    No hay noticias en esta categoría por ahora.
+                  </p>
                 ) : (
                   <div className="app-flex-col">
                     {categoryNews.map((item, idx) => (
@@ -512,19 +360,13 @@ export function UserTimeline() {
                 : `Noticias de ${region?.name || 'tu región'}.`}
             </p>
             {geoLoading ? (
-              <div className="app-empty-state">
-                <p className="app-empty-state-message">Detectando ubicación…</p>
-              </div>
+              <p className="app-muted-inline">Detectando ubicación…</p>
             ) : loadingLocalNews ? (
-              <div className="app-empty-state">
-                <p className="app-empty-state-message">Cargando noticias…</p>
-              </div>
+              <p className="app-muted-inline">Cargando noticias…</p>
             ) : localNews.length === 0 ? (
-              <div className="app-empty-state">
-                <p className="app-empty-state-message">
-                  No hay noticias disponibles para {region?.name || 'esta región'}.
-                </p>
-              </div>
+              <p className="app-muted-inline">
+                No hay noticias disponibles para {region?.name || 'esta región'}.
+              </p>
             ) : (
               <div className="app-flex-col">
                 {localNews.map((item, idx) => (
@@ -614,15 +456,11 @@ export function UserTimeline() {
             </form>
 
             {loadingUserSources ? (
-              <div className="app-empty-state">
-                <p className="app-empty-state-message">Cargando tus fuentes…</p>
-              </div>
+              <p className="app-muted-inline">Cargando tus fuentes…</p>
             ) : userSources.length === 0 ? (
-              <div className="app-empty-state">
-                <p className="app-empty-state-message">
-                  No has agregado ninguna fuente RSS todavía.
-                </p>
-              </div>
+              <p className="app-muted-inline">
+                No has agregado ninguna fuente RSS todavía.
+              </p>
             ) : (
               <ul className="app-sources-list">
                 {userSources.map((s) => (
