@@ -35,93 +35,93 @@ export function App() {
     <>
       <SessionExpiredHandler />
       <MenuSideProvider>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/timeline" element={<TimelinePage />} />
-          <Route
-            path="/me/timeline"
-            element={
-              <RequireRole role="user">
-                <UserTimeline />
-              </RequireRole>
-            }
-          />
-          <Route
-            path="/search"
-            element={
-              <RequireAuth>
-                <SearchPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/me/comparator"
-            element={
-              <RequireAuth>
-                <BiasComparatorPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/me/profile"
-            element={
-              <RequireAuth>
-                <UserProfilePage />
-              </RequireAuth>
-            }
-          />
-          
-          <Route
-            path="/me/interests"
-            element={
-              <RequireAuth>
-                <InterestsOnboardingPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/reader"
-            element={
-              <RequireAuth>
-                <ReaderPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/user-agreement"
-            element={
-              <RequireAuth>
-                <UserAgreementPage />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              <RequireRole role="admin">
-                <AdminDashboard />
-              </RequireRole>
-            }
-          >
-            <Route index element={<Navigate to="/admin/sources" replace />} />
-            <Route path="sources" element={<SourcesAdminPage />} />
-            <Route path="local-sources" element={<LocalSourcesAdminPage />} />
-            <Route path="categories" element={<CategoriesAdminPage />} />
-            <Route path="metrics" element={<RssMetricsPage />} />
-            <Route path="bias" element={<AdminBiasPage />} />
-            <Route path="logs" element={<AdminLogsPage />} />
-            <Route path="users" element={<AdminUsersPage />} />
-          </Route>
-          <Route path="/demo/clusters" element={<DemoClusterPage />} />
-          <Route path="/demo/bias" element={<TimelineBiasPage />} />
-          <Route path="/sources" element={<SourcesPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/verify-email" element={<VerifyEmailPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Layout>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/timeline" element={<TimelinePage />} />
+            <Route
+              path="/me/timeline"
+              element={
+                <RequireRole role="user">
+                  <UserTimeline />
+                </RequireRole>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <RequireAuth>
+                  <SearchPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/me/comparator"
+              element={
+                <RequireAuth>
+                  <BiasComparatorPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/me/profile"
+              element={
+                <RequireAuth>
+                  <UserProfilePage />
+                </RequireAuth>
+              }
+            />
+
+            <Route
+              path="/me/interests"
+              element={
+                <RequireAuth>
+                  <InterestsOnboardingPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/reader"
+              element={
+                <RequireAuth>
+                  <ReaderPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/user-agreement"
+              element={
+                <RequireAuth>
+                  <UserAgreementPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <RequireRole role="admin">
+                  <AdminDashboard />
+                </RequireRole>
+              }
+            >
+              <Route index element={<Navigate to="/admin/sources" replace />} />
+              <Route path="sources" element={<SourcesAdminPage />} />
+              <Route path="local-sources" element={<LocalSourcesAdminPage />} />
+              <Route path="categories" element={<CategoriesAdminPage />} />
+              <Route path="metrics" element={<RssMetricsPage />} />
+              <Route path="bias" element={<AdminBiasPage />} />
+              <Route path="logs" element={<AdminLogsPage />} />
+              <Route path="users" element={<AdminUsersPage />} />
+            </Route>
+            <Route path="/demo/clusters" element={<DemoClusterPage />} />
+            <Route path="/demo/bias" element={<TimelineBiasPage />} />
+            <Route path="/sources" element={<SourcesPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/verify-email" element={<VerifyEmailPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Layout>
       </MenuSideProvider>
       <CookieBanner />
       <Analytics />

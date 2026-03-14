@@ -25,10 +25,7 @@ export function UserTimeline() {
   const { trackClick } = useNewsClickTracker()
   const { isSaved, toggleSaved } = useSavedArticles()
   const navigate = useNavigate()
-  const {
-    regionId,
-    loading: geoLoading,
-  } = useRegionFromGeolocation()
+  const { regionId, loading: geoLoading } = useRegionFromGeolocation()
 
   const [lastHourItems, setLastHourItems] = useState<NewsItem[]>([])
   const [lastHourOffset, setLastHourOffset] = useState(0)
@@ -100,8 +97,8 @@ export function UserTimeline() {
       setLoadingLastHour(true)
       const res = await fetch(
         apiUrl(
-          `/api/news?limit=${LAST_HOUR_PAGE_SIZE}&offset=${lastHourOffset}`
-        )
+          `/api/news?limit=${LAST_HOUR_PAGE_SIZE}&offset=${lastHourOffset}`,
+        ),
       )
       const text = await res.text()
       let data: NewsItem[] = []
@@ -113,7 +110,10 @@ export function UserTimeline() {
       if (!Array.isArray(data)) data = []
       setLastHourItems((prev) => [...prev, ...data])
       setLastHourOffset((prev) => prev + data.length)
-      if (data.length < LAST_HOUR_PAGE_SIZE || lastHourOffset + data.length >= 100) {
+      if (
+        data.length < LAST_HOUR_PAGE_SIZE ||
+        lastHourOffset + data.length >= 100
+      ) {
         setLastHourHasMore(false)
       }
     } catch (e) {
@@ -167,8 +167,11 @@ export function UserTimeline() {
   }, [token])
 
   useEffect(() => {
-    if (!categories.length || !preferredCategoryIds.length || selectedCategory) return
-    const firstPreferred = categories.find((c) => preferredCategoryIds.includes(c.id))
+    if (!categories.length || !preferredCategoryIds.length || selectedCategory)
+      return
+    const firstPreferred = categories.find((c) =>
+      preferredCategoryIds.includes(c.id),
+    )
     if (firstPreferred) {
       loadNewsByCategory(firstPreferred.name)
     }
@@ -187,7 +190,11 @@ export function UserTimeline() {
     }
     const region = activeLocalRegionId
     setLoadingLocalNews(true)
-    fetch(apiUrl(`/api/news/by-region?region=${encodeURIComponent(region)}&limit=30`))
+    fetch(
+      apiUrl(
+        `/api/news/by-region?region=${encodeURIComponent(region)}&limit=30`,
+      ),
+    )
       .then((res) => (res.ok ? res.json() : []))
       .then((data) => setLocalNews(Array.isArray(data) ? data : []))
       .catch(() => setLocalNews([]))
@@ -284,16 +291,19 @@ export function UserTimeline() {
       const res = await fetch(
         apiUrl(
           `/api/news/by-category?category=${encodeURIComponent(
-            cat
-          )}&limit=${CATEGORY_PAGE_SIZE}&offset=${offsetToUse}`
-        )
+            cat,
+          )}&limit=${CATEGORY_PAGE_SIZE}&offset=${offsetToUse}`,
+        ),
       )
       if (res.ok) {
         const data = await res.json()
         const list = Array.isArray(data) ? data : []
         setCategoryNews((prev) => [...prev, ...list])
         setCategoryOffset(offsetToUse + list.length)
-        if (list.length < CATEGORY_PAGE_SIZE || offsetToUse + list.length >= 100) {
+        if (
+          list.length < CATEGORY_PAGE_SIZE ||
+          offsetToUse + list.length >= 100
+        ) {
           setCategoryHasMore(false)
         }
       } else {
@@ -337,14 +347,18 @@ export function UserTimeline() {
     <BasePage title="Mi TimeLine">
       <div className="app-page-section">
         {categories.length > 0 && (
-          <div className="app-category-carousel" aria-label="Categorías destacadas">
+          <div
+            className="app-category-carousel"
+            aria-label="Categorías destacadas"
+          >
             <div className="app-category-carousel-track">
               {categories
                 .slice()
                 .sort((a, b) => {
                   const aPreferred = preferredCategoryIds.includes(a.id)
                   const bPreferred = preferredCategoryIds.includes(b.id)
-                  if (aPreferred !== bPreferred) return Number(bPreferred) - Number(aPreferred)
+                  if (aPreferred !== bPreferred)
+                    return Number(bPreferred) - Number(aPreferred)
                   return Number(!!b.isSpecial) - Number(!!a.isSpecial)
                 })
                 .map((c) => {
@@ -365,15 +379,23 @@ export function UserTimeline() {
                       }}
                       title={c.description || undefined}
                     >
-                      {c.icon && <span className="app-category-chip-icon">{c.icon}</span>}
+                      {c.icon && (
+                        <span className="app-category-chip-icon">{c.icon}</span>
+                      )}
                       <span>{c.name}</span>
                       {isPreferred && (
-                        <span className="app-category-chip-preferred" aria-hidden="true">
+                        <span
+                          className="app-category-chip-preferred"
+                          aria-hidden="true"
+                        >
                           Para ti
                         </span>
                       )}
                       {c.isSpecial && (
-                        <span className="app-category-chip-badge" aria-hidden="true">
+                        <span
+                          className="app-category-chip-badge"
+                          aria-hidden="true"
+                        >
                           ⚡
                         </span>
                       )}
@@ -397,8 +419,8 @@ export function UserTimeline() {
                   tab.id === 'locales'
                     ? 'panel-locales'
                     : tab.id === 'mis-rss'
-                    ? 'panel-mis-rss'
-                    : 'panel-ultima-hora'
+                      ? 'panel-mis-rss'
+                      : 'panel-ultima-hora'
                 }
                 id={`tab-${tab.id}`}
                 className={`app-timeline-tab ${isSelected ? 'active' : ''}`}
@@ -430,51 +452,55 @@ export function UserTimeline() {
             className="app-timeline-panel"
           >
             <h2 className="app-card-title">
-              {isCategoryView ? selectedCategory || 'Noticias por categoría' : 'Última hora'}
+              {isCategoryView
+                ? selectedCategory || 'Noticias por categoría'
+                : 'Última hora'}
             </h2>
             {isCategoryView ? (
               loadingCategoryNews && categoryNews.length === 0 ? (
                 <p className="app-muted-inline">Cargando noticias…</p>
               ) : categoryNews.length === 0 ? (
-                <p className="app-muted-inline">No hay noticias para esta categoría.</p>
+                <p className="app-muted-inline">
+                  No hay noticias para esta categoría.
+                </p>
               ) : (
                 <>
-                <div className="app-flex-col app-grid-responsive">
-                  {categoryNews.map((item, idx) => (
-                    <TimelineArticleCard
-                      key={`${item.link}-${idx}`}
-                      item={item}
-                      formatDate
-                      isSaved={isSaved(item)}
-                      onLinkClick={(source, link) =>
-                        trackClick(source, link || item.link)
-                      }
-                      onSaveClick={() => toggleSaved(item)}
-                      onReaderClick={() =>
-                        navigate(
-                          `/me/reader?url=${encodeURIComponent(item.link)}`
-                        )
-                      }
-                      onShareClick={async () => {
-                        try {
-                          if (navigator.share) {
-                            await navigator.share({
-                              title: item.title,
-                              text: item.description || item.title,
-                              url: item.link,
-                            })
-                          } else {
-                            await navigator.clipboard.writeText(item.link)
-                            // eslint-disable-next-line no-alert
-                            alert('Enlace copiado al portapapeles')
-                          }
-                        } catch {
-                          // usuario canceló o fallo silencioso
+                  <div className="app-flex-col app-grid-responsive">
+                    {categoryNews.map((item, idx) => (
+                      <TimelineArticleCard
+                        key={`${item.link}-${idx}`}
+                        item={item}
+                        formatDate
+                        isSaved={isSaved(item)}
+                        onLinkClick={(source, link) =>
+                          trackClick(source, link || item.link)
                         }
-                      }}
-                    />
-                  ))}
-                </div>
+                        onSaveClick={() => toggleSaved(item)}
+                        onReaderClick={() =>
+                          navigate(
+                            `/me/reader?url=${encodeURIComponent(item.link)}`,
+                          )
+                        }
+                        onShareClick={async () => {
+                          try {
+                            if (navigator.share) {
+                              await navigator.share({
+                                title: item.title,
+                                text: item.description || item.title,
+                                url: item.link,
+                              })
+                            } else {
+                              await navigator.clipboard.writeText(item.link)
+                              // eslint-disable-next-line no-alert
+                              alert('Enlace copiado al portapapeles')
+                            }
+                          } catch {
+                            // usuario canceló o fallo silencioso
+                          }
+                        }}
+                      />
+                    ))}
+                  </div>
                   {categoryHasMore && selectedCategory && (
                     <div className="app-load-more">
                       <button
@@ -496,40 +522,40 @@ export function UserTimeline() {
             ) : (
               <>
                 <div className="app-flex-col app-grid-responsive">
-                {lastHourItems.map((item, idx) => (
-                  <TimelineArticleCard
-                    key={`${item.link}-${idx}`}
-                    item={item}
-                    formatDate
-                    isSaved={isSaved(item)}
-                    onLinkClick={(source, link) =>
-                      trackClick(source, link || item.link)
-                    }
-                    onSaveClick={() => toggleSaved(item)}
-                    onReaderClick={() =>
-                      navigate(
-                        `/me/reader?url=${encodeURIComponent(item.link)}`
-                      )
-                    }
-                    onShareClick={async () => {
-                      try {
-                        if (navigator.share) {
-                          await navigator.share({
-                            title: item.title,
-                            text: item.description || item.title,
-                            url: item.link,
-                          })
-                        } else {
-                          await navigator.clipboard.writeText(item.link)
-                          // eslint-disable-next-line no-alert
-                          alert('Enlace copiado al portapapeles')
-                        }
-                      } catch {
-                        // usuario canceló o fallo silencioso
+                  {lastHourItems.map((item, idx) => (
+                    <TimelineArticleCard
+                      key={`${item.link}-${idx}`}
+                      item={item}
+                      formatDate
+                      isSaved={isSaved(item)}
+                      onLinkClick={(source, link) =>
+                        trackClick(source, link || item.link)
                       }
-                    }}
-                  />
-                ))}
+                      onSaveClick={() => toggleSaved(item)}
+                      onReaderClick={() =>
+                        navigate(
+                          `/me/reader?url=${encodeURIComponent(item.link)}`,
+                        )
+                      }
+                      onShareClick={async () => {
+                        try {
+                          if (navigator.share) {
+                            await navigator.share({
+                              title: item.title,
+                              text: item.description || item.title,
+                              url: item.link,
+                            })
+                          } else {
+                            await navigator.clipboard.writeText(item.link)
+                            // eslint-disable-next-line no-alert
+                            alert('Enlace copiado al portapapeles')
+                          }
+                        } catch {
+                          // usuario canceló o fallo silencioso
+                        }
+                      }}
+                    />
+                  ))}
                 </div>
                 {lastHourHasMore && (
                   <div className="app-load-more">
@@ -558,7 +584,8 @@ export function UserTimeline() {
             <h2 className="app-card-title">Categorías</h2>
             {categories.length === 0 ? (
               <p className="app-muted-inline">
-                No hay categorías configuradas. El administrador puede crearlas en el panel de Admin.
+                No hay categorías configuradas. El administrador puede crearlas
+                en el panel de Admin.
               </p>
             ) : (
               <div className="app-categories-chips">
@@ -579,15 +606,23 @@ export function UserTimeline() {
                       onClick={() => loadNewsByCategory(c.name)}
                       title={c.description || undefined}
                     >
-                      {c.icon && <span className="app-category-chip-icon">{c.icon}</span>}
+                      {c.icon && (
+                        <span className="app-category-chip-icon">{c.icon}</span>
+                      )}
                       <span>{c.name}</span>
                       {preferredCategoryIds.includes(c.id) && (
-                        <span className="app-category-chip-preferred" aria-hidden="true">
+                        <span
+                          className="app-category-chip-preferred"
+                          aria-hidden="true"
+                        >
                           Para ti
                         </span>
                       )}
                       {c.isSpecial && (
-                        <span className="app-category-chip-badge" aria-hidden="true">
+                        <span
+                          className="app-category-chip-badge"
+                          aria-hidden="true"
+                        >
                           ⚡
                         </span>
                       )}
@@ -637,10 +672,13 @@ export function UserTimeline() {
                           <p className="app-comparador-cell-source app-timeline-meta">
                             {item.source}
                             {item.pubDate
-                              ? ` · ${new Date(item.pubDate).toLocaleString('es-ES', {
-                                  dateStyle: 'short',
-                                  timeStyle: 'short',
-                                })}`
+                              ? ` · ${new Date(item.pubDate).toLocaleString(
+                                  'es-ES',
+                                  {
+                                    dateStyle: 'short',
+                                    timeStyle: 'short',
+                                  },
+                                )}`
                               : ''}
                           </p>
                         </div>
@@ -686,13 +724,15 @@ export function UserTimeline() {
             ) : !activeLocalRegionId ? (
               <p className="app-muted-inline">
                 Aún no has elegido una comunidad autónoma. Selecciona una región
-                de la lista superior o activa la geolocalización de tu navegador.
+                de la lista superior o activa la geolocalización de tu
+                navegador.
               </p>
             ) : loadingLocalNews ? (
               <p className="app-muted-inline">Cargando noticias…</p>
             ) : localNews.length === 0 ? (
               <p className="app-muted-inline">
-                No hay noticias disponibles para {region?.name || 'esta región'}.
+                No hay noticias disponibles para {region?.name || 'esta región'}
+                .
               </p>
             ) : (
               <div className="app-flex-col app-grid-responsive">
@@ -708,7 +748,7 @@ export function UserTimeline() {
                     onSaveClick={() => toggleSaved(item)}
                     onReaderClick={() =>
                       navigate(
-                        `/me/reader?url=${encodeURIComponent(item.link)}`
+                        `/me/reader?url=${encodeURIComponent(item.link)}`,
                       )
                     }
                     onShareClick={async () => {

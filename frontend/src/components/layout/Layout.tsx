@@ -20,7 +20,9 @@ export function Layout({ children }: { children: ReactNode }) {
 
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [isNarrow, setIsNarrow] = useState(
-    typeof window !== 'undefined' ? window.innerWidth <= DRAWER_BREAKPOINT : false
+    typeof window !== 'undefined'
+      ? window.innerWidth <= DRAWER_BREAKPOINT
+      : false,
   )
 
   useEffect(() => {
@@ -43,7 +45,13 @@ export function Layout({ children }: { children: ReactNode }) {
   }, [drawerOpen])
 
   const themeButton = (
-    <button onClick={toggleTheme} className="app-header-icon-button" title={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}>
+    <button
+      onClick={toggleTheme}
+      className="app-header-icon-button"
+      title={
+        theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'
+      }
+    >
       {theme === 'dark' ? '☀️' : '🌙'}
     </button>
   )
@@ -56,18 +64,34 @@ export function Layout({ children }: { children: ReactNode }) {
     <>
       {user?.role === 'admin' ? (
         <>
-          <NavLinkWithActive to="/admin" onClick={closeDrawer}>Inicio</NavLinkWithActive>
-          <NavLinkWithActive to="/admin/logs" onClick={closeDrawer}>Logs</NavLinkWithActive>
-          <NavLinkWithActive to="/admin/users" onClick={closeDrawer}>Usuarios</NavLinkWithActive>
+          <NavLinkWithActive to="/admin" onClick={closeDrawer}>
+            Inicio
+          </NavLinkWithActive>
+          <NavLinkWithActive to="/admin/logs" onClick={closeDrawer}>
+            Logs
+          </NavLinkWithActive>
+          <NavLinkWithActive to="/admin/users" onClick={closeDrawer}>
+            Usuarios
+          </NavLinkWithActive>
           {themeButton}
-          <button onClick={() => { closeDrawer(); logout(); }} className="app-header-button">
+          <button
+            onClick={() => {
+              closeDrawer()
+              logout()
+            }}
+            className="app-header-button"
+          >
             Cerrar sesión
           </button>
         </>
       ) : user ? (
         <>
-          <NavLinkWithActive to="/me/timeline" onClick={closeDrawer}>Mi TimeLine</NavLinkWithActive>
-          <NavLinkWithActive to="/me/comparator" onClick={closeDrawer}>Comparador</NavLinkWithActive>
+          <NavLinkWithActive to="/me/timeline" onClick={closeDrawer}>
+            Mi TimeLine
+          </NavLinkWithActive>
+          <NavLinkWithActive to="/me/comparator" onClick={closeDrawer}>
+            Comparador
+          </NavLinkWithActive>
           {themeButton}
           <Link
             to="/me/profile"
@@ -77,19 +101,37 @@ export function Layout({ children }: { children: ReactNode }) {
           >
             {user.email}
           </Link>
-          <button onClick={() => { closeDrawer(); logout(); }} className="app-header-button">
+          <button
+            onClick={() => {
+              closeDrawer()
+              logout()
+            }}
+            className="app-header-button"
+          >
             Cerrar sesión
           </button>
         </>
       ) : (
         <>
-          <NavLinkWithActive to="/" end onClick={closeDrawer}>Inicio</NavLinkWithActive>
-          <NavLinkWithActive to="/timeline" onClick={closeDrawer}>Mi TimeLine</NavLinkWithActive>
-          <NavLinkWithActive to="/demo/clusters" onClick={closeDrawer}>Comparador</NavLinkWithActive>
-          <NavLinkWithActive to="/demo/bias" onClick={closeDrawer}>Sesgo TimeLine</NavLinkWithActive>
-          <NavLinkWithActive to="/sources" onClick={closeDrawer}>Fuentes</NavLinkWithActive>
+          <NavLinkWithActive to="/" end onClick={closeDrawer}>
+            Inicio
+          </NavLinkWithActive>
+          <NavLinkWithActive to="/timeline" onClick={closeDrawer}>
+            Mi TimeLine
+          </NavLinkWithActive>
+          <NavLinkWithActive to="/demo/clusters" onClick={closeDrawer}>
+            Comparador
+          </NavLinkWithActive>
+          <NavLinkWithActive to="/demo/bias" onClick={closeDrawer}>
+            Sesgo TimeLine
+          </NavLinkWithActive>
+          <NavLinkWithActive to="/sources" onClick={closeDrawer}>
+            Fuentes
+          </NavLinkWithActive>
           {themeButton}
-          <NavLinkWithActive to="/login" onClick={closeDrawer}>Entrar</NavLinkWithActive>
+          <NavLinkWithActive to="/login" onClick={closeDrawer}>
+            Entrar
+          </NavLinkWithActive>
         </>
       )}
     </>
@@ -196,14 +238,14 @@ export function Layout({ children }: { children: ReactNode }) {
                 ×
               </button>
             </div>
-            <nav className="app-drawer-nav">
-              {navContent}
-            </nav>
+            <nav className="app-drawer-nav">{navContent}</nav>
           </aside>
         </>
       )}
 
-      <main className={isComparatorPage ? 'app-main app-main--wide' : 'app-main'}>
+      <main
+        className={isComparatorPage ? 'app-main app-main--wide' : 'app-main'}
+      >
         {children}
       </main>
     </div>
