@@ -93,6 +93,26 @@ export function UserTimeline() {
     })()
   }, [token])
 
+  // Primera categoría por defecto: al cargar categorías, seleccionar la primera y cargar sus noticias
+  useEffect(() => {
+    if (categories.length === 0 || selectedCategory !== null) return
+    const sorted = [...categories].sort(
+      (a, b) => Number(!!b.isSpecial) - Number(!!a.isSpecial)
+    )
+    const first = sorted[0]
+    if (first) {
+      setSelectedCategory(first.name)
+      setLoadingCategoryNews(true)
+      fetch(
+        apiUrl(`/api/news/by-category?category=${encodeURIComponent(first.name)}&limit=20`)
+      )
+        .then((res) => (res.ok ? res.json() : []))
+        .then((data) => setCategoryNews(Array.isArray(data) ? data : []))
+        .catch(() => setCategoryNews([]))
+        .finally(() => setLoadingCategoryNews(false))
+    }
+  }, [categories, selectedCategory])
+
   useEffect(() => {
     if (!token) return
     loadUserSources()
@@ -196,10 +216,7 @@ export function UserTimeline() {
   }
 
   return (
-    <BasePage
-      title="Mi TimeLine"
-      subtitle="Tus fuentes, categorías y últimas noticias."
-    >
+    <BasePage>
       <div className="app-page-section">
         <nav className="app-timeline-tabs" role="tablist">
           {TABS.map((tab) => {
@@ -257,44 +274,42 @@ export function UserTimeline() {
             role="tabpanel"
             aria-labelledby="tab-categorias"
             hidden={activeTab !== 'categorias'}
-            className="app-timeline-panel"
+            className="app-timeline-panel app-timeline-panel--categorias"
           >
-            <h2 className="app-card-title">Categorías</h2>
-            <p className="app-card-subtitle app-page-subtitle--tight">
-              Noticias de las fuentes por categoría temática.
-            </p>
             {categories.length === 0 ? (
               <p className="app-muted-inline">
                 No hay categorías configuradas. El administrador puede crearlas en el panel de Admin.
               </p>
             ) : (
-              <div className="app-categories-chips">
-                {categories
-                  .slice()
-                  .sort((a, b) => Number(!!b.isSpecial) - Number(!!a.isSpecial))
-                  .map((c) => (
-                    <button
-                      key={c.id}
-                      type="button"
-                      className={`app-category-chip ${
-                        c.isSpecial ? 'app-category-chip--special' : ''
-                      } ${selectedCategory === c.name ? 'active' : ''}`}
-                      onClick={() => loadNewsByCategory(c.name)}
-                      title={c.description || undefined}
-                    >
-                      {c.icon && <span className="app-category-chip-icon">{c.icon}</span>}
-                      <span>{c.name}</span>
-                      {c.isSpecial && (
-                        <span className="app-category-chip-badge" aria-hidden="true">
-                          ⚡
-                        </span>
-                      )}
-                    </button>
-                  ))}
+              <div className="app-categories-carousel" role="group" aria-label="Categorías">
+                <div className="app-categories-chips">
+                  {categories
+                    .slice()
+                    .sort((a, b) => Number(!!b.isSpecial) - Number(!!a.isSpecial))
+                    .map((c) => (
+                      <button
+                        key={c.id}
+                        type="button"
+                        className={`app-category-chip ${
+                          c.isSpecial ? 'app-category-chip--special' : ''
+                        } ${selectedCategory === c.name ? 'active' : ''}`}
+                        onClick={() => loadNewsByCategory(c.name)}
+                        title={c.description || undefined}
+                      >
+                        {c.icon && <span className="app-category-chip-icon">{c.icon}</span>}
+                        <span>{c.name}</span>
+                        {c.isSpecial && (
+                          <span className="app-category-chip-badge" aria-hidden="true">
+                            ⚡
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                </div>
               </div>
             )}
             {selectedCategory && (
-              <>
+              <div className="app-category-news">
                 <h3 className="app-card-title app-category-news-title">
                   {selectedCategory}
                 </h3>
@@ -307,41 +322,19 @@ export function UserTimeline() {
                 ) : (
                   <div className="app-flex-col">
                     {categoryNews.map((item, idx) => (
-                      <article key={idx} className="app-card app-article-card">
-                        {item.image && (
-                          <img
-                            src={item.image}
-                            alt=""
-                            className="user-timeline-img app-article-card-media"
-                          />
-                        )}
-                        <div className="app-article-card-body">
-                          <h2 className="app-page-title app-headline-link">
-                            <a
-                              href={item.link}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="app-link-inherit"
-                              onClick={() => trackClick(item.source, item.link)}
-                            >
-                              {item.title}
-                            </a>
-                          </h2>
-                          {item.description && (
-                            <p className="app-page-subtitle app-page-subtitle--md app-page-subtitle--tight app-article-description-clamp">
-                              {item.description}
-                            </p>
-                          )}
-                          <p className="app-comparador-cell-source app-timeline-meta">
-                            {item.source}
-                            {item.pubDate ? ` · ${item.pubDate}` : ''}
-                          </p>
-                        </div>
-                      </article>
+                      <TimelineArticleCard
+                        key={`${item.link}-${idx}`}
+                        item={item}
+                        formatDate
+                        categoryLabel={selectedCategory}
+                        onLinkClick={(source, link) =>
+                          trackClick(source, link || item.link)
+                        }
+                      />
                     ))}
                   </div>
                 )}
-              </>
+              </div>
             )}
           </section>
 
@@ -353,12 +346,6 @@ export function UserTimeline() {
             hidden={activeTab !== 'locales'}
             className="app-timeline-panel"
           >
-            <h2 className="app-card-title">Noticias locales</h2>
-            <p className="app-card-subtitle app-page-subtitle--tight">
-              {isDefaultMadrid
-                ? 'Madrid por defecto (activa la geolocalización para ver noticias de tu región).'
-                : `Noticias de ${region?.name || 'tu región'}.`}
-            </p>
             {geoLoading ? (
               <p className="app-muted-inline">Detectando ubicación…</p>
             ) : loadingLocalNews ? (
@@ -370,42 +357,14 @@ export function UserTimeline() {
             ) : (
               <div className="app-flex-col">
                 {localNews.map((item, idx) => (
-                  <article key={idx} className="app-card app-article-card">
-                    {item.image && (
-                      <img
-                        src={item.image}
-                        alt=""
-                        className="user-timeline-img app-article-card-media"
-                      />
-                    )}
-                    <div className="app-article-card-body">
-                      <h2 className="app-page-title app-headline-link">
-                        <a
-                          href={item.link}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="app-link-inherit"
-                          onClick={() => trackClick(item.source, item.link)}
-                        >
-                          {item.title}
-                        </a>
-                      </h2>
-                      {item.description && (
-                        <p className="app-page-subtitle app-page-subtitle--md app-page-subtitle--tight app-article-description-clamp">
-                          {item.description}
-                        </p>
-                      )}
-                      <p className="app-comparador-cell-source app-timeline-meta">
-                        {item.source}
-                        {item.pubDate
-                          ? ` · ${new Date(item.pubDate).toLocaleString('es-ES', {
-                              dateStyle: 'short',
-                              timeStyle: 'short',
-                            })}`
-                          : ''}
-                      </p>
-                    </div>
-                  </article>
+                  <TimelineArticleCard
+                    key={`${item.link}-${idx}`}
+                    item={item}
+                    formatDate
+                    onLinkClick={(source, link) =>
+                      trackClick(source, link || item.link)
+                    }
+                  />
                 ))}
               </div>
             )}
@@ -419,11 +378,6 @@ export function UserTimeline() {
             hidden={activeTab !== 'mis-rss'}
             className="app-timeline-panel"
           >
-            <h2 className="app-card-title">Mis fuentes RSS</h2>
-            <p className="app-card-subtitle app-page-subtitle--tight">
-              Agrega tus propias fuentes RSS para seguir sus noticias.
-            </p>
-
             <form onSubmit={handleAddSource} className="app-add-source-form">
               <div className="app-form-row">
                 <input

@@ -25,6 +25,11 @@ type AuthContextValue = {
   user: DemoUser | null
   token: string | null
   login: (email: string, password: string) => Promise<DemoUser>
+  loginWithBluesky: (
+    identifier: string,
+    appPassword: string,
+    options?: { email?: string; name?: string }
+  ) => Promise<DemoUser>
   register: (name: string, email: string, password: string) => Promise<void>
   logout: () => void
   updateUser: (updates: Partial<DemoUser>) => void
@@ -81,6 +86,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           termsVersion: data.user.termsVersion ?? null,
         }
 
+        setUser(userData)
+        setToken(data.token)
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userData))
+        localStorage.setItem(TOKEN_KEY, data.token)
+        return userData
+      },
+      async loginWithBluesky(identifier, appPassword, options = {}) {
+        const data = await fetchApi<{
+          user: { id: number; email: string; name: string; region?: string; role: string; hasAcceptedTerms?: boolean; termsVersion?: string | null }
+          token: string
+        }>(apiUrl('/api/auth/login-bluesky'), {
+          method: 'POST',
+          body: { identifier, appPassword, email: options.email, name: options.name },
+        })
+        const userData: DemoUser = {
+          id: String(data.user.id),
+          email: data.user.email,
+          name: data.user.name,
+          region: data.user.region || 'Sin región',
+          role: data.user.role as Role,
+          hasAcceptedTerms: !!data.user.hasAcceptedTerms,
+          termsVersion: data.user.termsVersion ?? null,
+        }
         setUser(userData)
         setToken(data.token)
         localStorage.setItem(STORAGE_KEY, JSON.stringify(userData))

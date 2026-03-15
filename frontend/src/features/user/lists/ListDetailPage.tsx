@@ -1,8 +1,35 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../../app/providers/AuthProvider'
 import { BasePage } from '../../../components/layout/BasePage'
+import { TimelineArticleCard } from '../../../components/TimelineArticleCard'
+import { useNewsClickTracker } from '../../../hooks/useNewsClickTracker'
 import { apiUrl } from '@/config/api'
+import type { NewsItem } from '@/types/news'
+
+type ListNewsApiItem = {
+  id: number
+  sourceId: number
+  title: string
+  description: string | null
+  link: string
+  imageUrl: string | null
+  pubDate: string | null
+  createdAt: string
+  sourceName: string | null
+}
+
+function listNewsToItem(item: ListNewsApiItem): NewsItem {
+  return {
+    id: item.id,
+    title: item.title,
+    link: item.link,
+    description: item.description ?? '',
+    pubDate: item.pubDate ?? undefined,
+    image: item.imageUrl ?? undefined,
+    source: item.sourceName ?? '',
+  }
+}
 
 type ListSource = {
   id: number
@@ -46,8 +73,25 @@ export function ListDetailPage() {
   const [addSourceId, setAddSourceId] = useState('')
   const [addCustomId, setAddCustomId] = useState('')
   const [adding, setAdding] = useState(false)
+  const [listMenuOpen, setListMenuOpen] = useState(false)
+  const listMenuRef = useRef<HTMLDivElement>(null)
+  const [listNews, setListNews] = useState<ListNewsApiItem[]>([])
+  const [loadingNews, setLoadingNews] = useState(true)
 
+  const { trackClick } = useNewsClickTracker()
   const listId = id ? Number(id) : NaN
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (listMenuRef.current && !listMenuRef.current.contains(e.target as Node)) {
+        setListMenuOpen(false)
+      }
+    }
+    if (listMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [listMenuOpen])
 
   useEffect(() => {
     if (!token || !Number.isFinite(listId)) return
@@ -72,6 +116,29 @@ export function ListDetailPage() {
       })
       .finally(() => {
         if (!cancelled) setLoading(false)
+      })
+    return () => { cancelled = true }
+  }, [token, listId])
+
+  useEffect(() => {
+    if (!token || !Number.isFinite(listId)) return
+    let cancelled = false
+    setLoadingNews(true)
+    fetch(apiUrl(`/api/me/lists/${listId}/news?limit=50`), {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => {
+        if (!res.ok) return []
+        return res.json()
+      })
+      .then((data: ListNewsApiItem[]) => {
+        if (!cancelled) setListNews(Array.isArray(data) ? data : [])
+      })
+      .catch(() => {
+        if (!cancelled) setListNews([])
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingNews(false)
       })
     return () => { cancelled = true }
   }, [token, listId])
@@ -154,6 +221,12 @@ export function ListDetailPage() {
           ...list,
           sources: list.sources.filter((s) => s.id !== itemId),
         })
+        fetch(apiUrl(`/api/me/lists/${listId}/news?limit=50`), {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+          .then((r) => (r.ok ? r.json() : []))
+          .then((data: ListNewsApiItem[]) => setListNews(Array.isArray(data) ? data : []))
+          .catch(() => setListNews([]))
       }
     } finally {
       setRemovingId(null)
@@ -206,6 +279,12 @@ export function ListDetailPage() {
             },
           ],
         })
+        fetch(apiUrl(`/api/me/lists/${listId}/news?limit=50`), {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+          .then((r) => (r.ok ? r.json() : []))
+          .then((news: ListNewsApiItem[]) => setListNews(Array.isArray(news) ? news : []))
+          .catch(() => setListNews([]))
       }
       setAddSourceOpen(false)
       setAddSourceId('')
@@ -245,161 +324,202 @@ export function ListDetailPage() {
           <p className="app-form-message app-form-message--error">{error}</p>
         )}
 
-        {editMode ? (
-          <form onSubmit={handleUpdateList} className="app-form">
-            <div className="app-form-group">
-              <label>Nombre *</label>
-              <input
-                type="text"
-                value={editName}
-                onChange={(e) => setEditName(e.target.value)}
-                className="app-input"
-                required
-              />
+        <div className="app-list-detail-cover-wrap" ref={listMenuRef}>
+          <div className="app-list-detail-cover" aria-hidden>
+            <span className="app-list-detail-cover-icon">
+              <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+            </span>
+          </div>
+          <button
+            type="button"
+            className="app-list-detail-menu-btn"
+            onClick={() => setListMenuOpen((o) => !o)}
+            aria-label="Opciones de la lista"
+            aria-expanded={listMenuOpen}
+          >
+            <span className="app-list-detail-menu-dots">⋮</span>
+          </button>
+          {listMenuOpen && (
+            <div className="app-list-detail-menu">
+              <p className="app-muted-inline app-list-detail-menu-meta">
+                {list.sources.length} fuente{list.sources.length !== 1 ? 's' : ''}
+                {list.isPublic && ' · Pública'}
+              </p>
+              {editMode ? (
+                <form onSubmit={handleUpdateList} className="app-form">
+                  <div className="app-form-group">
+                    <label>Nombre *</label>
+                    <input
+                      type="text"
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                      className="app-input"
+                      required
+                    />
+                  </div>
+                  <div className="app-form-group">
+                    <label>Descripción</label>
+                    <textarea
+                      value={editDescription}
+                      onChange={(e) => setEditDescription(e.target.value)}
+                      className="app-input"
+                      rows={2}
+                    />
+                  </div>
+                  <div className="app-form-group">
+                    <label className="app-checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={editPublic}
+                        onChange={(e) => setEditPublic(e.target.checked)}
+                      />
+                      Lista pública
+                    </label>
+                  </div>
+                  <div className="app-form-actions">
+                    <button type="submit" className="app-button app-btn-primary" disabled={saving}>
+                      {saving ? 'Guardando…' : 'Guardar'}
+                    </button>
+                    <button
+                      type="button"
+                      className="app-button app-btn-secondary"
+                      onClick={() => setEditMode(false)}
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <div className="app-list-detail-actions">
+                  <button
+                    type="button"
+                    className="app-button app-btn-secondary"
+                    onClick={() => setEditMode(true)}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    type="button"
+                    className="app-button app-button--danger"
+                    onClick={handleDeleteList}
+                  >
+                    Eliminar lista
+                  </button>
+                </div>
+              )}
+              <h3 className="app-card-title app-list-detail-menu-title">Fuentes en esta lista</h3>
+              <button
+                type="button"
+                className="app-button app-btn-secondary app-list-add-btn"
+                onClick={() => setAddSourceOpen((o) => !o)}
+              >
+                {addSourceOpen ? 'Cerrar' : 'Añadir fuente'}
+              </button>
+              {addSourceOpen && (
+                <form onSubmit={handleAddSource} className="app-form app-list-add-form">
+                  <div className="app-form-group">
+                    <label>Tipo</label>
+                    <select
+                      value={addType}
+                      onChange={(e) => setAddType(e.target.value as 'sourceId' | 'customSourceId')}
+                      className="app-input"
+                    >
+                      <option value="sourceId">Fuente del catálogo</option>
+                      <option value="customSourceId">Mi fuente RSS</option>
+                    </select>
+                  </div>
+                  {addType === 'sourceId' && (
+                    <div className="app-form-group">
+                      <label>Fuente</label>
+                      <select
+                        value={addSourceId}
+                        onChange={(e) => setAddSourceId(e.target.value)}
+                        className="app-input"
+                        required
+                      >
+                        <option value="">Seleccionar…</option>
+                        {catalogSources.map((s) => (
+                          <option key={s.id} value={s.id}>
+                            {s.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                  {addType === 'customSourceId' && (
+                    <div className="app-form-group">
+                      <label>Mi fuente RSS</label>
+                      <select
+                        value={addCustomId}
+                        onChange={(e) => setAddCustomId(e.target.value)}
+                        className="app-input"
+                        required
+                      >
+                        <option value="">Seleccionar…</option>
+                        {customSources.map((s) => (
+                          <option key={s.id} value={s.id}>
+                            {s.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                  <button type="submit" className="app-button app-btn-primary" disabled={adding}>
+                    {adding ? 'Añadiendo…' : 'Añadir'}
+                  </button>
+                </form>
+              )}
+              {list.sources.length === 0 ? (
+                <p className="app-muted-inline">No hay fuentes en esta lista.</p>
+              ) : (
+                <ul className="app-list-sources">
+                  {list.sources.map((s) => (
+                    <li key={s.id} className="app-list-source-item">
+                      <span className="app-list-source-name">{s.sourceName || 'Sin nombre'}</span>
+                      <button
+                        type="button"
+                        className="app-button app-button--sm app-button--danger"
+                        onClick={() => handleRemoveSource(s.id)}
+                        disabled={removingId === s.id}
+                        title="Quitar de la lista"
+                      >
+                        {removingId === s.id ? '…' : 'Quitar'}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
-            <div className="app-form-group">
-              <label>Descripción</label>
-              <textarea
-                value={editDescription}
-                onChange={(e) => setEditDescription(e.target.value)}
-                className="app-input"
-                rows={2}
-              />
+          )}
+        </div>
+
+        <section className="app-list-detail-news" aria-labelledby="list-news-heading">
+          <h2 id="list-news-heading" className="app-card-title">Noticias de esta lista</h2>
+          {loadingNews ? (
+            <p className="app-muted-inline">Cargando noticias…</p>
+          ) : listNews.length === 0 ? (
+            <div className="app-empty-state">
+              <p className="app-empty-state-message">
+                {list.sources.length === 0
+                  ? 'Añade fuentes desde el menú ⋮ para ver aquí las noticias.'
+                  : 'Aún no hay noticias de las fuentes de esta lista.'}
+              </p>
             </div>
-            <div className="app-form-group">
-              <label className="app-checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={editPublic}
-                  onChange={(e) => setEditPublic(e.target.checked)}
+          ) : (
+            <div className="app-flex-col">
+              {listNews.map((item) => (
+                <TimelineArticleCard
+                  key={item.id}
+                  item={listNewsToItem(item)}
+                  formatDate
+                  onLinkClick={(source, link) => trackClick(source, link || item.link)}
                 />
-                Lista pública
-              </label>
+              ))}
             </div>
-            <div className="app-form-actions">
-              <button type="submit" className="app-button app-btn-primary" disabled={saving}>
-                {saving ? 'Guardando…' : 'Guardar'}
-              </button>
-              <button
-                type="button"
-                className="app-button app-btn-secondary"
-                onClick={() => setEditMode(false)}
-              >
-                Cancelar
-              </button>
-            </div>
-          </form>
-        ) : (
-          <div className="app-list-detail-meta">
-            <p className="app-muted-inline">
-              {list.sources.length} fuente{list.sources.length !== 1 ? 's' : ''}
-              {list.isPublic && ' · Pública'}
-            </p>
-            <div className="app-list-detail-actions">
-              <button
-                type="button"
-                className="app-button app-btn-secondary"
-                onClick={() => setEditMode(true)}
-              >
-                Editar
-              </button>
-              <button
-                type="button"
-                className="app-button app-button--danger"
-                onClick={handleDeleteList}
-              >
-                Eliminar lista
-              </button>
-            </div>
-          </div>
-        )}
-
-        <h2 className="app-card-title">Fuentes en esta lista</h2>
-        <button
-          type="button"
-          className="app-button app-btn-secondary app-list-add-btn"
-          onClick={() => setAddSourceOpen((o) => !o)}
-        >
-          {addSourceOpen ? 'Cerrar' : 'Añadir fuente'}
-        </button>
-
-        {addSourceOpen && (
-          <form onSubmit={handleAddSource} className="app-card app-form app-list-add-form">
-            <div className="app-form-group">
-              <label>Tipo</label>
-              <select
-                value={addType}
-                onChange={(e) => setAddType(e.target.value as 'sourceId' | 'customSourceId')}
-                className="app-input"
-              >
-                <option value="sourceId">Fuente del catálogo</option>
-                <option value="customSourceId">Mi fuente RSS</option>
-              </select>
-            </div>
-            {addType === 'sourceId' && (
-              <div className="app-form-group">
-                <label>Fuente</label>
-                <select
-                  value={addSourceId}
-                  onChange={(e) => setAddSourceId(e.target.value)}
-                  className="app-input"
-                  required
-                >
-                  <option value="">Seleccionar…</option>
-                  {catalogSources.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-            {addType === 'customSourceId' && (
-              <div className="app-form-group">
-                <label>Mi fuente RSS</label>
-                <select
-                  value={addCustomId}
-                  onChange={(e) => setAddCustomId(e.target.value)}
-                  className="app-input"
-                  required
-                >
-                  <option value="">Seleccionar…</option>
-                  {customSources.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-            <button type="submit" className="app-button app-btn-primary" disabled={adding}>
-              {adding ? 'Añadiendo…' : 'Añadir'}
-            </button>
-          </form>
-        )}
-
-        {list.sources.length === 0 ? (
-          <div className="app-empty-state">
-            <p className="app-empty-state-message">No hay fuentes en esta lista.</p>
-          </div>
-        ) : (
-          <ul className="app-list-sources">
-            {list.sources.map((s) => (
-              <li key={s.id} className="app-list-source-item">
-                <span className="app-list-source-name">{s.sourceName || 'Sin nombre'}</span>
-                <button
-                  type="button"
-                  className="app-button app-button--sm app-button--danger"
-                  onClick={() => handleRemoveSource(s.id)}
-                  disabled={removingId === s.id}
-                  title="Quitar de la lista"
-                >
-                  {removingId === s.id ? '…' : 'Quitar'}
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+          )}
+        </section>
       </div>
     </BasePage>
   )

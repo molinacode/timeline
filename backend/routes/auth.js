@@ -403,7 +403,7 @@ router.get('/auth/profile', authenticateToken, async (req, res) => {
 // PUT /api/auth/profile
 router.put('/auth/profile', authenticateToken, async (req, res) => {
   const supabase = getSupabase()
-  const { name, region } = req.body || {}
+  const { name, region, email: newEmail } = req.body || {}
 
   try {
     if (name != null && typeof name === 'string' && name.trim().length === 0) {
@@ -419,6 +419,43 @@ router.put('/auth/profile', authenticateToken, async (req, res) => {
     }
     if (region != null) {
       updates.region = typeof region === 'string' ? region.trim() || null : null
+    }
+
+    // Permitir cambiar email solo si el actual es el placeholder de Bluesky (@bluesky.local)
+    if (newEmail != null && typeof newEmail === 'string') {
+      const { data: current } = await supabase
+        .from('users')
+        .select('email')
+        .eq('id', req.user.id)
+        .maybeSingle()
+      if (current?.email?.endsWith('@bluesky.local')) {
+        const trimmed = newEmail.trim()
+        if (!trimmed) {
+          return res.status(400).json({
+            error: 'Email inválido',
+            message: 'Indica un correo electrónico',
+          })
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+          return res.status(400).json({
+            error: 'Email inválido',
+            message: 'El formato del correo no es válido',
+          })
+        }
+        const { data: existing } = await supabase
+          .from('users')
+          .select('id')
+          .eq('email', trimmed)
+          .neq('id', req.user.id)
+          .maybeSingle()
+        if (existing) {
+          return res.status(400).json({
+            error: 'Email en uso',
+            message: 'Ese correo ya está registrado',
+          })
+        }
+        updates.email = trimmed
+      }
     }
 
     if (Object.keys(updates).length === 0) {

@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../app/providers/AuthProvider';
 import { BasePage } from '../../components/layout/BasePage';
-import { NewsImage } from '../../components/NewsImage';
+import { TimelineArticleCard } from '../../components/TimelineArticleCard';
 import { Link } from 'react-router-dom';
 import { useNewsClickTracker } from '../../hooks/useNewsClickTracker';
 import { apiUrl } from '@/config/api';
+import type { NewsItem } from '@/types/news';
 
-type NewsItem = {
+type ApiNewsItem = {
   id: number;
   sourceId: number;
   title: string;
@@ -18,10 +19,22 @@ type NewsItem = {
   sourceName: string;
 };
 
+function toNewsItem(item: ApiNewsItem): NewsItem {
+  return {
+    id: item.id,
+    title: item.title,
+    link: item.link,
+    description: item.description ?? '',
+    pubDate: item.pubDate ?? undefined,
+    image: item.imageUrl ?? undefined,
+    source: item.sourceName,
+  };
+}
+
 export function TimelinePage() {
   const { user } = useAuth();
   const { trackClick } = useNewsClickTracker();
-  const [items, setItems] = useState<NewsItem[]>([]);
+  const [items, setItems] = useState<ApiNewsItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -76,38 +89,14 @@ export function TimelinePage() {
         ) : (
           <div className="app-flex-col">
             {items.map((item) => (
-              <article key={item.id} className="app-card app-article-card">
-                <NewsImage src={item.imageUrl} />
-                <div className="app-article-card-body">
-                  <h2 className="app-page-title app-headline-link">
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="app-link-inherit"
-                      onClick={() => trackClick(item.sourceName, item.link)}
-                    >
-                      {item.title}
-                    </a>
-                  </h2>
-                  {item.description && (
-                    <p className="app-page-subtitle app-page-subtitle--md app-page-subtitle--tight">
-                      {item.description}
-                    </p>
-                  )}
-                  <p className="app-comparador-cell-source app-timeline-meta">
-                    {item.sourceName}
-                    {item.pubDate
-                      ? ` · ${new Date(item.pubDate).toLocaleString('es-ES', {
-                          day: '2-digit',
-                          month: 'short',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}`
-                      : ''}
-                  </p>
-                </div>
-              </article>
+              <TimelineArticleCard
+                key={item.id}
+                item={toNewsItem(item)}
+                formatDate
+                onLinkClick={(source, link) =>
+                  trackClick(source, link || item.link)
+                }
+              />
             ))}
           </div>
         )}

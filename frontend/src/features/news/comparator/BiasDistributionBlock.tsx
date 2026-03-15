@@ -32,6 +32,16 @@ const BIAS_COLORS = {
   conservative: 'var(--accent-mint)',
 }
 
+function getFaviconFromLink(link: string | null | undefined): string | null {
+  if (!link) return null
+  try {
+    const url = new URL(link)
+    return `${url.origin}/favicon.ico`
+  } catch {
+    return null
+  }
+}
+
 export function BiasDistributionBlock() {
   const { token } = useAuth()
   const [data, setData] = useState<SourcesByBiasResponse | null>(null)
@@ -94,16 +104,7 @@ export function BiasDistributionBlock() {
         {total} fuentes en el comparador · Progresista / Centrista / Conservador
       </p>
       <div className="bias-distribution-bar-wrap" role="img" aria-label={`Progresista ${pctP}%, Centrista ${pctC}%, Conservador ${pctCons}%`}>
-        <div
-          className="bias-distribution-bar"
-          style={{
-            display: 'flex',
-            height: '1.5rem',
-            borderRadius: 'var(--radius-sm)',
-            overflow: 'hidden',
-            background: 'var(--surface-alt)',
-          }}
-        >
+        <div className="bias-distribution-bar">
           {pctP > 0 && (
             <span
               className="bias-distribution-segment bias-distribution-segment--progressive"
@@ -112,7 +113,11 @@ export function BiasDistributionBlock() {
                 background: BIAS_COLORS.progressive,
               }}
               title={`Progresista: ${progressive} fuentes`}
-            />
+            >
+              <span className="bias-distribution-segment-legend">
+                Progresista {pctP}% ({progressive})
+              </span>
+            </span>
           )}
           {pctC > 0 && (
             <span
@@ -122,7 +127,11 @@ export function BiasDistributionBlock() {
                 background: BIAS_COLORS.centrist,
               }}
               title={`Centrista: ${centrist} fuentes`}
-            />
+            >
+              <span className="bias-distribution-segment-legend">
+                Centrista {pctC}% ({centrist})
+              </span>
+            </span>
           )}
           {pctCons > 0 && (
             <span
@@ -132,20 +141,13 @@ export function BiasDistributionBlock() {
                 background: BIAS_COLORS.conservative,
               }}
               title={`Conservador: ${conservative} fuentes`}
-            />
+            >
+              <span className="bias-distribution-segment-legend">
+                Conservador {pctCons}% ({conservative})
+              </span>
+            </span>
           )}
         </div>
-      </div>
-      <div className="bias-distribution-legend">
-        <span className="bias-distribution-legend-item" style={{ color: BIAS_COLORS.progressive }}>
-          Progresista {pctP}% ({progressive})
-        </span>
-        <span className="bias-distribution-legend-item" style={{ color: BIAS_COLORS.centrist }}>
-          Centrista {pctC}% ({centrist})
-        </span>
-        <span className="bias-distribution-legend-item" style={{ color: BIAS_COLORS.conservative }}>
-          Conservador {pctCons}% ({conservative})
-        </span>
       </div>
       <div className="bias-distribution-sources">
         {(['progressive', 'centrist', 'conservative'] as const).map((key) => {
@@ -157,12 +159,34 @@ export function BiasDistributionBlock() {
               <h3 className="bias-distribution-source-group-title" style={{ color: BIAS_COLORS[key] }}>
                 {label}
               </h3>
-              <ul className="bias-distribution-source-list">
-                {sources.slice(0, 8).map((s) => (
-                  <li key={s.id || s.name}>
-                    <span className="bias-distribution-source-name">{s.name}</span>
-                  </li>
-                ))}
+              <ul className="bias-distribution-source-list bias-distribution-source-list--favicon-only">
+                {sources.slice(0, 8).map((s) => {
+                  const faviconUrl = getFaviconFromLink(s.url || s.rssUrl)
+                  const initial = s.name && s.name.length > 0 ? s.name.charAt(0).toUpperCase() : '?'
+                  return (
+                    <li key={s.id || s.name}>
+                      <span
+                        className="bias-distribution-source-favicon"
+                        title={s.name}
+                        aria-hidden
+                      >
+                        {faviconUrl ? (
+                          <img
+                            src={faviconUrl}
+                            alt=""
+                            className="bias-distribution-source-favicon-img"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <span className="bias-distribution-source-favicon-initial">
+                            {initial}
+                          </span>
+                        )}
+                      </span>
+                    </li>
+                  )
+                })}
                 {sources.length > 8 && (
                   <li className="app-muted-inline">+{sources.length - 8} más</li>
                 )}

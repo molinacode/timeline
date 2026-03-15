@@ -22,6 +22,7 @@ export function UserProfilePage() {
 
   // Formulario de datos
   const [formName, setFormName] = useState('')
+  const [formEmail, setFormEmail] = useState('')
   const [formRegion, setFormRegion] = useState('')
   const [savingData, setSavingData] = useState(false)
   const [dataMessage, setDataMessage] = useState<string | null>(null)
@@ -44,6 +45,7 @@ export function UserProfilePage() {
           const json = await res.json()
           setProfile(json)
           setFormName(json.name)
+          setFormEmail(json.email || '')
           setFormRegion(json.region || '')
         }
       } catch {
@@ -54,23 +56,37 @@ export function UserProfilePage() {
     })()
   }, [token])
 
+  const canEditEmail = profile?.email?.endsWith('@bluesky.local') ?? false
+  const needsProfileCompletion =
+    !!profile &&
+    (profile.email?.endsWith('@bluesky.local') || !profile.name?.trim())
+
   async function handleSaveData(e: React.FormEvent) {
     e.preventDefault()
     setDataMessage(null)
     setSavingData(true)
     try {
+      const body: { name: string; region: string | null; email?: string } = {
+        name: formName,
+        region: formRegion || null,
+      }
+      if (canEditEmail && formEmail.trim()) body.email = formEmail.trim()
       const res = await fetch(apiUrl('/api/auth/profile'), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ name: formName, region: formRegion || null }),
+        body: JSON.stringify(body),
       })
       const data = await res.json()
       if (res.ok) {
         setProfile(data)
-        updateUser({ name: data.name, region: data.region || 'Sin región' })
+        updateUser({
+          name: data.name,
+          region: data.region || 'Sin región',
+          email: data.email,
+        })
         setDataMessage('Datos actualizados correctamente.')
       } else {
         setDataMessage(data.message || 'Error al guardar')
@@ -141,6 +157,15 @@ export function UserProfilePage() {
   return (
     <BasePage title="Mi perfil" subtitle="Datos de tu cuenta y configuración">
       <div className="app-page-section">
+        {needsProfileCompletion && (
+          <div className="app-profile-incomplete" role="status">
+            <p className="app-profile-incomplete-title">Completa tu perfil</p>
+            <p className="app-profile-incomplete-text">
+              Añade tu nombre y, si quieres, un correo de contacto para tu cuenta TimeLine.
+            </p>
+          </div>
+        )}
+
         <nav className="app-nav-pills">
           <button
             type="button"
@@ -171,13 +196,20 @@ export function UserProfilePage() {
               <input
                 id="profile-email"
                 type="email"
-                value={profile.email}
-                disabled
+                value={canEditEmail ? formEmail : profile.email}
+                onChange={canEditEmail ? (e) => setFormEmail(e.target.value) : undefined}
+                disabled={!canEditEmail}
                 className="app-input"
               />
-              <span className="app-form-hint">
-                El email no se puede cambiar.
-              </span>
+              {canEditEmail ? (
+                <span className="app-form-hint">
+                  Puedes indicar un correo para tu cuenta TimeLine.
+                </span>
+              ) : (
+                <span className="app-form-hint">
+                  El email no se puede cambiar.
+                </span>
+              )}
             </div>
             <div className="app-form-group">
               <label htmlFor="profile-name">Nombre</label>

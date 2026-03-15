@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+import { ROUTES } from '../app/routes'
 import type { NewsItem } from '../types/news'
 import { NewsImage } from './NewsImage'
 
@@ -40,8 +42,8 @@ export function TimelineArticleCard({
       : item.pubDate
     : ''
 
-  return (
-    <article className="app-card app-article-card app-article-card--mobile-hero">
+  const cardContent = (
+    <>
       <div className="app-article-card-media-wrap">
         {categoryLabel && (
           <span className="app-article-card-pill">{categoryLabel}</span>
@@ -50,15 +52,7 @@ export function TimelineArticleCard({
       </div>
       <div className="app-article-card-body">
         <h2 className="app-page-title app-headline-link">
-          <a
-            href={item.link}
-            target="_blank"
-            rel="noreferrer"
-            className="app-link-inherit"
-            onClick={() => onLinkClick?.(item.source, item.link)}
-          >
-            {item.title}
-          </a>
+          <span className="app-link-inherit">{item.title}</span>
         </h2>
         {item.description && (
           <p className="app-page-subtitle app-page-subtitle--md app-page-subtitle--tight app-article-description-clamp">
@@ -73,47 +67,72 @@ export function TimelineArticleCard({
               {dateStr ? ` · ${dateStr}` : ''}
             </p>
           )}
-          <div className="app-article-card-actions">
-            {(onReaderClick || onOpenReader) && (
-              <button
-                type="button"
-                className="app-header-button"
-                onClick={() =>
-                  onReaderClick ? onReaderClick() : onOpenReader?.(item)
-                }
-              >
-                Ver en lector
-              </button>
-            )}
-            {(onSaveClick || (onSave && item.id != null)) && (
-              <button
-                type="button"
-                className="app-header-button"
-                disabled={saving}
-                onClick={() =>
-                  onSaveClick ? onSaveClick() : onSave?.(item.id as number)
-                }
-                aria-label="Guardar noticia"
-              >
-                {saving
-                  ? 'Guardando…'
-                  : isSaved
-                    ? 'Guardada'
-                    : 'Guardar'}
-              </button>
-            )}
-            {onShareClick && (
-              <button
-                type="button"
-                className="app-header-button"
-                onClick={onShareClick}
-              >
-                Compartir
-              </button>
-            )}
-          </div>
+          {(onReaderClick || onOpenReader || onSaveClick || (onSave && item.id != null) || onShareClick) && (
+            <div
+              className="app-article-card-actions"
+              onClick={(e) => e.preventDefault()}
+              onKeyDown={(e) => e.stopPropagation()}
+              role="presentation"
+            >
+              {(onReaderClick || onOpenReader) && (
+                <button
+                  type="button"
+                  className="app-header-button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    onReaderClick ? onReaderClick() : onOpenReader?.(item)
+                  }}
+                >
+                  Ver en lector
+                </button>
+              )}
+              {(onSaveClick || (onSave && item.id != null)) && (
+                <button
+                  type="button"
+                  className="app-header-button"
+                  disabled={saving}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    onSaveClick ? onSaveClick() : onSave?.(item.id as number)
+                  }}
+                  aria-label="Guardar noticia"
+                >
+                  {saving ? 'Guardando…' : isSaved ? 'Guardada' : 'Guardar'}
+                </button>
+              )}
+              {onShareClick && (
+                <button
+                  type="button"
+                  className="app-header-button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    onShareClick()
+                  }}
+                >
+                  Compartir
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
+    </>
+  )
+
+  return (
+    <article className="app-card app-article-card app-article-card--mobile-hero">
+      <Link
+        to={ROUTES.ARTICLE}
+        state={{ item }}
+        className="app-article-card-link"
+        onClick={() => onLinkClick?.(item.source, item.link)}
+        aria-label={`Abrir noticia: ${item.title}`}
+      >
+        {cardContent}
+      </Link>
     </article>
   )
 }

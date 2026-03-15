@@ -1,7 +1,20 @@
-/** Card compartida para artículos del comparador por sesgo */
-import type { BiasArticle } from '@/types/news'
+/** Card compartida para artículos del comparador por sesgo. Al hacer clic abre la vista /article. */
+import { Link } from 'react-router-dom'
+import { ROUTES } from '@/app/routes'
+import type { BiasArticle, NewsItem } from '@/types/news'
 
 type BiasSide = 'left' | 'center' | 'right'
+
+function biasArticleToNewsItem(article: BiasArticle): NewsItem {
+  return {
+    title: article.title,
+    link: article.link,
+    description: article.description ?? '',
+    source: article.source,
+    pubDate: article.pubDate,
+    image: article.image,
+  }
+}
 
 interface BiasArticleCardProps {
   article: BiasArticle
@@ -22,10 +35,9 @@ export function BiasArticleCard({
         : 'comparador-card__headline comparador-card__headline--right'
 
   return (
-    <a
-      href={article.link}
-      target="_blank"
-      rel="noreferrer"
+    <Link
+      to={ROUTES.ARTICLE}
+      state={{ item: biasArticleToNewsItem(article) }}
       className={`comparador-card comparador-card--${side}`}
       onClick={onLinkClick}
     >
@@ -42,6 +54,6 @@ export function BiasArticleCard({
         <span className="comparador-card__source">{article.source}</span>
         <span className={headlineClass}>{article.title}</span>
       </div>
-    </a>
+    </Link>
   )
 }

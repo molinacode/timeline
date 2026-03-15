@@ -17,6 +17,7 @@ import { CookieBanner } from './components/CookieBanner'
 import { Analytics } from '@vercel/analytics/react'
 import { SessionExpiredHandler } from './app/SessionExpiredHandler'
 import { UserAgreementPage } from './features/legal/UserAgreementPage'
+import { ROUTES } from './app/routes'
 
 const DemoClusterPage = lazy(() =>
   import('./features/news/DemoClusterPage').then((m) => ({ default: m.DemoClusterPage }))
@@ -26,6 +27,9 @@ const TimelineBiasPage = lazy(() =>
 )
 const ReaderPage = lazy(() =>
   import('./features/news/reader/ReaderPage').then((m) => ({ default: m.ReaderPage }))
+)
+const NewsCardPage = lazy(() =>
+  import('./features/news/NewsCardPage').then((m) => ({ default: m.NewsCardPage }))
 )
 const AdminDashboard = lazy(() =>
   import('./features/admin/AdminDashboard').then((m) => ({ default: m.AdminDashboard }))
@@ -165,6 +169,14 @@ export function App() {
                 element={
                   <RequireAuth>
                     <ReaderPage />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path={ROUTES.ARTICLE}
+                element={
+                  <RequireAuth>
+                    <NewsCardPage />
                   </RequireAuth>
                 }
               />

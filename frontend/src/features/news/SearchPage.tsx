@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { BasePage } from '../../components/layout/BasePage'
+import { TimelineArticleCard } from '../../components/TimelineArticleCard'
 import { apiUrl } from '@/config/api'
 import { useAuth } from '../../app/providers/AuthProvider'
+import type { NewsItem } from '@/types/news'
 
 type SearchResultItem = {
   id: number
@@ -183,38 +185,26 @@ export function SearchPage() {
 
         {!loading && results.length > 0 && (
           <ul className="app-search-results">
-            {results.map((item) => (
-              <li key={item.id} className="app-search-result-item">
-                <article className="app-card app-search-card">
-                  <header className="app-search-card-header">
-                    {item.sourceName && (
-                      <span className="app-search-card-source">{item.sourceName}</span>
-                    )}
-                    {item.category && (
-                      <span className="app-search-card-category">{item.category}</span>
-                    )}
-                    {item.bias && (
-                      <span className="app-search-card-bias-badge">{item.bias}</span>
-                    )}
-                  </header>
-                  <div className="app-search-card-body">
-                    <h2 className="app-search-card-title">{item.title}</h2>
-                    {item.description && (
-                      <p className="app-search-card-description">{item.description}</p>
-                    )}
-                  </div>
-                  <footer className="app-search-card-footer">
-                    <button
-                      type="button"
-                      className="app-btn-link"
-                      onClick={() => window.open(item.link, '_blank')}
-                    >
-                      Abrir en la web original
-                    </button>
-                  </footer>
-                </article>
-              </li>
-            ))}
+            {results.map((item) => {
+              const newsItem: NewsItem = {
+                id: item.id,
+                title: item.title,
+                link: item.link,
+                description: item.description ?? '',
+                pubDate: item.pubDate ?? undefined,
+                image: item.image ?? undefined,
+                source: item.sourceName ?? '',
+              }
+              return (
+                <li key={item.id} className="app-search-result-item">
+                  <TimelineArticleCard
+                    item={newsItem}
+                    formatDate
+                    categoryLabel={item.category ?? null}
+                  />
+                </li>
+              )
+            })}
           </ul>
         )}
       </div>

@@ -112,7 +112,7 @@ export function Layout({ children }: { children: ReactNode }) {
         Saltar al contenido
       </a>
       <header
-        className={`app-header ${menuSide === 'right' ? 'app-header--drawer-right' : ''}`}
+        className={`app-header ${menuSide === 'right' ? 'app-header--drawer-right' : ''} ${isNarrow ? 'app-header--narrow' : ''}`}
       >
         <div className="app-header-left">
           {isNarrow && (
@@ -129,43 +129,29 @@ export function Layout({ children }: { children: ReactNode }) {
           )}
           <Link to="/" className="app-header-logo-link">
             <img src="/images/logo.svg" alt="TimeLine" className="app-header-logo" />
-            <div>
+            <div className="app-header-logo-text">
               <div className="app-header-title">TimeLine</div>
               <div className="app-header-subtitle">El mundo a tu alrededor</div>
-              <div className="app-header-meta" aria-label="Fecha y ubicación">
-                {date.toLocaleDateString('es-ES', {
-                  day: 'numeric',
-                  month: 'short',
-                  year: 'numeric',
-                })}
-                {locationLabel != null && (
-                  <>
-                    {' · '}
-                    {locationLabel}
-                  </>
-                )}
-              </div>
             </div>
           </Link>
+          <span className="app-header-meta" aria-label="Fecha y ubicación">
+            {date.toLocaleDateString('es-ES', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+            })}
+            {locationLabel != null && (
+              <>
+                {' · '}
+                {locationLabel}
+              </>
+            )}
+          </span>
         </div>
         <nav className="app-header-nav" aria-label="Navegación principal">
           {navContent}
         </nav>
       </header>
-
-      {isNarrow && user && (
-        <nav className="app-mobile-tabs" aria-label="Secciones principales">
-          <NavLinkWithActive to="/me/timeline" onClick={closeDrawer} end>
-            Mi TimeLine
-          </NavLinkWithActive>
-          <NavLinkWithActive to="/me/comparator" onClick={closeDrawer}>
-            Comparador
-          </NavLinkWithActive>
-          <NavLinkWithActive to="/me/saved" onClick={closeDrawer}>
-            Guardadas
-          </NavLinkWithActive>
-        </nav>
-      )}
 
       {drawerOpen && (
         <>
@@ -205,7 +191,6 @@ export function Layout({ children }: { children: ReactNode }) {
         className={[
           'app-main',
           isComparatorPage && 'app-main--wide',
-          isNarrow && user && 'app-main--with-bottom-nav',
         ]
           .filter(Boolean)
           .join(' ')}

@@ -218,6 +218,82 @@ router.get('/lists/:id', async (req, res) => {
   }
 })
 
+// GET /api/me/lists/:id/news — noticias de las fuentes del catálogo de la lista (paginación limit/offset)
+router.get('/lists/:id/news', async (req, res) => {
+  const listId = Number(req.params.id)
+  if (!Number.isFinite(listId)) {
+    return res.status(400).json({ error: 'ID de lista inválido' })
+  }
+
+  const rawLimit = Number(req.query.limit)
+  const limit = Number.isFinite(rawLimit) && rawLimit > 0 ? Math.min(rawLimit, 100) : 50
+  const rawOffset = Number(req.query.offset)
+  const offset = Number.isFinite(rawOffset) && rawOffset >= 0 ? rawOffset : 0
+
+  try {
+    const supabase = getSupabase()
+
+    const { data: list, error: listError } = await supabase
+      .from('source_lists')
+      .select('id')
+      .eq('id', listId)
+      .eq('user_id', req.user.id)
+      .maybeSingle()
+
+    if (listError) throw listError
+    if (!list) return res.status(404).json({ error: 'Lista no encontrada' })
+
+    const { data: items, error: itemsError } = await supabase
+      .from('source_list_items')
+      .select('source_id')
+      .eq('list_id', listId)
+      .not('source_id', 'is', null)
+
+    if (itemsError) throw itemsError
+
+    const catalogSourceIds = [...new Set((items || []).map((i) => i.source_id).filter(Boolean))]
+    if (catalogSourceIds.length === 0) {
+      return res.json([])
+    }
+
+    const { data: rows, error: newsError } = await supabase
+      .from('news_items')
+      .select('id, source_id, title, description, link, image_url, pub_date, created_at')
+      .in('source_id', catalogSourceIds)
+      .order('pub_date', { ascending: false })
+      .range(offset, offset + limit - 1)
+
+    if (newsError) throw newsError
+
+    const sourceIds = [...new Set((rows || []).map((r) => r.source_id).filter(Boolean))]
+    const sourceMap = new Map()
+    if (sourceIds.length > 0) {
+      const { data: sources } = await supabase
+        .from('news_sources')
+        .select('id, name')
+        .in('id', sourceIds)
+      ;(sources || []).forEach((s) => sourceMap.set(s.id, s.name))
+    }
+
+    const listNews = (rows || []).map((r) => ({
+      id: r.id,
+      sourceId: r.source_id,
+      title: r.title,
+      description: r.description,
+      link: r.link,
+      imageUrl: r.image_url,
+      pubDate: r.pub_date,
+      createdAt: r.created_at,
+      sourceName: sourceMap.get(r.source_id) ?? null,
+    }))
+
+    res.json(listNews)
+  } catch (error) {
+    console.error('Error obteniendo noticias de la lista:', error)
+    res.status(500).json({ error: 'Error al obtener noticias de la lista' })
+  }
+})
+
 // PUT /api/me/lists/:id — actualizar lista
 router.put('/lists/:id', async (req, res) => {
   const id = Number(req.params.id)

@@ -48,10 +48,7 @@ export function ListsListPage() {
   }, [token])
 
   return (
-    <BasePage
-      title="Mis listas"
-      subtitle="Organiza tus fuentes en listas personalizadas."
-    >
+    <BasePage>
       <div className="app-page-section">
         <div className="app-lists-actions">
           <Link to="/me/lists/new" className="app-button app-btn-primary">
@@ -81,17 +78,26 @@ export function ListsListPage() {
                   to={`/me/lists/${list.id}`}
                   className="app-card app-list-card"
                 >
-                  <div className="app-list-card-header">
-                    <h2 className="app-card-title">{list.name}</h2>
-                    <span className="app-list-card-count">
-                      {list.sources.length} fuente{list.sources.length !== 1 ? 's' : ''}
+                  <div className="app-list-card-cover" aria-hidden>
+                    <span className="app-list-card-cover-icon">
+                      <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                      </svg>
                     </span>
                   </div>
-                  {list.description && (
-                    <p className="app-card-subtitle app-list-card-desc">
-                      {list.description}
-                    </p>
-                  )}
+                  <div className="app-list-card-body">
+                    <div className="app-list-card-header">
+                      <h2 className="app-card-title">{list.name}</h2>
+                      <span className="app-list-card-count">
+                        {list.sources.length} fuente{list.sources.length !== 1 ? 's' : ''}
+                      </span>
+                    </div>
+                    {list.description && (
+                      <p className="app-card-subtitle app-list-card-desc">
+                        {list.description}
+                      </p>
+                    )}
+                  </div>
                 </Link>
               </li>
             ))}
