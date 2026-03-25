@@ -7,7 +7,9 @@ import { useGeolocationLabel } from '../../hooks/useGeolocationLabel'
 import { useMenuSide } from '../../contexts/MenuSideContext'
 import { NavLinkWithActive } from './NavLinkWithActive'
 
-const DRAWER_BREAKPOINT = 900
+// A partir de ~tablet pequeño el header completo se comprime demasiado,
+// así que activamos el drawer antes.
+const DRAWER_BREAKPOINT = 1024
 
 export function Layout({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth()
