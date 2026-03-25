@@ -1,8 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { BasePage } from '../../components/layout/BasePage'
 import { apiUrl } from '@/config/api'
+
+const SOURCES_PREFS_KEY = 'timeline_sources_prefs_v1'
+
+type SourcesPrefs = {
+  lastHourEnabled: string[]
+  localEnabledByRegion: Record<string, string[]>
+}
 
 type ProfileData = {
   id: number
@@ -18,7 +25,7 @@ export function UserProfilePage() {
   const { token, updateUser } = useAuth()
   const [profile, setProfile] = useState<ProfileData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [tab, setTab] = useState<'data' | 'password'>('data')
+  const [tab, setTab] = useState<'data' | 'password' | 'sources'>('data')
 
   // Formulario de datos
   const [formName, setFormName] = useState('')
@@ -33,6 +40,43 @@ export function UserProfilePage() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [savingPassword, setSavingPassword] = useState(false)
   const [passwordMessage, setPasswordMessage] = useState<string | null>(null)
+
+  // Ajustes de fuentes (UX): persistencia en localStorage (sin backend todavía)
+  const [sourcesPrefs, setSourcesPrefs] = useState<SourcesPrefs>({
+    lastHourEnabled: [],
+    localEnabledByRegion: {},
+  })
+  const [sourcesDraft, setSourcesDraft] = useState<SourcesPrefs>({
+    lastHourEnabled: [],
+    localEnabledByRegion: {},
+  })
+  const [sourcesSavedMsg, setSourcesSavedMsg] = useState<string | null>(null)
+
+  useEffect(() => {
+    const raw = localStorage.getItem(SOURCES_PREFS_KEY)
+    if (!raw) return
+    try {
+      const parsed = JSON.parse(raw) as SourcesPrefs
+      if (
+        parsed &&
+        Array.isArray(parsed.lastHourEnabled) &&
+        typeof parsed.localEnabledByRegion === 'object'
+      ) {
+        setSourcesPrefs(parsed)
+        setSourcesDraft(parsed)
+      }
+    } catch {
+      // ignore
+    }
+  }, [])
+
+  const lastHourAll = useMemo(() => {
+    // Lista base curada (se puede refinar luego con catálogo real)
+    return ['El País', 'El Mundo', 'ABC', 'La Razón', 'Eldiario.es', '20Minutos.es', 'El Confidencial']
+  }, [])
+
+  const effectiveLastHourEnabled =
+    sourcesDraft.lastHourEnabled.length > 0 ? sourcesDraft.lastHourEnabled : lastHourAll
 
   useEffect(() => {
     ;(async () => {
@@ -181,6 +225,13 @@ export function UserProfilePage() {
           >
             Cambiar contraseña
           </button>
+          <button
+            type="button"
+            className={tab === 'sources' ? 'active' : ''}
+            onClick={() => setTab('sources')}
+          >
+            Fuentes
+          </button>
           <Link
             to="/me/interests"
             className="app-nav-pills-link"
@@ -324,6 +375,108 @@ export function UserProfilePage() {
               {savingPassword ? 'Cambiando…' : 'Cambiar contraseña'}
             </button>
           </form>
+        )}
+
+        {tab === 'sources' && (
+          <div className="app-profile-form app-profile-sources">
+            <div className="app-card-header app-card-header--sm">
+              <h3 className="app-card-title app-card-title--xs">Fuentes del feed</h3>
+              <p className="app-muted-inline">
+                Elige qué fuentes entran en Última hora y en Locales. El comparador es fijo.
+              </p>
+            </div>
+
+            <div className="app-form-group">
+              <label className="auth-label-inline">Última hora</label>
+              <div className="app-source-toggles">
+                {lastHourAll.map((name) => {
+                  const enabled = effectiveLastHourEnabled.includes(name)
+                  return (
+                    <label key={name} className="app-source-toggle">
+                      <input
+                        type="checkbox"
+                        checked={enabled}
+                        onChange={(e) => {
+                          setSourcesSavedMsg(null)
+                          setSourcesDraft((prev) => {
+                            const base =
+                              prev.lastHourEnabled.length > 0
+                                ? prev.lastHourEnabled
+                                : lastHourAll
+                            const next = e.target.checked
+                              ? [...new Set([...base, name])]
+                              : base.filter((x) => x !== name)
+                            return { ...prev, lastHourEnabled: next }
+                          })
+                        }}
+                      />
+                      <span>{name}</span>
+                    </label>
+                  )
+                })}
+              </div>
+              <div className="app-flex-row">
+                <button
+                  type="button"
+                  className="app-button app-button--sm"
+                  onClick={() => {
+                    setSourcesSavedMsg(null)
+                    setSourcesDraft((p) => ({ ...p, lastHourEnabled: lastHourAll }))
+                  }}
+                >
+                  Seleccionar todas
+                </button>
+                <button
+                  type="button"
+                  className="app-button app-button--sm"
+                  onClick={() => {
+                    setSourcesSavedMsg(null)
+                    setSourcesDraft((p) => ({ ...p, lastHourEnabled: [] }))
+                  }}
+                >
+                  Restablecer (todas)
+                </button>
+              </div>
+              <span className="app-form-hint">
+                Si no seleccionas nada, se mostrarán todas las fuentes.
+              </span>
+            </div>
+
+            <div className="app-form-group">
+              <label className="auth-label-inline">Locales</label>
+              <span className="app-form-hint">
+                (Siguiente paso) Aquí mostraremos las fuentes locales de tu región para activar/desactivar.
+              </span>
+            </div>
+
+            {sourcesSavedMsg && (
+              <p className="app-form-message app-form-message--success">{sourcesSavedMsg}</p>
+            )}
+
+            <div className="app-flex-row">
+              <button
+                type="button"
+                className="app-button app-btn-primary"
+                onClick={() => {
+                  setSourcesPrefs(sourcesDraft)
+                  localStorage.setItem(SOURCES_PREFS_KEY, JSON.stringify(sourcesDraft))
+                  setSourcesSavedMsg('Preferencias guardadas.')
+                }}
+              >
+                Guardar fuentes
+              </button>
+              <button
+                type="button"
+                className="app-button"
+                onClick={() => {
+                  setSourcesDraft(sourcesPrefs)
+                  setSourcesSavedMsg('Cambios descartados.')
+                }}
+              >
+                Descartar
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </BasePage>

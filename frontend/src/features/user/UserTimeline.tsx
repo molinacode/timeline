@@ -10,6 +10,8 @@ import type { NewsItem } from '../../types/news'
 import type { Category } from '../../types/category'
 import type { UserCustomSource } from '../../types/source'
 
+const SOURCES_PREFS_KEY = 'timeline_sources_prefs_v1'
+
 type TabId = 'ultima-hora' | 'categorias' | 'locales' | 'mis-rss'
 
 const TABS: { id: TabId; label: string }[] = [
@@ -38,6 +40,7 @@ export function UserTimeline() {
   const [loadingCategoryNews, setLoadingCategoryNews] = useState(false)
   const [localNews, setLocalNews] = useState<NewsItem[]>([])
   const [loadingLocalNews, setLoadingLocalNews] = useState(false)
+  const [enabledLastHourSources, setEnabledLastHourSources] = useState<string[] | null>(null)
 
   // Formulario agregar RSS
   const [newName, setNewName] = useState('')
@@ -52,6 +55,19 @@ export function UserTimeline() {
   const isDefaultMadrid = !regionId && effectiveRegionId === 'madrid'
 
   useEffect(() => {
+    // Cargar preferencias de fuentes (solo frontend por ahora)
+    try {
+      const raw = localStorage.getItem(SOURCES_PREFS_KEY)
+      if (raw) {
+        const parsed = JSON.parse(raw) as { lastHourEnabled?: string[] }
+        if (Array.isArray(parsed?.lastHourEnabled)) {
+          setEnabledLastHourSources(parsed.lastHourEnabled)
+        }
+      }
+    } catch {
+      // ignore
+    }
+
     ;(async () => {
       try {
         setLoadingLastHour(true)
@@ -264,7 +280,12 @@ export function UserTimeline() {
               <p className="app-muted-inline">No hay noticias disponibles.</p>
             ) : (
               <div className="app-flex-col">
-                {lastHourItems.map((item, idx) => (
+                {lastHourItems
+                  .filter((it) => {
+                    if (!enabledLastHourSources || enabledLastHourSources.length === 0) return true
+                    return enabledLastHourSources.includes(it.source)
+                  })
+                  .map((item, idx) => (
                   <TimelineArticleCard
                     key={`${item.link}-${idx}`}
                     item={item}
