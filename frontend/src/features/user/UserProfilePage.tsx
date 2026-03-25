@@ -161,7 +161,7 @@ export function UserProfilePage() {
           <div className="app-profile-incomplete" role="status">
             <p className="app-profile-incomplete-title">Completa tu perfil</p>
             <p className="app-profile-incomplete-text">
-              Añade tu nombre y, si quieres, un correo de contacto para tu cuenta TimeLine.
+              Añade tu nombre y un email de contacto para tu cuenta TimeLine.
             </p>
           </div>
         )}

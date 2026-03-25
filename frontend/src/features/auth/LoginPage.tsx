@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useRef, useState } from 'react'
 import { useNavigate, Link, Navigate } from 'react-router-dom'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { BasePage } from '../../components/layout/BasePage'
@@ -16,6 +16,8 @@ export function LoginPage() {
   const [blueskyLoading, setBlueskyLoading] = useState(false)
   const [blueskyError, setBlueskyError] = useState<string | null>(null)
   const [loginMode, setLoginMode] = useState<'email' | 'bluesky'>('email')
+  const touchStartX = useRef<number | null>(null)
+  const touchStartY = useRef<number | null>(null)
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -61,7 +63,35 @@ export function LoginPage() {
       title="Iniciar sesión"
       subtitle="Introduce tus credenciales para acceder a tu TimeLine personalizado."
     >
-      <div className="app-card app-card--form auth-container">
+      <div
+        className="app-card app-card--form auth-container"
+        onTouchStart={(e) => {
+          const t = e.touches[0]
+          if (!t) return
+          touchStartX.current = t.clientX
+          touchStartY.current = t.clientY
+        }}
+        onTouchEnd={(e) => {
+          const startX = touchStartX.current
+          const startY = touchStartY.current
+          touchStartX.current = null
+          touchStartY.current = null
+          if (startX == null || startY == null) return
+
+          const t = e.changedTouches[0]
+          if (!t) return
+
+          const dx = t.clientX - startX
+          const dy = t.clientY - startY
+
+          // Swipe horizontal suave para cambiar entre modos.
+          if (Math.abs(dx) < 48) return
+          if (Math.abs(dy) > 40) return
+
+          if (dx < 0) setLoginMode('bluesky')
+          else setLoginMode('email')
+        }}
+      >
         <div className="auth-tabs" role="tablist" aria-label="Tipo de inicio de sesión">
           <button
             type="button"

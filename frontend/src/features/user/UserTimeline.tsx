@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '../../app/providers/AuthProvider'
 import { useRegionFromGeolocation } from '../../hooks/useRegionFromGeolocation'
 import { useNewsClickTracker } from '../../hooks/useNewsClickTracker'
@@ -45,6 +45,7 @@ export function UserTimeline() {
   const [addingSource, setAddingSource] = useState(false)
   const [addError, setAddError] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<TabId>('ultima-hora')
+  const categoriesCarouselRef = useRef<HTMLDivElement>(null)
 
   const effectiveRegionId = regionId || 'madrid'
   const region = regionsData.regions.find((r) => r.id === effectiveRegionId) ?? null
@@ -202,6 +203,15 @@ export function UserTimeline() {
     }
   }
 
+  // Mantener visible el chip activo dentro del carrusel
+  useEffect(() => {
+    if (!selectedCategory) return
+    const el = categoriesCarouselRef.current
+    if (!el) return
+    const active = el.querySelector<HTMLButtonElement>('.app-category-chip.active')
+    active?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+  }, [selectedCategory])
+
   async function handleRemoveSource(id: number) {
     if (!token) return
     try {
@@ -281,7 +291,12 @@ export function UserTimeline() {
                 No hay categorías configuradas. El administrador puede crearlas en el panel de Admin.
               </p>
             ) : (
-              <div className="app-categories-carousel" role="group" aria-label="Categorías">
+              <div
+                className="app-categories-carousel"
+                role="group"
+                aria-label="Categorías"
+                ref={categoriesCarouselRef}
+              >
                 <div className="app-categories-chips">
                   {categories
                     .slice()

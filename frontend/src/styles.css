@@ -1842,6 +1842,28 @@ button {
   overflow-y: hidden;
   padding-bottom: var(--space-xs);
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+}
+.app-categories-carousel::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+.app-categories-carousel {
+  /* Sugerencia visual de scroll horizontal (fade en los bordes) */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 20px,
+    #000 calc(100% - 20px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 20px,
+    #000 calc(100% - 20px),
+    transparent 100%
+  );
+  scroll-snap-type: x proximity;
 }
 .app-categories-carousel::-webkit-scrollbar {
   height: 6px;
@@ -1873,6 +1895,7 @@ button {
   white-space: nowrap;
   flex-shrink: 0;
   max-width: 100%;
+  scroll-snap-align: start;
 }
 button.app-category-chip {
   font: inherit;
@@ -2504,6 +2527,27 @@ button.app-category-chip {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
   z-index: 10;
+}
+
+@media (max-width: 520px) {
+  /* En móvil, el menú se comporta como bottom-sheet */
+  .app-list-detail-menu {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    margin-top: 0;
+    width: 100vw;
+    max-width: none;
+    min-width: 0;
+    max-height: 70vh;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    z-index: 1100;
+  }
+  .app-list-detail-cover-wrap {
+    z-index: 1;
+  }
 }
 .app-list-detail-menu-meta {
   margin: 0 0 var(--space-sm);
